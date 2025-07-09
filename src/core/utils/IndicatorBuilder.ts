@@ -5,33 +5,38 @@ import { FetchAdapter } from "../adapters/fetch-adapter/FetchAdapter";
 export class IndicatorBuilder {
 	#config: Indicator = {} as Indicator;
 
-	setName(name: string) {
+	setName(name: Indicator["name"]) {
 		this.#config.name = name;
 		return this;
 	}
 
-	setDescription(description: string) {
+	setDescription(description: Indicator["description"]) {
 		this.#config.description = description;
 		return this;
 	}
 
-	setUrl(url: string) {
+	setUrl(url: Indicator["url"]) {
 		this.#config.url = url;
-		return this;
-	}
-
-	setFetchAdapter(adapter: FetchAdapter) {
-		this.#config.fetchAdapter = adapter;
-		return this;
-	}
-
-	setParseAdapter(adapter: ParseAdapter) {
-		this.#config.parseAdapter = adapter;
 		return this;
 	}
 
 	setFrequency(frequency: Indicator["frequency"]) {
 		this.#config.frequency = frequency;
+		return this;
+	}
+
+	setMetadata(metadata: Indicator["metadata"]) {
+		this.#config.metadata = metadata;
+		return this;
+	}
+
+	setFetchAdapter(adapter: Indicator["fetchAdapter"]) {
+		this.#config.fetchAdapter = adapter;
+		return this;
+	}
+
+	setParseAdapter(adapter: Indicator["parseAdapter"]) {
+		this.#config.parseAdapter = adapter;
 		return this;
 	}
 
@@ -44,15 +49,19 @@ export class IndicatorBuilder {
 	}
 }
 
+const FREQUENCIES = ["daily", "weekly", "monthly", "year", "once"] as const;
+
 const IndicatorSchema = z.object({
 	name: z.string(),
 	description: z.string().optional(),
 	url: z.string().url(),
-	frequency: z.enum(["daily", "weekly", "monthly", "year", "once"])
+	frequency: z.enum(FREQUENCIES),
+	metadata: z.record(z.unknown()).optional()
 });
 
-export type Indicator = z.infer<typeof IndicatorSchema> & {
+type Indicator = z.infer<typeof IndicatorSchema> & {
 	fetchAdapter: FetchAdapter;
 	parseAdapter: ParseAdapter;
 };
+
 export type ModuleConfig = Record<string, Indicator>;
