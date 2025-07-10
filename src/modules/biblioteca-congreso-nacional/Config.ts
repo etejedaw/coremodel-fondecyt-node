@@ -1,8 +1,10 @@
+import { JsonFetchAdapter } from "../../core/adapters/fetch-adapter/JsonFetchAdapter";
 import { RequestPromiseAdapter } from "../../core/adapters/fetch-adapter/RequestPromiseAdapter";
 import {
 	IndicatorBuilder,
 	ModuleConfig
 } from "../../core/utils/IndicatorBuilder";
+import { OrganizacionesComunitarias } from "./adapters/OrganizacionesComunitarias";
 import { TasaPobrezaIngresosAdapter } from "./adapters/TasaPobrezaIngresoAdapter";
 
 export const BIBLIOTECA_CONGRESO_NACIONAL_CONFIG: ModuleConfig = {
@@ -14,5 +16,14 @@ export const BIBLIOTECA_CONGRESO_NACIONAL_CONFIG: ModuleConfig = {
 		.setFrequency("year")
 		.setFetchAdapter(new RequestPromiseAdapter())
 		.setParseAdapter(new TasaPobrezaIngresosAdapter())
+		.build(),
+	"valdivia-organizaciones-comunitaras": new IndicatorBuilder()
+		.setName("Organizaciones Comunitarias en Valdivia")
+		.setUrl(
+			"https://www.bcn.cl/siit/estadisticasterritoriales/descargar-resultados/469123/datos.json"
+		)
+		.setFrequency("year")
+		.setFetchAdapter(new JsonFetchAdapter())
+		.setParseAdapter(new OrganizacionesComunitarias())
 		.build()
 } as const;
