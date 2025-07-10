@@ -130,11 +130,11 @@ scraperFactory.register(new MiNuevoModuloScraper());
 
 ## Clases y helpers disponibles en `core/`
 
-`ScraperFactory`: Registro central de módulos.
-`ScrapeBase`: Base para todos los módulos.
-`IndicatorBuilder`: Builder para indicadores.
-`adapters/`: Adapters listos para scraping web, JSON, descarga de archivos, etc.
-`utils/IndicatorBuilder.ts`: Utilidad para construcción y validación de indicadores.
+- `ScraperFactory`: Registro central de módulos.
+- `ScrapeBase`: Base para todos los módulos.
+- `IndicatorBuilder`: Builder para indicadores.
+- `adapters/`: Adapters listos para scraping web, JSON, descarga de archivos, etc.
+- `utils/IndicatorBuilder.ts`: Utilidad para construcción y validación de indicadores.
 
 ## Notas
 
