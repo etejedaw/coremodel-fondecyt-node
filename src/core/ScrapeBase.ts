@@ -33,8 +33,15 @@ export abstract class ScrapeBase {
 		return this.#moduleConfig[indicator].parseAdapter;
 	}
 
-	async init(indicator: string) {
-		const url = this.getIndicatorUrl(indicator);
+	#buildUrl(url: string, params: Record<string, string>) {
+		return Object.entries(params).reduce((acc, [key, value]) => {
+			return acc.replace(new RegExp(`{{${key}}}`, "g"), value.toString());
+		}, url);
+	}
+
+	async init(indicator: string, params: Record<string, string> = {}) {
+		const indicatorUrl = this.getIndicatorUrl(indicator);
+		const url = this.#buildUrl(indicatorUrl, params);
 
 		const fetchAdapter = this.#getFetchAdapter(indicator);
 		const fetch = await fetchAdapter.fetch(url);
