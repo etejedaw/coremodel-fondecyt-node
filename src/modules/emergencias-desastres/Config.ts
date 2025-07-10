@@ -1,5 +1,5 @@
 import { RequestPromiseAdapter } from "../../core/adapters/fetch-adapter/RequestPromiseAdapter";
-import { DateParserAdapter } from "./adapters/DateParser";
+import { DateParserAdapter } from "./adapters/DateParserAdapter";
 import {
 	IndicatorBuilder,
 	ModuleConfig
