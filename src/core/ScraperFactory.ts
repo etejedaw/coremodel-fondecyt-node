@@ -15,14 +15,19 @@ export class ScraperFactory {
 
 	register(scraper: ScrapeBase) {
 		const scraperName = scraper.getName();
+		if (this.#modules[scraperName])
+			throw new Error(`Scraper ${scraperName} is already registered`);
 		this.#modules[scraperName] = scraper;
 	}
 
-	getIndicators(module: string) {
-		return this.#modules[module].getIndicators();
+	getIndicators(module: string): string[] {
+		const scraper = this.get(module);
+		return scraper.getIndicators();
 	}
 
-	get(module: string) {
-		return this.#modules[module];
+	get(module: string): ScrapeBase {
+		const scraper = this.#modules[module];
+		if (!scraper) throw new Error(`Scraper ${module} not found`);
+		return scraper;
 	}
 }
