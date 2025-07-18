@@ -60,7 +60,7 @@ export abstract class ScrapeBase {
 		const mapperFunction = this.#getMapperFunction(indicator);
 		const data = parse
 			.map(mapperFunction)
-			.map(data => ({ ...data, indicador: indicator }));
+			.map(data => ({ ...data, indicador: indicator, modulo: this.getName() }));
 
 		const storageAdapter = this.#getStorageAdapter(indicator);
 		await storageAdapter.save(data);
