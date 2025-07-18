@@ -33,6 +33,14 @@ export abstract class ScrapeBase {
 		return this.#moduleConfig[indicator].parseAdapter;
 	}
 
+	#getStorageAdapter(indicator: string) {
+		return this.#moduleConfig[indicator].storageAdapter;
+	}
+
+	#getMapperFunction(indicator: string) {
+		return this.#moduleConfig[indicator].mapperFunction;
+	}
+
 	#buildUrl(url: string, params: Record<string, string>) {
 		return Object.entries(params).reduce((acc, [key, value]) => {
 			return acc.replace(new RegExp(`{{${key}}}`, "g"), value.toString());
@@ -47,6 +55,16 @@ export abstract class ScrapeBase {
 		const fetch = await fetchAdapter.fetch(url);
 
 		const parseAdapter = this.#getParseAdapter(indicator);
-		return parseAdapter.extract(fetch);
+		const parse = parseAdapter.extract(fetch);
+
+		const mapperFunction = this.#getMapperFunction(indicator);
+		const data = parse
+			.map(mapperFunction)
+			.map(data => ({ ...data, indicador: indicator }));
+
+		const storageAdapter = this.#getStorageAdapter(indicator);
+		await storageAdapter.save(data);
+
+		return data;
 	}
 }
