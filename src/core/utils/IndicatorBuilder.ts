@@ -47,7 +47,7 @@ export class IndicatorBuilder {
 		return this;
 	}
 
-	setMapperFunction(mapper: MapperFunction) {
+	setMapperFunction(mapper: Indicator["mapperFunction"]) {
 		this.#config.mapperFunction = mapper;
 		return this;
 	}
