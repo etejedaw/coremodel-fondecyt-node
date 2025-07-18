@@ -1,7 +1,7 @@
 import cheerio from "cheerio";
 import { ParseAdapter } from "../../../core/adapters/parse-adapter/ParseAdapter";
 
-export class TasaPobrezaIngresosAdapter implements ParseAdapter {
+export class TasaPobrezaIngresosParseAdapter implements ParseAdapter {
 	extract(html: string) {
 		const $ = cheerio.load(html);
 		const data = [] as any[];
@@ -24,6 +24,6 @@ export class TasaPobrezaIngresosAdapter implements ParseAdapter {
 				}
 			});
 		}
-		return data;
+		return data as Array<Record<string, unknown>>;
 	}
 }

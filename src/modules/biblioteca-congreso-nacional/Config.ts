@@ -4,8 +4,10 @@ import {
 	IndicatorBuilder,
 	ModuleConfig
 } from "../../core/utils/IndicatorBuilder";
-import { OrganizacionesComunitarias } from "./adapters/OrganizacionesComunitarias";
-import { TasaPobrezaIngresosAdapter } from "./adapters/TasaPobrezaIngresoAdapter";
+import { OrganizacionesComunitariasParseAdapter } from "./adapters/OrganizacionesComunitariasParseAdapter";
+import { OrganizacionesComunitariasStorageAdapter } from "./adapters/OrganizacionesComunitariasStorageAdapter";
+import { TasaPobrezaIngresosParseAdapter } from "./adapters/TasaPobrezaIngresosParseAdapter";
+import { OrganizacionesComunitariasMapper } from "./functions/OrganizacionesComunitariasMapper";
 
 export const BIBLIOTECA_CONGRESO_NACIONAL_CONFIG: ModuleConfig = {
 	"valdivia-tasa-pobreza-ingresos": new IndicatorBuilder()
@@ -15,7 +17,7 @@ export const BIBLIOTECA_CONGRESO_NACIONAL_CONFIG: ModuleConfig = {
 		)
 		.setFrequency("year")
 		.setFetchAdapter(new RequestPromiseAdapter())
-		.setParseAdapter(new TasaPobrezaIngresosAdapter())
+		.setParseAdapter(new TasaPobrezaIngresosParseAdapter())
 		.build(),
 	"valdivia-organizaciones-comunitaras": new IndicatorBuilder()
 		.setName("Organizaciones Comunitarias en Valdivia")
@@ -24,6 +26,8 @@ export const BIBLIOTECA_CONGRESO_NACIONAL_CONFIG: ModuleConfig = {
 		)
 		.setFrequency("year")
 		.setFetchAdapter(new JsonFetchAdapter())
-		.setParseAdapter(new OrganizacionesComunitarias())
+		.setParseAdapter(new OrganizacionesComunitariasParseAdapter())
+		.setMapperFunction(OrganizacionesComunitariasMapper)
+		.setStorageAdapter(new OrganizacionesComunitariasStorageAdapter())
 		.build()
 } as const;
