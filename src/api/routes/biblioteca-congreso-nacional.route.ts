@@ -20,7 +20,7 @@ router.get("/:indicator", async (req, res) => {
 
 	const data = await scraper.init(indicator, { year });
 
-	return res.json({ data }).status(200);
+	return res.json({ data });
 });
 
 export default router;
