@@ -1,6 +1,8 @@
 import { z } from "zod";
 import { ParseAdapter } from "../adapters/parse-adapter/ParseAdapter";
 import { FetchAdapter } from "../adapters/fetch-adapter/FetchAdapter";
+import { StorageAdapter } from "../adapters/storage-adapter/StorageAdapter";
+import { MapperFunction } from "./MapperFunction";
 
 export class IndicatorBuilder {
 	#config: Indicator = {} as Indicator;
@@ -40,11 +42,23 @@ export class IndicatorBuilder {
 		return this;
 	}
 
+	setStorageAdapter(adapter: Indicator["storageAdapter"]) {
+		this.#config.storageAdapter = adapter;
+		return this;
+	}
+
+	setMapperFunction(mapper: MapperFunction) {
+		this.#config.mapperFunction = mapper;
+		return this;
+	}
+
 	build(): Indicator {
 		return {
 			...IndicatorSchema.parse(this.#config),
 			fetchAdapter: this.#config.fetchAdapter,
-			parseAdapter: this.#config.parseAdapter
+			parseAdapter: this.#config.parseAdapter,
+			storageAdapter: this.#config.storageAdapter,
+			mapperFunction: this.#config.mapperFunction
 		};
 	}
 }
@@ -62,6 +76,8 @@ const IndicatorSchema = z.object({
 type Indicator = z.infer<typeof IndicatorSchema> & {
 	fetchAdapter: FetchAdapter;
 	parseAdapter: ParseAdapter;
+	storageAdapter: StorageAdapter;
+	mapperFunction: MapperFunction;
 };
 
 export type ModuleConfig = Record<string, Indicator>;
