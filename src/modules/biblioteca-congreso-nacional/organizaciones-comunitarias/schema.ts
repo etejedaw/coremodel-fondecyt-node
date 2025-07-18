@@ -2,7 +2,6 @@ import { model, Schema } from "mongoose";
 
 const OrganizacionesComunitariasSchema = new Schema(
 	{
-		indicador: { type: String, required: true },
 		nDeCentrosDeMadres: { type: Number, required: true },
 		nDeOtrasOrganizacionesComunitariasFuncionalesOtros: {
 			type: Number,
@@ -18,7 +17,7 @@ const OrganizacionesComunitariasSchema = new Schema(
 		nDeCompaniasDeBomberos: { type: Number, required: true },
 		anio: { type: Number, required: true }
 	},
-	{ timestamps: true }
+	{ timestamps: true, strict: false }
 );
 
 export const OrganizacionesComunitarias = model(

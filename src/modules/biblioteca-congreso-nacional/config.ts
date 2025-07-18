@@ -4,10 +4,12 @@ import {
 	IndicatorBuilder,
 	ModuleConfig
 } from "../../core/utils/IndicatorBuilder";
-import { OrganizacionesComunitariasParseAdapter } from "./adapters/OrganizacionesComunitariasParseAdapter";
-import { OrganizacionesComunitariasStorageAdapter } from "./adapters/OrganizacionesComunitariasStorageAdapter";
-import { TasaPobrezaIngresosParseAdapter } from "./adapters/TasaPobrezaIngresosParseAdapter";
-import { OrganizacionesComunitariasMapper } from "./functions/OrganizacionesComunitariasMapper";
+import {
+	OrganizacionesComunitariasParseAdapter,
+	OrganizacionesComunitariasStorageAdapter,
+	OrganizacionesComunitariasMapper
+} from "./organizaciones-comunitarias";
+import { TasaPobrezaIngresosParseAdapter } from "./tasa-pobreza-ingresos/parse-adapter";
 
 export const BIBLIOTECA_CONGRESO_NACIONAL_CONFIG: ModuleConfig = {
 	"valdivia-tasa-pobreza-ingresos": new IndicatorBuilder()

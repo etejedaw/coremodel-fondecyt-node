@@ -1,9 +1,9 @@
-import { environment } from "./config/environment";
-import { mongodb } from "./config/database";
+import { environment } from "./config/environment.config";
+import { mongodb } from "./config/database.config";
 import { server } from "./api/server";
 import { ScraperFactory } from "./core/ScraperFactory";
-import { EmergenciaDesastresScraper } from "./modules/emergencias-desastres/EmergenciaDesastreScraper";
-import { BibliotecaCongresoNacionalScraper } from "./modules/biblioteca-congreso-nacional/BibliotecaCongresaNacionalScraper";
+import { EmergenciaDesastresScraper } from "./modules/emergencias-desastres";
+import { BibliotecaCongresoNacionalScraper } from "./modules/biblioteca-congreso-nacional";
 
 async function main() {
 	const scraperFactory = ScraperFactory.getInstance();

@@ -1,5 +1,5 @@
 import cheerio from "cheerio";
-import { ParseAdapter } from "../../../core/adapters/parse-adapter/ParseAdapter";
+import { ParseAdapter } from "../../core/adapters/parse-adapter/ParseAdapter";
 
 export class DateParserAdapter implements ParseAdapter {
 	extract(data: string) {

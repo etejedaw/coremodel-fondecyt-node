@@ -1,5 +1,5 @@
 import { StorageAdapter } from "../../../core/adapters/storage-adapter/StorageAdapter";
-import { OrganizacionesComunitarias } from "../OrganizacionesComunitarias";
+import { OrganizacionesComunitarias } from "./schema";
 
 export class OrganizacionesComunitariasStorageAdapter
 	implements StorageAdapter

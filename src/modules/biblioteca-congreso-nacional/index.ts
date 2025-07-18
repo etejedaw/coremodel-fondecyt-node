@@ -1,5 +1,5 @@
 import { ScrapeBase } from "../../core/ScrapeBase";
-import { BIBLIOTECA_CONGRESO_NACIONAL_CONFIG } from "./Config";
+import { BIBLIOTECA_CONGRESO_NACIONAL_CONFIG } from "./config";
 
 export class BibliotecaCongresoNacionalScraper extends ScrapeBase {
 	constructor() {
