@@ -38,7 +38,7 @@ export abstract class ScrapeBase {
 	}
 
 	#getMapperFunction(indicator: string) {
-		return this.#moduleConfig[indicator].mapperFunction;
+		return this.#moduleConfig[indicator].mapperFunction.map;
 	}
 
 	#buildUrl(url: string, params: Record<string, string>) {
