@@ -5,7 +5,7 @@ import { StorageAdapter } from "../adapters/storage-adapter/StorageAdapter";
 import { MapperFunction } from "./MapperFunction";
 
 export class IndicatorBuilder {
-	#config: Indicator = {} as Indicator;
+	#config = {} as Indicator;
 
 	setName(name: Indicator["name"]) {
 		this.#config.name = name;
