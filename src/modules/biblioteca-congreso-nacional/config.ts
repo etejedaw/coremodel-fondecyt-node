@@ -9,7 +9,11 @@ import {
 	OrganizacionesComunitariasStorageAdapter,
 	OrganizacionesComunitariasMapper
 } from "./organizaciones-comunitarias";
-import { TasaPobrezaIngresosParseAdapter } from "./tasa-pobreza-ingresos/parse-adapter";
+import {
+	TasaPobrezaIngresosMapper,
+	TasaPobrezaIngresosParseAdapter,
+	TasaPobrezaIngresosStorageAdapter
+} from "./tasa-pobreza-ingresos";
 
 export const BIBLIOTECA_CONGRESO_NACIONAL_CONFIG: ModuleConfig = {
 	"valdivia-tasa-pobreza-ingresos": new IndicatorBuilder()
@@ -20,6 +24,8 @@ export const BIBLIOTECA_CONGRESO_NACIONAL_CONFIG: ModuleConfig = {
 		.setFrequency("year")
 		.setFetchAdapter(new RequestPromiseAdapter())
 		.setParseAdapter(new TasaPobrezaIngresosParseAdapter())
+		.setMapperFunction(TasaPobrezaIngresosMapper)
+		.setStorageAdapter(new TasaPobrezaIngresosStorageAdapter())
 		.build(),
 	"valdivia-organizaciones-comunitaras": new IndicatorBuilder()
 		.setName("Organizaciones Comunitarias en Valdivia")
