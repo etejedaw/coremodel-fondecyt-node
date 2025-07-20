@@ -1,4 +1,4 @@
-import { ModuleConfig } from "./utils/IndicatorBuilder";
+import { ModuleConfig } from "./IndicatorBuilder";
 
 export abstract class ScrapeBase {
 	readonly #moduleConfig: ModuleConfig;
@@ -70,6 +70,10 @@ export abstract class ScrapeBase {
 
 		const parseAdapter = this.#getParseAdapter(indicator);
 		const parse = parseAdapter.extract(fetch);
+		if (!parse.length)
+			throw new Error(
+				"Error in parse method or fetch method. Cannot extract data"
+			);
 
 		const hasher = this.#getHashAdapter(indicator);
 		const mapperAdapter = this.#getMapperAdapter(indicator);

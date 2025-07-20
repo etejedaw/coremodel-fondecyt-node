@@ -1,9 +1,9 @@
 import { z } from "zod";
-import { ParseAdapter } from "../adapters/parse-adapter/ParseAdapter";
-import { FetchAdapter } from "../adapters/fetch-adapter/FetchAdapter";
-import { StorageAdapter } from "../adapters/storage-adapter/StorageAdapter";
-import { MapperAdater } from "../adapters/mapper-adapter/MapperAdapter";
-import { HashAdapter } from "../adapters/hash-adapter/HashAdapter";
+import { ParseAdapter } from "./adapters/parse-adapter/ParseAdapter";
+import { FetchAdapter } from "./adapters/fetch-adapter/FetchAdapter";
+import { StorageAdapter } from "./adapters/storage-adapter/StorageAdapter";
+import { MapperAdater } from "./adapters/mapper-adapter/MapperAdapter";
+import { HashAdapter } from "./adapters/hash-adapter/HashAdapter";
 
 export class IndicatorBuilder {
 	#config = {} as Indicator;

@@ -1,9 +1,6 @@
 import { RequestPromiseAdapter } from "../../core/adapters/fetch-adapter/RequestPromiseAdapter";
 import { DateParserAdapter } from "./parse-adapter";
-import {
-	IndicatorBuilder,
-	ModuleConfig
-} from "../../core/utils/IndicatorBuilder";
+import { IndicatorBuilder, ModuleConfig } from "../../core/IndicatorBuilder";
 
 export const EMERGENCIA_DESASTRES_CONFIG: ModuleConfig = {
 	"simulacros-2021": new IndicatorBuilder()

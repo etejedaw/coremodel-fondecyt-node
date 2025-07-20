@@ -1,9 +1,6 @@
 import { JsonFetchAdapter } from "../../core/adapters/fetch-adapter/JsonFetchAdapter";
 import { RequestPromiseAdapter } from "../../core/adapters/fetch-adapter/RequestPromiseAdapter";
-import {
-	IndicatorBuilder,
-	ModuleConfig
-} from "../../core/utils/IndicatorBuilder";
+import { IndicatorBuilder, ModuleConfig } from "../../core/IndicatorBuilder";
 import {
 	OrganizacionesComunitariasParseAdapter,
 	OrganizacionesComunitariasStorageAdapter,
