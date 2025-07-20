@@ -17,6 +17,7 @@
 
 - [x] Asegurar que los datos extraídos son guardados de forma homogénea en MongoDB.
 - [x] Validar que los datos extraídos no sean guardados en caso de ya existir
+- [ ] Validar en caso de que el scrape falle o no encuentre datos
 
 ### Extras
 
