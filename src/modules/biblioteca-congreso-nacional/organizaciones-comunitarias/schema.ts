@@ -2,6 +2,7 @@ import { model, Schema } from "mongoose";
 
 const OrganizacionesComunitariasSchema = new Schema(
 	{
+		key: { type: String, required: true, unique: true },
 		nDeCentrosDeMadres: { type: Number, required: true },
 		nDeOtrasOrganizacionesComunitariasFuncionalesOtros: {
 			type: Number,
