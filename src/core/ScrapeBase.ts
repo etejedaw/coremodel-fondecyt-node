@@ -26,19 +26,29 @@ export abstract class ScrapeBase {
 	}
 
 	#getFetchAdapter(indicator: string) {
-		return this.#moduleConfig[indicator].fetchAdapter;
+		const adapter = this.#moduleConfig[indicator].fetchAdapter;
+		if (!adapter) throw new Error("Fetch Adapter not found");
+		return adapter;
 	}
 
 	#getParseAdapter(indicator: string) {
-		return this.#moduleConfig[indicator].parseAdapter;
+		const adapter = this.#moduleConfig[indicator].parseAdapter;
+		if (!adapter) throw new Error("Parse Adapter not found");
+		return adapter;
 	}
 
 	#getStorageAdapter(indicator: string) {
-		return this.#moduleConfig[indicator].storageAdapter;
+		const adapter = this.#moduleConfig[indicator].storageAdapter;
+		if (!adapter) throw new Error("Storage Adapter not found");
+		return adapter;
 	}
 
-	#getMapperFunction(indicator: string) {
-		return this.#moduleConfig[indicator].mapperFunction.map;
+	#getMapperAdapter(indicator: string) {
+		const adapter = this.#moduleConfig[indicator].mapperAdapter.map;
+		if (!adapter) throw new Error("Mapper Adapter not found");
+		return adapter;
+	}
+
 	}
 
 	#buildUrl(url: string, params: Record<string, string>) {
@@ -57,10 +67,11 @@ export abstract class ScrapeBase {
 		const parseAdapter = this.#getParseAdapter(indicator);
 		const parse = parseAdapter.extract(fetch);
 
-		const mapperFunction = this.#getMapperFunction(indicator);
+		const mapperAdapter = this.#getMapperAdapter(indicator);
+
 		const data = parse
-			.map(mapperFunction)
-			.map(data => ({ ...data, indicador: indicator, modulo: this.getName() }));
+			.map(mapperAdapter)
+			.map(data => ({ ...data, indicator, module: this.getName() }))
 
 		const storageAdapter = this.#getStorageAdapter(indicator);
 		await storageAdapter.save(data);
