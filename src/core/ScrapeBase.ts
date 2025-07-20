@@ -49,6 +49,10 @@ export abstract class ScrapeBase {
 		return adapter;
 	}
 
+	#getHashAdapter(indicator: string) {
+		const adapter = this.#moduleConfig[indicator].hashAdapter;
+		if (!adapter) throw new Error("Hash Adapter not found");
+		return adapter;
 	}
 
 	#buildUrl(url: string, params: Record<string, string>) {
@@ -67,11 +71,13 @@ export abstract class ScrapeBase {
 		const parseAdapter = this.#getParseAdapter(indicator);
 		const parse = parseAdapter.extract(fetch);
 
+		const hasher = this.#getHashAdapter(indicator);
 		const mapperAdapter = this.#getMapperAdapter(indicator);
 
 		const data = parse
 			.map(mapperAdapter)
 			.map(data => ({ ...data, indicator, module: this.getName() }))
+			.map(data => ({ ...data, key: hasher.generate(data) }));
 
 		const storageAdapter = this.#getStorageAdapter(indicator);
 		await storageAdapter.save(data);
