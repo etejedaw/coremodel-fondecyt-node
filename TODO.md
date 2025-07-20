@@ -16,10 +16,10 @@
 ## Fase 3: Modelos de datos, exportación y API
 
 - [x] Asegurar que los datos extraídos son guardados de forma homogénea en MongoDB.
-- [ ] Validar que los datos extraídos no sean guardados en caso de ya existir
+- [x] Validar que los datos extraídos no sean guardados en caso de ya existir
 
 ### Extras
 
+- [ ] Actualizar documentación
 - [ ] Añadir control de errores y logging robusto
 - [ ] Generar Test básicos
-- [ ] Documenta la API y su uso.
