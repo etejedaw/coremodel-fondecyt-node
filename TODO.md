@@ -19,8 +19,10 @@
 - [x] Validar que los datos extraídos no sean guardados en caso de ya existir
 - [x] Validar en caso de que el scrape falle o no encuentre datos
 
-### Extras
+## Fase 4: Automatización, robustez y preparación para producción
 
-- [ ] Actualizar documentación
-- [ ] Añadir control de errores y logging robusto
-- [ ] Generar Test básicos
+- [x] Definir enum FREQUENCIES con representación en cron
+- [x] Permitir usar strings como "year" o el cron directamente
+- [ ] Crear una clase/servicio CronRegistry
+- [ ] Definir estructura común para los errores
+- [ ] Crear un Logger común
