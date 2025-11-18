@@ -23,8 +23,8 @@ export class IndicatorBuilder {
 		return this;
 	}
 
-	setFrequency(frequency: Indicator["frequency"]) {
-		this.#config.frequency = frequency;
+	setFrequency(frequencyCron: Indicator["frequency"]) {
+		this.#config.frequency = frequencyCron;
 		return this;
 	}
 
@@ -70,13 +70,11 @@ export class IndicatorBuilder {
 	}
 }
 
-const FREQUENCIES = ["daily", "weekly", "monthly", "year", "once"] as const;
-
 const IndicatorSchema = z.object({
 	name: z.string(),
 	description: z.string().optional(),
 	url: z.string().url(),
-	frequency: z.enum(FREQUENCIES),
+	frequency: z.string().default(""),
 	metadata: z.record(z.unknown()).optional()
 });
 

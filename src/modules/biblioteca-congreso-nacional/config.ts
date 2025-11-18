@@ -1,5 +1,6 @@
 import { JsonFetchAdapter } from "../../core/adapters/fetch-adapter/JsonFetchAdapter";
 import { RequestPromiseAdapter } from "../../core/adapters/fetch-adapter/RequestPromiseAdapter";
+import { FREQUENCIES } from "../../core/enums/Frequencies";
 import { IndicatorBuilder, ModuleConfig } from "../../core/IndicatorBuilder";
 import {
 	OrganizacionesComunitariasParseAdapter,
@@ -20,7 +21,7 @@ export const BIBLIOTECA_CONGRESO_NACIONAL_CONFIG: ModuleConfig = {
 		.setUrl(
 			"https://www.bcn.cl/siit/reportescomunales/comunas_v.html?anno={{year}}&idcom=14101"
 		)
-		.setFrequency("year")
+		.setFrequency(FREQUENCIES.year)
 		.setFetchAdapter(new RequestPromiseAdapter())
 		.setParseAdapter(new TasaPobrezaIngresosParseAdapter())
 		.setMapperAdapter(new TasaPobrezaMapperAdapter())
@@ -32,7 +33,7 @@ export const BIBLIOTECA_CONGRESO_NACIONAL_CONFIG: ModuleConfig = {
 		.setUrl(
 			"https://www.bcn.cl/siit/estadisticasterritoriales/descargar-resultados/469123/datos.json"
 		)
-		.setFrequency("year")
+		.setFrequency(FREQUENCIES.year)
 		.setFetchAdapter(new JsonFetchAdapter())
 		.setParseAdapter(new OrganizacionesComunitariasParseAdapter())
 		.setMapperAdapter(new OrganizacionesComunitariasMapperAdapter())
