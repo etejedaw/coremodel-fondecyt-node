@@ -1,6 +1,7 @@
 import { schedule, ScheduledTask } from "node-cron";
 import { ScraperFactory } from "./ScraperFactory";
 import { CronExecutionError } from "./errors";
+import { logger } from "./logger";
 
 export class CronRegistry {
 	#tasks: ScheduledTask[] = [];
@@ -21,7 +22,14 @@ export class CronRegistry {
 					try {
 						await scraper.init(indicator);
 					} catch (error) {
-						throw new CronExecutionError(indicator, error);
+						const cronError = new CronExecutionError(
+							indicator,
+							error
+						);
+						logger.error(
+							{ context: cronError.context },
+							cronError.message
+						);
 					}
 				})
 			);

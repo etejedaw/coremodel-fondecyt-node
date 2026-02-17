@@ -1,6 +1,7 @@
 import { mongo } from "mongoose";
 import { StorageAdapter } from "../../../core/adapters/storage-adapter/StorageAdapter";
 import { StorageError } from "../../../core/errors";
+import { logger } from "../../../core/logger";
 import { TasaPobrezaIngresos } from "./schema";
 
 export class TasaPobrezaIngresosStorageAdapter implements StorageAdapter {
@@ -9,7 +10,7 @@ export class TasaPobrezaIngresosStorageAdapter implements StorageAdapter {
 			await TasaPobrezaIngresos.insertMany(data, { ordered: false });
 		} catch (error) {
 			if (error instanceof mongo.MongoError && error.code === 11000) {
-				console.log(error.message);
+				logger.warn(error.message, "Duplicate keys skipped");
 				return;
 			}
 			throw new StorageError("tasa-pobreza-ingresos insertMany failed", {

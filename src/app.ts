@@ -3,6 +3,7 @@ import { mongodb } from "./config/database.config";
 import { server } from "./api/server";
 import { ScraperFactory } from "./core/ScraperFactory";
 import { CronRegistry } from "./core/CronRegistry";
+import { logger } from "./core/logger";
 import { EmergenciaDesastresScraper } from "./modules/emergencias-desastres";
 import { BibliotecaCongresoNacionalScraper } from "./modules/biblioteca-congreso-nacional";
 
@@ -13,10 +14,10 @@ async function main() {
 	scraperFactory.register(new BibliotecaCongresoNacionalScraper());
 
 	server(environment.PORT);
-	console.log(`Server connected on port ${environment.PORT}`);
+	logger.info(`Server connected on port ${environment.PORT}`);
 
 	await mongodb();
-	console.log(`Database connected on port ${environment.DB_PORT}`);
+	logger.info(`Database connected on port ${environment.DB_PORT}`);
 
 	const cronRegistry = new CronRegistry();
 	cronRegistry.start(scraperFactory);

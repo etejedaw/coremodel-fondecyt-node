@@ -23,6 +23,6 @@
 
 - [x] Definir enum FREQUENCIES con representación en cron
 - [x] Permitir usar strings como "year" o el cron directamente
-- [ ] Crear una clase/servicio CronRegistry
-- [ ] Definir estructura común para los errores
-- [ ] Crear un Logger común
+- [x] Crear una clase/servicio CronRegistry
+- [x] Definir estructura común para los errores
+- [x] Crear un Logger común

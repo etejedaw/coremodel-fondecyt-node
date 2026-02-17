@@ -1,6 +1,7 @@
 import { mongo } from "mongoose";
 import { StorageAdapter } from "../../../core/adapters/storage-adapter/StorageAdapter";
 import { StorageError } from "../../../core/errors";
+import { logger } from "../../../core/logger";
 import { OrganizacionesComunitarias } from "./schema";
 
 export class OrganizacionesComunitariasStorageAdapter
@@ -11,7 +12,7 @@ export class OrganizacionesComunitariasStorageAdapter
 			await OrganizacionesComunitarias.insertMany(data, { ordered: false });
 		} catch (error) {
 			if (error instanceof mongo.MongoError && error.code === 11000) {
-				console.log(error.message);
+				logger.warn(error.message, "Duplicate keys skipped");
 				return;
 			}
 			throw new StorageError(
