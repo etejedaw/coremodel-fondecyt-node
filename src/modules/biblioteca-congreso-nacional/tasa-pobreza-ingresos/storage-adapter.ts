@@ -1,5 +1,6 @@
 import { mongo } from "mongoose";
 import { StorageAdapter } from "../../../core/adapters/storage-adapter/StorageAdapter";
+import { StorageError } from "../../../core/errors";
 import { TasaPobrezaIngresos } from "./schema";
 
 export class TasaPobrezaIngresosStorageAdapter implements StorageAdapter {
@@ -11,7 +12,9 @@ export class TasaPobrezaIngresosStorageAdapter implements StorageAdapter {
 				console.log(error.message);
 				return;
 			}
-			throw error;
+			throw new StorageError("tasa-pobreza-ingresos insertMany failed", {
+				error: error instanceof Error ? error.message : String(error)
+			});
 		}
 	}
 }

@@ -1,4 +1,5 @@
 import { StorageAdapter } from "../../core/adapters/storage-adapter/StorageAdapter";
+import { StorageError } from "../../core/errors";
 import { EmercenciaDesastres } from "./schema";
 import { MongoBulkWriteError } from "mongodb";
 
@@ -11,8 +12,9 @@ export class EmergenciasDesastresStorageAdapter implements StorageAdapter {
 				console.warn(error.writeErrors);
 				return;
 			}
-			console.error(error);
-			throw error;
+			throw new StorageError("emergencia-desastres insertMany failed", {
+				error: error instanceof Error ? error.message : String(error)
+			});
 		}
 	}
 }

@@ -1,5 +1,6 @@
 import { mongo } from "mongoose";
 import { StorageAdapter } from "../../../core/adapters/storage-adapter/StorageAdapter";
+import { StorageError } from "../../../core/errors";
 import { OrganizacionesComunitarias } from "./schema";
 
 export class OrganizacionesComunitariasStorageAdapter
@@ -13,8 +14,13 @@ export class OrganizacionesComunitariasStorageAdapter
 				console.log(error.message);
 				return;
 			}
-			console.error(error);
-			throw error;
+			throw new StorageError(
+				"organizaciones-comunitarias insertMany failed",
+				{
+					error:
+						error instanceof Error ? error.message : String(error)
+				}
+			);
 		}
 	}
 }
