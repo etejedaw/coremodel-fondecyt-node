@@ -4,10 +4,16 @@ import { CronExecutionError } from "./errors";
 import { logger } from "./logger";
 
 export class CronRegistry {
-	#tasks: ScheduledTask[] = [];
+	static #instance: CronRegistry;
+	#tasks = new Map<string, ScheduledTask>();
+
+	static getInstance(): CronRegistry {
+		if (!this.#instance) this.#instance = new CronRegistry();
+		return this.#instance;
+	}
 
 	start(factory: ScraperFactory) {
-		this.#tasks = factory
+		factory
 			.getAll()
 			.flatMap(scraper =>
 				scraper.getIndicators().map(indicator => ({
@@ -17,8 +23,9 @@ export class CronRegistry {
 				}))
 			)
 			.filter(job => job.frequency !== "")
-			.map(({ scraper, indicator, frequency }) =>
-				schedule(frequency, async () => {
+			.forEach(({ scraper, indicator, frequency }) => {
+				const key = `${scraper.getName()}:${indicator}`;
+				const task = schedule(frequency, async () => {
 					try {
 						await scraper.init(indicator);
 					} catch (error) {
@@ -31,14 +38,24 @@ export class CronRegistry {
 							cronError.message
 						);
 					}
-				})
-			);
+				});
+				this.#tasks.set(key, task);
+			});
+	}
+
+	stopTask(module: string, indicator: string) {
+		const key = `${module}:${indicator}`;
+		const task = this.#tasks.get(key);
+		if (!task) return false;
+		void task.stop();
+		this.#tasks.delete(key);
+		return true;
 	}
 
 	async stop() {
 		// eslint-disable-next-line @typescript-eslint/promise-function-async
-		const promises = this.#tasks.map(task => task.stop());
+		const promises = [...this.#tasks.values()].map(task => task.stop());
 		await Promise.all(promises);
-		this.#tasks = [];
+		this.#tasks.clear();
 	}
 }

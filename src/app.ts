@@ -19,7 +19,7 @@ async function main() {
 	await mongodb();
 	logger.info(`Database connected on port ${environment.DB_PORT}`);
 
-	const cronRegistry = new CronRegistry();
+	const cronRegistry = CronRegistry.getInstance();
 	cronRegistry.start(scraperFactory);
 }
 
