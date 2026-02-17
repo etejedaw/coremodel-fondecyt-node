@@ -4,7 +4,11 @@ import { StorageError } from "../../../core/errors";
 import { logger } from "../../../core/logger";
 import { TasaPobrezaIngresos } from "./schema";
 
-export class TasaPobrezaIngresosStorageAdapter implements StorageAdapter {
+export class TasaPobrezaIngresosStorageAdapter extends StorageAdapter {
+	async find() {
+		return await TasaPobrezaIngresos.find().lean();
+	}
+
 	async save(data: Array<Record<string, unknown>>): Promise<void> {
 		try {
 			await TasaPobrezaIngresos.insertMany(data, { ordered: false });

@@ -4,9 +4,11 @@ import { StorageError } from "../../../core/errors";
 import { logger } from "../../../core/logger";
 import { OrganizacionesComunitarias } from "./schema";
 
-export class OrganizacionesComunitariasStorageAdapter
-	implements StorageAdapter
-{
+export class OrganizacionesComunitariasStorageAdapter extends StorageAdapter {
+	async find() {
+		return await OrganizacionesComunitarias.find().lean();
+	}
+
 	async save(data: Array<Record<string, unknown>>): Promise<void> {
 		try {
 			await OrganizacionesComunitarias.insertMany(data, { ordered: false });

@@ -4,7 +4,11 @@ import { logger } from "../../core/logger";
 import { EmercenciaDesastres } from "./schema";
 import { MongoBulkWriteError } from "mongodb";
 
-export class EmergenciasDesastresStorageAdapter implements StorageAdapter {
+export class EmergenciasDesastresStorageAdapter extends StorageAdapter {
+	async find() {
+		return await EmercenciaDesastres.find().lean();
+	}
+
 	async save(data: Array<Record<string, unknown>>): Promise<void> {
 		try {
 			await EmercenciaDesastres.insertMany(data, { ordered: false });

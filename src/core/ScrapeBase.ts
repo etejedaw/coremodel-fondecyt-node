@@ -42,7 +42,7 @@ export abstract class ScrapeBase {
 		return adapter;
 	}
 
-	#getStorageAdapter(indicator: string) {
+	getStorageAdapter(indicator: string) {
 		const adapter = this.#moduleConfig[indicator].storageAdapter;
 		if (!adapter)
 			throw new AdapterNotFoundError("StorageAdapter", indicator);
@@ -87,7 +87,7 @@ export abstract class ScrapeBase {
 			.map(data => ({ ...data, indicator, module: this.getName() }))
 			.map(data => ({ ...data, key: hasher.generate(data) }));
 
-		const storageAdapter = this.#getStorageAdapter(indicator);
+		const storageAdapter = this.getStorageAdapter(indicator);
 		await storageAdapter.save(data);
 
 		return data;
