@@ -25,6 +25,10 @@ export abstract class ScrapeBase {
 		return this.#moduleConfig[indicator].url;
 	}
 
+	getIndicatorFrequency(indicator: string) {
+		return this.#moduleConfig[indicator].frequency;
+	}
+
 	#getFetchAdapter(indicator: string) {
 		const adapter = this.#moduleConfig[indicator].fetchAdapter;
 		if (!adapter) throw new Error("Fetch Adapter not found");

@@ -26,4 +26,8 @@ export class ScraperFactory {
 		if (!scraper) throw new Error(`Scraper ${module} not found`);
 		return scraper;
 	}
+
+	getAll(): ScrapeBase[] {
+		return Object.values(this.#modules);
+	}
 }

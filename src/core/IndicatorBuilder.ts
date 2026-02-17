@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { validate } from "node-cron";
 import { ParseAdapter } from "./adapters/parse-adapter/ParseAdapter";
 import { FetchAdapter } from "./adapters/fetch-adapter/FetchAdapter";
 import { StorageAdapter } from "./adapters/storage-adapter/StorageAdapter";
@@ -74,7 +75,12 @@ const IndicatorSchema = z.object({
 	name: z.string(),
 	description: z.string().optional(),
 	url: z.string().url(),
-	frequency: z.string().default(""),
+	frequency: z
+		.string()
+		.default("")
+		.refine(value => value === "" || validate(value), {
+			message: "frequency must be a valid cron expression"
+		}),
 	metadata: z.record(z.unknown()).optional()
 });
 
