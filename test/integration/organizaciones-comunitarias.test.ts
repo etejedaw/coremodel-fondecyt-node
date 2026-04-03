@@ -9,7 +9,6 @@ const parseAdapter = new OrganizacionesComunitariasParseAdapter();
 const mapper = new OrganizacionesComunitariasMapperAdapter();
 const hasher = new OrganizacionesComunitariasHashAdapter();
 
-// JSON realista que simula la respuesta de la API de BCN estadísticas territoriales
 const sampleJson = JSON.stringify({
 	datosTemaN: [
 		{
@@ -43,25 +42,21 @@ const sampleJson = JSON.stringify({
 
 describe("Organizaciones Comunitarias - ETL integration", () => {
 	it("should process JSON through the full pipeline: parse → map → hash", () => {
-		// 1. Parse
 		const parsed = parseAdapter.extract(sampleJson);
 		expect(parsed).toHaveLength(2);
 
-		// 2. Map
 		const mapped = parsed.map(item => mapper.map(item as any));
 		expect(mapped[0].nDeJuntasDeVecinos).toBe(98);
 		expect(mapped[0].anio).toBe(2020);
 		expect(mapped[1].nDeJuntasDeVecinos).toBe(102);
 		expect(mapped[1].anio).toBe(2021);
 
-		// 3. Add metadata
 		const withMetadata = mapped.map(item => ({
 			...item,
 			indicator: INDICATOR,
 			module: MODULE
 		}));
 
-		// 4. Hash
 		const final = withMetadata.map(item => ({
 			...item,
 			key: hasher.generate(item)
@@ -69,7 +64,6 @@ describe("Organizaciones Comunitarias - ETL integration", () => {
 
 		expect(final).toHaveLength(2);
 
-		// Verificar estructura completa del primer registro
 		expect(final[0]).toMatchObject({
 			nDeCentrosDeMadres: 12,
 			nDeJuntasDeVecinos: 98,
@@ -115,7 +109,6 @@ describe("Organizaciones Comunitarias - Validación contra datos manuales", () =
 		const parsed = parseAdapter.extract(sampleJson);
 		const mapped = parsed.map(item => mapper.map(item as any));
 
-		// Año 2020: verificar todos los campos contra los datos de entrada
 		const year2020 = mapped[0];
 		expect(year2020.nDeCentrosDeMadres).toBe(12);
 		expect(year2020.nDeOtrasOrganizacionesComunitariasFuncionalesOtros).toBe(45);
@@ -134,10 +127,7 @@ describe("Organizaciones Comunitarias - Validación contra datos manuales", () =
 		const parsed = parseAdapter.extract(sampleJson);
 		const mapped = parsed.map(item => mapper.map(item as any));
 
-		// Verificar que los cambios entre años se reflejan correctamente
-		// Juntas de vecinos: 98 (2020) → 102 (2021), aumento de 4
 		expect(mapped[1].nDeJuntasDeVecinos - mapped[0].nDeJuntasDeVecinos).toBe(4);
-		// Centros de madres: 12 (2020) → 10 (2021), disminución de 2
 		expect(mapped[1].nDeCentrosDeMadres - mapped[0].nDeCentrosDeMadres).toBe(-2);
 	});
 });

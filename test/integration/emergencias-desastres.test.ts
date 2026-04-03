@@ -9,7 +9,6 @@ const parseAdapter = new DateParserAdapter();
 const mapper = new EmergenciaDesastresMapper();
 const hasher = new EmergenciaDesastresHashAdapter();
 
-// HTML realista que simula la estructura de emergenciaydesastres.mineduc.cl
 const sampleHtml = `
 <div class="back-fechas">
   <div class="item">
@@ -43,24 +42,20 @@ const sampleHtml = `
 
 describe("Emergencias Desastres - ETL integration", () => {
 	it("should process HTML through the full pipeline: parse → map → hash", () => {
-		// 1. Parse
 		const parsed = parseAdapter.extract(sampleHtml);
 		expect(parsed).toHaveLength(2);
 
-		// 2. Map
 		const mapped = parsed.map(item => mapper.map(item));
 		expect(mapped[0].date).toBeInstanceOf(Date);
 		expect(mapped[0].place).toBe("Simulacro Tsunami");
 		expect(mapped[0].city).toBe("Valdivia");
 
-		// 3. Add metadata (como hace ScrapeBase.init)
 		const withMetadata = mapped.map(item => ({
 			...item,
 			indicator: INDICATOR,
 			module: MODULE
 		}));
 
-		// 4. Hash
 		const final = withMetadata.map(item => ({
 			...item,
 			key: hasher.generate(item)
@@ -70,7 +65,6 @@ describe("Emergencias Desastres - ETL integration", () => {
 		expect(final[0].key).toBe("2021-03-25-valdivia");
 		expect(final[1].key).toBe("2021-11-03-concepcion");
 
-		// Verificar estructura completa del registro final
 		expect(final[0]).toEqual({
 			date: new Date(2021, 2, 25),
 			place: "Simulacro Tsunami",
@@ -96,22 +90,19 @@ describe("Emergencias Desastres - ETL integration", () => {
 
 describe("Emergencias Desastres - Validación contra datos manuales", () => {
 	it("should match manually verified drill data", () => {
-		// Datos de referencia: un simulacro conocido del 25 de marzo de 2021 en Valdivia
 		const parsed = parseAdapter.extract(sampleHtml);
 		const result = parsed
 			.map(item => mapper.map(item))
 			.map(item => ({ ...item, indicator: INDICATOR, module: MODULE }))
 			.map(item => ({ ...item, key: hasher.generate(item) }));
 
-		// Validación manual: fecha correcta (25 de marzo = mes index 2)
 		expect(result[0].date.getFullYear()).toBe(2021);
-		expect(result[0].date.getMonth()).toBe(2); // Marzo = 2
+		expect(result[0].date.getMonth()).toBe(2);
 		expect(result[0].date.getDate()).toBe(25);
 		expect(result[0].city).toBe("Valdivia");
 
-		// Validación manual: segundo registro (3 de noviembre)
 		expect(result[1].date.getFullYear()).toBe(2021);
-		expect(result[1].date.getMonth()).toBe(10); // Noviembre = 10
+		expect(result[1].date.getMonth()).toBe(10);
 		expect(result[1].date.getDate()).toBe(3);
 		expect(result[1].city).toBe("Concepción");
 	});

@@ -9,7 +9,6 @@ const parseAdapter = new TasaPobrezaIngresosParseAdapter();
 const mapper = new TasaPobrezaMapperAdapter();
 const hasher = new TasaPobrezaIngresosHashAdapter();
 
-// HTML realista que simula la estructura de BCN reportes comunales
 const sampleHtml = `
 <div class="z-depth-1">
   <h6>2.1 Tasa de Pobreza por ingresos</h6>
@@ -25,24 +24,20 @@ const sampleHtml = `
 
 describe("Tasa Pobreza Ingresos - ETL integration", () => {
 	it("should process HTML through the full pipeline: parse → map → hash", () => {
-		// 1. Parse
 		const parsed = parseAdapter.extract(sampleHtml);
 		expect(parsed).toHaveLength(3);
 
-		// 2. Map
 		const mapped = parsed.map(item => mapper.map(item as any));
 		expect(mapped[0].unidadTerritorial).toBe("Valdivia");
 		expect(mapped[0].casen2017).toBe(12.5);
 		expect(mapped[0].casen2022).toBe(10.3);
 
-		// 3. Add metadata
 		const withMetadata = mapped.map(item => ({
 			...item,
 			indicator: INDICATOR,
 			module: MODULE
 		}));
 
-		// 4. Hash
 		const final = withMetadata.map(item => ({
 			...item,
 			key: hasher.generate(item)
@@ -53,7 +48,6 @@ describe("Tasa Pobreza Ingresos - ETL integration", () => {
 			"valdivia-biblioteca-congreso-nacional-valdivia-tasa-pobreza-ingresos"
 		);
 
-		// Verificar estructura completa
 		expect(final[0]).toEqual({
 			unidadTerritorial: "Valdivia",
 			casen2017: 12.5,
@@ -79,20 +73,15 @@ describe("Tasa Pobreza Ingresos - ETL integration", () => {
 
 describe("Tasa Pobreza Ingresos - Validación contra datos manuales", () => {
 	it("should correctly convert Chilean decimal format to numbers", () => {
-		// En Chile se usa coma como separador decimal
-		// Un investigador leería "12,5" como 12.5%
 		const parsed = parseAdapter.extract(sampleHtml);
 		const mapped = parsed.map(item => mapper.map(item as any));
 
-		// Valdivia: CASEN 2017 = 12.5%, CASEN 2022 = 10.3%
 		expect(mapped[0].casen2017).toBe(12.5);
 		expect(mapped[0].casen2022).toBe(10.3);
 
-		// Región de los Ríos: CASEN 2017 = 15.1%, CASEN 2022 = 13.7%
 		expect(mapped[1].casen2017).toBe(15.1);
 		expect(mapped[1].casen2022).toBe(13.7);
 
-		// País: CASEN 2017 = 8.6%, CASEN 2022 = 6.5%
 		expect(mapped[2].casen2017).toBe(8.6);
 		expect(mapped[2].casen2022).toBe(6.5);
 	});
