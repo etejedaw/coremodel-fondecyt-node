@@ -5,6 +5,7 @@ import { FREQUENCIES } from "../../core/enums/Frequencies";
 import { EmergenciaDesastresMapper } from "./mapper";
 import { EmergenciaDesastresHashAdapter } from "./hash";
 import { EmergenciasDesastresStorageAdapter } from "./storage-adapter";
+import { TsunamiDrillsCalculatorAdapter } from "./calculator-adapter";
 
 export const EMERGENCIA_DESASTRES_CONFIG: ModuleConfig = {
 	"simulacros-2021": new IndicatorBuilder()
@@ -18,6 +19,7 @@ export const EMERGENCIA_DESASTRES_CONFIG: ModuleConfig = {
 		.setMapperAdapter(new EmergenciaDesastresMapper())
 		.setHashAdapter(new EmergenciaDesastresHashAdapter())
 		.setStorageAdapter(new EmergenciasDesastresStorageAdapter())
+		.setCalculatorAdapter(new TsunamiDrillsCalculatorAdapter())
 		.build(),
 	"simulacros-2022": new IndicatorBuilder()
 		.setName("Simulacros 2022")
@@ -30,6 +32,7 @@ export const EMERGENCIA_DESASTRES_CONFIG: ModuleConfig = {
 		.setMapperAdapter(new EmergenciaDesastresMapper())
 		.setHashAdapter(new EmergenciaDesastresHashAdapter())
 		.setStorageAdapter(new EmergenciasDesastresStorageAdapter())
+		.setCalculatorAdapter(new TsunamiDrillsCalculatorAdapter())
 		.build(),
 	"simulacros-2023": new IndicatorBuilder()
 		.setName("Simulacros 2023")
@@ -42,5 +45,6 @@ export const EMERGENCIA_DESASTRES_CONFIG: ModuleConfig = {
 		.setMapperAdapter(new EmergenciaDesastresMapper())
 		.setHashAdapter(new EmergenciaDesastresHashAdapter())
 		.setStorageAdapter(new EmergenciasDesastresStorageAdapter())
+		.setCalculatorAdapter(new TsunamiDrillsCalculatorAdapter())
 		.build()
 } as const;
