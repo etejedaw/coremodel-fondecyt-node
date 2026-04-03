@@ -152,7 +152,7 @@ scraperFactory.register(new MiNuevoModuloScraper());
 4. **MapperAdapter** normaliza la estructura.
 5. **HashAdapter** genera la key única del registro.
 6. **StorageAdapter** almacena la data cruda en MongoDB (ignorando duplicados).
-7. **CalculatorAdapter** (si existe) calcula el resultado agregado y lo persiste en la colección `indicator-results`.
+7. **CalculatorAdapter** (si existe) calcula el resultado agregado y lo persiste en la colección `indicator-results`. Solo crea un nuevo registro si el resultado cambió respecto al último almacenado, lo que permite mantener historial sin duplicados.
 
 ## API Endpoints
 

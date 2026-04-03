@@ -76,7 +76,8 @@ Los módulos implementados demuestran los distintos tipos de conexión que sopor
 - [x] Agregar `setCalculatorAdapter()` como opcional en el `IndicatorBuilder`
 - [x] Integrar el paso de cálculo en `ScrapeBase.init()` (después del save, si existe calculator)
 - [x] Implementar cálculo para Tsunami Drills: totalDrills + drillsByCity
-- [x] Respuesta del endpoint incluye `calculated` automáticamente si el indicador tiene calculator
+- [x] Persistir resultados en colección `indicator-results` con historial (solo guarda si el resultado cambió)
+- [x] Endpoint `GET /:indicator/result` para consultar el último resultado calculado
 
 ## Fase 9: Visualización y analíticas con Metabase
 
