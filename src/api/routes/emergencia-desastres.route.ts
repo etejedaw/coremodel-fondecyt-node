@@ -1,7 +1,5 @@
-import { Router } from "express";
+import { Router, Request, Response, NextFunction } from "express";
 import { ScraperFactory } from "../../core/ScraperFactory";
-import { BaseError } from "../../core/errors";
-import { logger } from "../../core/logger";
 
 const MODULE = "emergencia-desastres";
 const router = Router();
@@ -12,7 +10,7 @@ router.get("/", (req, res) => {
 	res.json({ indicators });
 });
 
-router.get("/:indicator/result", async (req, res) => {
+router.get("/:indicator/result", async (req: Request, res: Response, next: NextFunction) => {
 	try {
 		const { indicator } = req.params;
 		const scrapeFactory = ScraperFactory.getInstance();
@@ -33,17 +31,12 @@ router.get("/:indicator/result", async (req, res) => {
 		}
 
 		return res.json({ result });
-	} catch (error) {
-		if (error instanceof BaseError) {
-			logger.error({ context: error.context }, error.message);
-			return res.status(400).json({ error: error.message });
-		}
-		logger.error(error);
-		return res.status(500).json({ error: "Internal server error" });
+	} catch (err) {
+		next(err);
 	}
 });
 
-router.get("/:indicator", async (req, res) => {
+router.get("/:indicator", async (req: Request, res: Response, next: NextFunction) => {
 	try {
 		const { indicator } = req.params;
 		const scrapeFactory = ScraperFactory.getInstance();
@@ -55,13 +48,8 @@ router.get("/:indicator", async (req, res) => {
 
 		const data = await scraper.init(indicator);
 		return res.json({ data });
-	} catch (error) {
-		if (error instanceof BaseError) {
-			logger.error({ context: error.context }, error.message);
-			return res.status(400).json({ error: error.message });
-		}
-		logger.error(error);
-		return res.status(500).json({ error: "Internal server error" });
+	} catch (err) {
+		next(err);
 	}
 });
 

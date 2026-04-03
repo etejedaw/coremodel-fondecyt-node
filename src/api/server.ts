@@ -1,6 +1,7 @@
 import express from "express";
 import morgan from "morgan";
 import router from "./routes";
+import { errorHandler } from "./error-handler";
 
 import { environment } from "../config/environment.config";
 
@@ -12,6 +13,7 @@ export function server(port: number): void {
 	app.use(morgan(nodeEnv));
 	app.use(express.json());
 	app.use(router);
+	app.use(errorHandler);
 
 	app.listen(port);
 }
