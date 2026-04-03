@@ -1,7 +1,7 @@
-import { MapperAdater } from "../../core/adapters/mapper-adapter/MapperAdapter";
+import { MapperAdapter } from "../../core/adapters/mapper-adapter/MapperAdapter";
 import { Input, Output } from "./interfaces";
 
-export class EmergenciaDesastresMapper implements MapperAdater {
+export class EmergenciaDesastresMapper implements MapperAdapter {
 	map(data: Input): Output {
 		const { date, place } = data;
 		const newDate = new Date(

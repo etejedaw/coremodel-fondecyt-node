@@ -3,7 +3,7 @@ import { validate } from "node-cron";
 import { ParseAdapter } from "./adapters/parse-adapter/ParseAdapter";
 import { FetchAdapter } from "./adapters/fetch-adapter/FetchAdapter";
 import { StorageAdapter } from "./adapters/storage-adapter/StorageAdapter";
-import { MapperAdater } from "./adapters/mapper-adapter/MapperAdapter";
+import { MapperAdapter } from "./adapters/mapper-adapter/MapperAdapter";
 import { HashAdapter } from "./adapters/hash-adapter/HashAdapter";
 import { CalculatorAdapter } from "./adapters/calculator-adapter/CalculatorAdapter";
 
@@ -95,7 +95,7 @@ type Indicator = z.infer<typeof IndicatorSchema> & {
 	fetchAdapter: FetchAdapter;
 	parseAdapter: ParseAdapter;
 	storageAdapter: StorageAdapter;
-	mapperAdapter: MapperAdater;
+	mapperAdapter: MapperAdapter;
 	hashAdapter: HashAdapter;
 	calculatorAdapter?: CalculatorAdapter;
 };

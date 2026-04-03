@@ -1,4 +1,4 @@
-export abstract class MapperAdater<
+export abstract class MapperAdapter<
 	Input = Record<string, any>,
 	Output = Record<string, any>
 > {

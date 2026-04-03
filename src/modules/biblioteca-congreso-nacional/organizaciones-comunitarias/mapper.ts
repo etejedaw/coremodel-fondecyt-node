@@ -1,7 +1,7 @@
-import { MapperAdater } from "../../../core/adapters/mapper-adapter/MapperAdapter";
+import { MapperAdapter } from "../../../core/adapters/mapper-adapter/MapperAdapter";
 import { Input, Output } from "./interfaces";
 
-export class OrganizacionesComunitariasMapperAdapter implements MapperAdater {
+export class OrganizacionesComunitariasMapperAdapter implements MapperAdapter {
 	map(data: Input): Output {
 		return {
 			nDeCentrosDeMadres: Number(data.n_de_centros_de_madres) || 0,

@@ -1,7 +1,7 @@
-import { MapperAdater } from "../../../core/adapters/mapper-adapter/MapperAdapter";
+import { MapperAdapter } from "../../../core/adapters/mapper-adapter/MapperAdapter";
 import { Input, Output } from "./interfaces";
 
-export class TasaPobrezaMapperAdapter implements MapperAdater {
+export class TasaPobrezaMapperAdapter implements MapperAdapter {
 	map(data: Input): Output {
 		return {
 			unidadTerritorial: data.unidadTerritorial,
