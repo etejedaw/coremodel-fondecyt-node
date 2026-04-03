@@ -1,8 +1,5 @@
 import { ScrapeBase } from "./ScrapeBase";
-import {
-	ScraperNotFoundError,
-	ScraperAlreadyRegisteredError
-} from "./errors";
+import { ScraperNotFoundError, ScraperAlreadyRegisteredError } from "./errors";
 
 export class ScraperFactory {
 	#modules: Record<string, ScrapeBase> = {};

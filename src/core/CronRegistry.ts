@@ -29,14 +29,8 @@ export class CronRegistry {
 					try {
 						await scraper.init(indicator);
 					} catch (error) {
-						const cronError = new CronExecutionError(
-							indicator,
-							error
-						);
-						logger.error(
-							{ context: cronError.context },
-							cronError.message
-						);
+						const cronError = new CronExecutionError(indicator, error);
+						logger.error({ context: cronError.context }, cronError.message);
 					}
 				});
 				this.#tasks.set(key, task);

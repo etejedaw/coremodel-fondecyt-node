@@ -48,15 +48,13 @@ export abstract class ScrapeBase {
 
 	getStorageAdapter(indicator: string) {
 		const adapter = this.#moduleConfig[indicator].storageAdapter;
-		if (!adapter)
-			throw new AdapterNotFoundError("StorageAdapter", indicator);
+		if (!adapter) throw new AdapterNotFoundError("StorageAdapter", indicator);
 		return adapter;
 	}
 
 	#getMapperAdapter(indicator: string) {
 		const adapter = this.#moduleConfig[indicator].mapperAdapter.map;
-		if (!adapter)
-			throw new AdapterNotFoundError("MapperAdapter", indicator);
+		if (!adapter) throw new AdapterNotFoundError("MapperAdapter", indicator);
 		return adapter;
 	}
 
