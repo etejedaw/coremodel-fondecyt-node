@@ -27,46 +27,39 @@
 - [x] Definir estructura común para los errores
 - [x] Crear un Logger común
 
-## Fase 5: Implementación de indicadores pendientes (OE1 + OE2)
+## Fase 5: Implementación de indicadores (OE1 + OE2)
 
-### Population Poverty (PP) - Fuentes adicionales
+Los módulos implementados demuestran los distintos tipos de conexión que soporta la arquitectura:
+- **HTML scraping** (RequestPromiseAdapter + Cheerio) → emergencias-desastres
+- **HTML table scraping** (RequestPromiseAdapter + Cheerio) → BCN tasa-pobreza-ingresos
+- **JSON API** (JsonFetchAdapter) → BCN organizaciones-comunitarias
+- **JS-rendered pages** (PuppeteerAdapter) → Disponible en core
+- **Descarga de archivos** (DownloadAdapter) → Disponible en core
 
-- [ ] Módulo DataSocial: Descarga y normalización de archivos XLSX del Ministerio de Desarrollo Social (segmentación regional)
-- [ ] Módulo CASEN: Descarga y normalización de archivos XLS de Observatorio Social, Casen 2017 (segmentación ciudadana)
-- [ ] Módulo INE Censo: Descarga y normalización de archivos CSV del Censo de Población y Vivienda 2017 (segmentación regional y ciudadana)
-- [ ] Generalizar el módulo BCN tasa-pobreza-ingresos para soportar múltiples comunas (actualmente solo Valdivia)
+### Tsunami Drills (TD)
+- [x] Módulo emergencias-desastres: Scraping de simulacros 2021/2022/2023 desde MINEDUC (vía Wayback Machine, los links originales ya no existen)
+- [x] ParseAdapter con Cheerio para extracción de fechas y lugares
+- [x] Mapper, Hash (slug date-city), StorageAdapter con manejo de duplicados
+- [x] Endpoint API: `GET /emergencia-desastres` y `GET /emergencia-desastres/:indicator`
 
-### Social Capital - Civic Participation (SCCP)
-
-- [ ] Módulo Servel: Descarga y normalización de archivos CSV del Registro Electoral (porcentaje de participación cívica, segmentación regional)
-- [ ] Crear sub-módulo en BCN o módulo independiente para participación cívica
+### Population Poverty (PP)
+- [x] Sub-módulo BCN tasa-pobreza-ingresos: Scraping de tabla HTML desde BCN (Valdivia como caso demostrativo)
+- [x] Endpoint API: `GET /biblioteca-congreso-nacional/valdivia-tasa-pobreza-ingresos?year=YYYY`
 
 ### Social Capital - Civic Organizations (SCCO)
+- [x] Sub-módulo BCN organizaciones-comunitarias: Extracción de JSON API desde BCN (Valdivia como caso demostrativo)
+- [x] Endpoint API: `GET /biblioteca-congreso-nacional/valdivia-organizaciones-comunitarias`
 
-- [ ] Generalizar el módulo BCN organizaciones-comunitarias para soportar múltiples comunas (actualmente solo Valdivia)
-
-### Special Needs Population (SNP)
-
-- [ ] Módulo CASEN SNP: Descarga y normalización de datos de discapacidad desde Observatorio Social (XLS/SAV)
-- [ ] Módulo INE SNP: Descarga y normalización de datos de discapacidad desde INE (SAV/DAT)
-- [ ] Módulo BCN SNP: Scraping de datos de población con necesidades especiales desde BCN (tabla HTML)
-
-### Tsunami Drills (TD) - Ampliación
-
-- [ ] Módulo ONEMI: Scraping de simulacros desde la web de ONEMI (tabla HTML, incluye simulacros de aluviones y erupciones - requiere filtrado)
-- [ ] Evaluar agregar más años de simulacros del MINEDUC si están disponibles
-
-### Social Capital - Emergency Organizations (SCEO)
-
-- [ ] Investigar fuentes de datos municipales para voluntarios en organizaciones de emergencia
-- [ ] Documentar como indicador sin fuente accesible si no se encuentra data
+### Indicadores documentados como limitación
+- **SCEO (Emergency Organizations)**: Sin fuente de datos pública identificada; depende de datos municipales no accesibles
+- **SCCP (Civic Participation)**: Fuente identificada (Servel, CSV) pero no implementada — candidato a trabajo futuro
+- **SNP (Special Needs Population)**: Fuentes identificadas (CASEN, INE, BCN) pero no implementadas — candidato a trabajo futuro
 
 ## Fase 6: API y analíticas (OE3)
 
-- [ ] Crear endpoints API para los nuevos módulos implementados en Fase 5
+- [x] Endpoint API para emergencias-desastres (listar indicadores + ejecutar scrape)
+- [x] Endpoint API para biblioteca-congreso-nacional (listar indicadores + ejecutar scrape con parámetro year)
 - [ ] Endpoint de resumen: listar todos los módulos e indicadores disponibles con su estado
-- [ ] Endpoint de consulta: permitir consultar datos por comuna, región y periodo de tiempo
-- [ ] Endpoint de exportación CSV para cada indicador
 - [ ] Documentar la API (endpoints disponibles, parámetros, respuestas de ejemplo)
 
 ## Fase 7: Testing y validación
@@ -85,7 +78,7 @@
 - [ ] **Cap. 5 - Diseño de prototipo**: Actualizar para reflejar la arquitectura modular final (ya no es un prototipo simple; describir patrones factory, adapter, builder)
 - [ ] **Cap. 6 - Desarrollo e implementación** (nuevo): Describir la arquitectura modular, el flujo ETL con adapters, el IndicatorBuilder, ScraperFactory, ScrapeBase. Incluir diagramas de clases y secuencia
 - [ ] **Cap. 7 - Resultados** (nuevo): Mostrar datos extraídos por cada módulo, screenshots de la API, comparación con extracción manual, métricas de rendimiento
-- [ ] **Cap. 8 - Conclusiones** (nuevo): Evaluación de cumplimiento de objetivos (OE1, OE2, OE3), limitaciones encontradas (SCEO sin fuente, Statista de pago, dependencia de municipalidades), trabajo futuro (más indicadores, frontend Angular, deploy productivo)
+- [ ] **Cap. 8 - Conclusiones** (nuevo): Evaluación de cumplimiento de objetivos (OE1, OE2, OE3), limitaciones (SCEO sin fuente, links de MINEDUC caídos, Statista de pago, dependencia de municipalidades), trabajo futuro (más indicadores con PuppeteerAdapter/DownloadAdapter, frontend Angular, deploy productivo)
 - [ ] **Bibliografía**: Actualizar con nuevas referencias técnicas y académicas utilizadas
 
 ### Diagramas y material visual
