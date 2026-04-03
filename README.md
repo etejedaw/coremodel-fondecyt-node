@@ -193,6 +193,16 @@ La documentación completa de la API está disponible como colección Bruno en `
 | `organizaciones-comunitarias` | Data cruda de organizaciones comunitarias por año |
 | `indicator-results` | Resultados calculados por el CalculatorAdapter |
 
+## Visualización con Metabase
+
+Metabase se levanta junto con los demás servicios y permite visualizar los datos almacenados en MongoDB a través de dashboards.
+
+```bash
+docker compose up metabase -d
+```
+
+Acceder a `http://localhost:3001`. La guía completa de configuración está en `docs/metabase/setup.md`.
+
 ## Testing
 
 ```bash
