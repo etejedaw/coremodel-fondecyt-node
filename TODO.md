@@ -70,7 +70,14 @@ Los módulos implementados demuestran los distintos tipos de conexión que sopor
 - [ ] Tests de integración: flujo completo ETL por módulo (fetch → parse → map → hash → save)
 - [ ] Validar datos extraídos vs datos manuales del equipo de investigación
 
-## Fase 8: Redacción de la tesis (documento escrito)
+## Fase 8: Visualización y analíticas con Metabase
+
+- [ ] Agregar Metabase al `docker-compose.yml` con volumen persistente para su base de datos interna
+- [ ] Conectar Metabase a MongoDB como fuente de datos
+- [ ] Crear y guardar queries por cada colección (simulacros, pobreza, organizaciones comunitarias)
+- [ ] Configurar dashboards con gráficos por indicador (se actualizan automáticamente al poblar MongoDB via CronRegistry)
+
+## Fase 9: Redacción de la tesis (documento escrito)
 
 ### Capítulos por escribir/actualizar
 
