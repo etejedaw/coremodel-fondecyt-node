@@ -195,13 +195,13 @@ La documentación completa de la API está disponible como colección Bruno en `
 
 ## Visualización con Metabase
 
-Metabase se levanta junto con los demás servicios y permite visualizar los datos almacenados en MongoDB a través de dashboards.
+Metabase permite visualizar los datos almacenados en MongoDB a través de dashboards que se actualizan automáticamente a medida que el CronRegistry pobla las colecciones.
 
 ```bash
 docker compose up metabase -d
 ```
 
-Acceder a `http://localhost:3001`. La guía completa de configuración está en `docs/metabase/setup.md`.
+Acceder a `http://localhost:3001`. Los dashboards y queries se persisten en un volumen de Docker, por lo que sobreviven a reinicios del contenedor. La guía completa de configuración y conexión a MongoDB está en `docs/metabase/setup.md`.
 
 ## Testing
 

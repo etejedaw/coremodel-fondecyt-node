@@ -81,9 +81,9 @@ Los módulos implementados demuestran los distintos tipos de conexión que sopor
 ## Fase 9: Visualización y analíticas con Metabase
 
 - [x] Agregar Metabase al `docker-compose.yml` con volumen persistente para su base de datos interna
-- [ ] Conectar Metabase a MongoDB como fuente de datos (ver `docs/metabase/setup.md`)
-- [ ] Crear y guardar queries por cada colección (simulacros, pobreza, organizaciones comunitarias)
-- [ ] Configurar dashboards con gráficos por indicador (se actualizan automáticamente al poblar MongoDB via CronRegistry)
+- [x] Conectar Metabase a MongoDB como fuente de datos (ver `docs/metabase/setup.md`)
+- [x] Crear y guardar queries por cada colección (simulacros, pobreza, organizaciones comunitarias)
+- [x] Configurar dashboards con gráficos por indicador (se actualizan automáticamente al poblar MongoDB via CronRegistry)
 
 ## Fase 10: Redacción de la tesis (documento escrito)
 
