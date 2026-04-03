@@ -70,14 +70,22 @@ Los módulos implementados demuestran los distintos tipos de conexión que sopor
 - [x] Tests de integración: flujo completo ETL por módulo (parse → map → hash con datos realistas)
 - [x] Validar datos extraídos vs datos manuales de referencia (formato decimal chileno, nombres territoriales, fechas)
 
-## Fase 8: Visualización y analíticas con Metabase
+## Fase 8: Capa de cálculo de indicadores CORE
+
+- [ ] Crear `CalculatorAdapter` abstracto en `core/adapters/` (agrega múltiples registros en un valor final)
+- [ ] Agregar `setCalculatorAdapter()` como opcional en el `IndicatorBuilder`
+- [ ] Integrar el paso de cálculo en `ScrapeBase.init()` (después del save, si existe calculator)
+- [ ] Implementar cálculo para Tsunami Drills: suma total de simulacros entre un rango de años
+- [ ] Exponer resultados calculados en un endpoint (ej: `GET /emergencia-desastres/simulacros-2021/calculate`)
+
+## Fase 9: Visualización y analíticas con Metabase
 
 - [ ] Agregar Metabase al `docker-compose.yml` con volumen persistente para su base de datos interna
 - [ ] Conectar Metabase a MongoDB como fuente de datos
 - [ ] Crear y guardar queries por cada colección (simulacros, pobreza, organizaciones comunitarias)
 - [ ] Configurar dashboards con gráficos por indicador (se actualizan automáticamente al poblar MongoDB via CronRegistry)
 
-## Fase 9: Redacción de la tesis (documento escrito)
+## Fase 10: Redacción de la tesis (documento escrito)
 
 ### Capítulos por escribir/actualizar
 
