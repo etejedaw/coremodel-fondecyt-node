@@ -22,8 +22,8 @@ router.get("/:indicator", async (req, res) => {
 			return res.status(404).json({ error: `Indicator ${indicator} not found` });
 		}
 
-		const data = await scraper.init(indicator);
-		return res.json({ data });
+		const result = await scraper.init(indicator);
+		return res.json(result);
 	} catch (error) {
 		if (error instanceof BaseError) {
 			logger.error({ context: error.context }, error.message);
