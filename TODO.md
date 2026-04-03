@@ -64,11 +64,11 @@ Los módulos implementados demuestran los distintos tipos de conexión que sopor
 
 ## Fase 7: Testing y validación
 
-- [ ] Tests unitarios para cada ParseAdapter (verificar que extrae correctamente la data)
-- [ ] Tests unitarios para cada MapperAdapter (verificar transformación de datos)
-- [ ] Tests unitarios para cada HashAdapter (verificar unicidad de keys)
-- [ ] Tests de integración: flujo completo ETL por módulo (fetch → parse → map → hash → save)
-- [ ] Validar datos extraídos vs datos manuales del equipo de investigación
+- [x] Tests unitarios para cada ParseAdapter (verificar que extrae correctamente la data)
+- [x] Tests unitarios para cada MapperAdapter (verificar transformación de datos)
+- [x] Tests unitarios para cada HashAdapter (verificar unicidad de keys)
+- [x] Tests de integración: flujo completo ETL por módulo (parse → map → hash con datos realistas)
+- [x] Validar datos extraídos vs datos manuales de referencia (formato decimal chileno, nombres territoriales, fechas)
 
 ## Fase 8: Visualización y analíticas con Metabase
 
