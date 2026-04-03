@@ -15,7 +15,6 @@ interface DrillResult {
 
 const DrillResultSchema = new Schema(
 	{
-		key: { type: String, required: true, unique: true },
 		indicator: { type: String, required: true },
 		module: { type: String, required: true },
 		totalDrills: { type: Number, required: true },
@@ -47,20 +46,26 @@ export class TsunamiDrillsCalculatorAdapter extends CalculatorAdapter<
 		indicator: string,
 		module: string
 	): Promise<void> {
-		const key = `${module}:${indicator}`;
-		await DrillResultModel.findOneAndUpdate(
-			{ key },
-			{ ...result, indicator, module, key },
-			{ upsert: true }
-		);
-		logger.info(`Calculator result saved for ${key}`);
+		const latest = await DrillResultModel.findOne({ indicator, module })
+			.sort({ createdAt: -1 })
+			.lean();
+
+		if (latest && JSON.stringify(latest.totalDrills) === JSON.stringify(result.totalDrills) &&
+			JSON.stringify(latest.drillsByCity) === JSON.stringify(result.drillsByCity)) {
+			logger.info(`Calculator result unchanged for ${module}:${indicator}`);
+			return;
+		}
+
+		await DrillResultModel.create({ ...result, indicator, module });
+		logger.info(`Calculator result saved for ${module}:${indicator}`);
 	}
 
 	async find(indicator: string, module: string): Promise<DrillResult | null> {
-		const key = `${module}:${indicator}`;
 		return await DrillResultModel.findOne(
-			{ key },
-			{ _id: 0, __v: 0, key: 0, createdAt: 0, updatedAt: 0 }
-		).lean();
+			{ indicator, module },
+			{ _id: 0, __v: 0, createdAt: 0, updatedAt: 0 }
+		)
+			.sort({ createdAt: -1 })
+			.lean();
 	}
 }
