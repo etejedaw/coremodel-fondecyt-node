@@ -1,20 +1,37 @@
 import { Router } from "express";
 import { ScraperFactory } from "../../core/ScraperFactory";
+import { BaseError } from "../../core/errors";
+import { logger } from "../../core/logger";
 
+const MODULE = "emergencia-desastres";
 const router = Router();
 
 router.get("/", (req, res) => {
 	const scrapeFactory = ScraperFactory.getInstance();
-	const indicators = scrapeFactory.getIndicators("emergencia-desastres");
+	const indicators = scrapeFactory.getIndicators(MODULE);
 	res.json({ indicators });
 });
 
 router.get("/:indicator", async (req, res) => {
-	const indicator = req.params.indicator;
-	const scrapeFactory = ScraperFactory.getInstance();
-	const scraper = scrapeFactory.get("emergencia-desastres");
-	const data = await scraper.init(indicator);
-	return res.json({ data }).status(200);
+	try {
+		const { indicator } = req.params;
+		const scrapeFactory = ScraperFactory.getInstance();
+		const scraper = scrapeFactory.get(MODULE);
+
+		if (!scraper.getIndicators().includes(indicator)) {
+			return res.status(404).json({ error: `Indicator ${indicator} not found` });
+		}
+
+		const data = await scraper.init(indicator);
+		return res.json({ data });
+	} catch (error) {
+		if (error instanceof BaseError) {
+			logger.error({ context: error.context }, error.message);
+			return res.status(400).json({ error: error.message });
+		}
+		logger.error(error);
+		return res.status(500).json({ error: "Internal server error" });
+	}
 });
 
 export default router;
