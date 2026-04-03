@@ -38,6 +38,10 @@ export abstract class ScrapeBase {
 		return this.#moduleConfig[indicator].storageAdapter;
 	}
 
+	getCalculatorAdapter(indicator: string) {
+		return this.#moduleConfig[indicator].calculatorAdapter;
+	}
+
 	#buildUrl(url: string, params: Record<string, string>) {
 		return Object.entries(params).reduce((acc, [key, value]) => {
 			return acc.replace(new RegExp(`{{${key}}}`, "g"), value.toString());
@@ -67,8 +71,11 @@ export abstract class ScrapeBase {
 		await storageAdapter.save(data);
 
 		const calculator = this.#moduleConfig[indicator].calculatorAdapter;
-		if (calculator) return { data, calculated: calculator.calculate(data) };
+		if (calculator) {
+			const result = calculator.calculate(data);
+			await calculator.save(result, indicator, this.getName());
+		}
 
-		return { data };
+		return data;
 	}
 }
