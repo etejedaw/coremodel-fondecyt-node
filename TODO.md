@@ -23,35 +23,41 @@
 
 - [x] Definir enum FREQUENCIES con representación en cron
 - [x] Permitir usar strings como "year" o el cron directamente
-- [ ] Crear una clase/servicio CronRegistry
-- [ ] Definir estructura común para los errores
-- [ ] Crear un Logger común
+- [x] Crear una clase/servicio CronRegistry
+- [x] Definir estructura común para los errores
+- [x] Crear un Logger común
 
 ## Fase 5: Implementación de indicadores pendientes (OE1 + OE2)
 
 ### Population Poverty (PP) - Fuentes adicionales
+
 - [ ] Módulo DataSocial: Descarga y normalización de archivos XLSX del Ministerio de Desarrollo Social (segmentación regional)
 - [ ] Módulo CASEN: Descarga y normalización de archivos XLS de Observatorio Social, Casen 2017 (segmentación ciudadana)
 - [ ] Módulo INE Censo: Descarga y normalización de archivos CSV del Censo de Población y Vivienda 2017 (segmentación regional y ciudadana)
 - [ ] Generalizar el módulo BCN tasa-pobreza-ingresos para soportar múltiples comunas (actualmente solo Valdivia)
 
 ### Social Capital - Civic Participation (SCCP)
+
 - [ ] Módulo Servel: Descarga y normalización de archivos CSV del Registro Electoral (porcentaje de participación cívica, segmentación regional)
 - [ ] Crear sub-módulo en BCN o módulo independiente para participación cívica
 
 ### Social Capital - Civic Organizations (SCCO)
+
 - [ ] Generalizar el módulo BCN organizaciones-comunitarias para soportar múltiples comunas (actualmente solo Valdivia)
 
 ### Special Needs Population (SNP)
+
 - [ ] Módulo CASEN SNP: Descarga y normalización de datos de discapacidad desde Observatorio Social (XLS/SAV)
 - [ ] Módulo INE SNP: Descarga y normalización de datos de discapacidad desde INE (SAV/DAT)
 - [ ] Módulo BCN SNP: Scraping de datos de población con necesidades especiales desde BCN (tabla HTML)
 
 ### Tsunami Drills (TD) - Ampliación
+
 - [ ] Módulo ONEMI: Scraping de simulacros desde la web de ONEMI (tabla HTML, incluye simulacros de aluviones y erupciones - requiere filtrado)
 - [ ] Evaluar agregar más años de simulacros del MINEDUC si están disponibles
 
 ### Social Capital - Emergency Organizations (SCEO)
+
 - [ ] Investigar fuentes de datos municipales para voluntarios en organizaciones de emergencia
 - [ ] Documentar como indicador sin fuente accesible si no se encuentra data
 
@@ -74,6 +80,7 @@
 ## Fase 8: Redacción de la tesis (documento escrito)
 
 ### Capítulos por escribir/actualizar
+
 - [ ] **Cap. 4 - Herramientas de desarrollo**: Actualizar stack tecnológico (agregar Puppeteer, Zod, Docker; actualizar versiones; mencionar cambio de `request` por `request-promise`)
 - [ ] **Cap. 5 - Diseño de prototipo**: Actualizar para reflejar la arquitectura modular final (ya no es un prototipo simple; describir patrones factory, adapter, builder)
 - [ ] **Cap. 6 - Desarrollo e implementación** (nuevo): Describir la arquitectura modular, el flujo ETL con adapters, el IndicatorBuilder, ScraperFactory, ScrapeBase. Incluir diagramas de clases y secuencia
@@ -82,6 +89,7 @@
 - [ ] **Bibliografía**: Actualizar con nuevas referencias técnicas y académicas utilizadas
 
 ### Diagramas y material visual
+
 - [ ] Diagrama de arquitectura general del sistema (módulos, core, adapters)
 - [ ] Diagrama de clases (ScrapeBase, ScraperFactory, IndicatorBuilder, Adapters)
 - [ ] Diagrama de secuencia del flujo ETL
@@ -89,6 +97,7 @@
 - [ ] Tablas comparativas: datos extraídos vs datos de referencia
 
 ### Revisión general del documento
+
 - [ ] Revisar consistencia de terminología (ETL, web scraping, scraping vs scrapping)
 - [ ] Verificar que los 3 objetivos específicos estén cubiertos en resultados y conclusiones
 - [ ] Agregar anexos con ejemplos de datos extraídos y código relevante

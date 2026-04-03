@@ -1,4 +1,5 @@
 import { ModuleConfig } from "./IndicatorBuilder";
+import { AdapterNotFoundError, ParseError } from "./errors";
 
 export abstract class ScrapeBase {
 	readonly #moduleConfig: ModuleConfig;
@@ -25,33 +26,39 @@ export abstract class ScrapeBase {
 		return this.#moduleConfig[indicator].url;
 	}
 
+	getIndicatorFrequency(indicator: string) {
+		return this.#moduleConfig[indicator].frequency;
+	}
+
 	#getFetchAdapter(indicator: string) {
 		const adapter = this.#moduleConfig[indicator].fetchAdapter;
-		if (!adapter) throw new Error("Fetch Adapter not found");
+		if (!adapter) throw new AdapterNotFoundError("FetchAdapter", indicator);
 		return adapter;
 	}
 
 	#getParseAdapter(indicator: string) {
 		const adapter = this.#moduleConfig[indicator].parseAdapter;
-		if (!adapter) throw new Error("Parse Adapter not found");
+		if (!adapter) throw new AdapterNotFoundError("ParseAdapter", indicator);
 		return adapter;
 	}
 
-	#getStorageAdapter(indicator: string) {
+	getStorageAdapter(indicator: string) {
 		const adapter = this.#moduleConfig[indicator].storageAdapter;
-		if (!adapter) throw new Error("Storage Adapter not found");
+		if (!adapter)
+			throw new AdapterNotFoundError("StorageAdapter", indicator);
 		return adapter;
 	}
 
 	#getMapperAdapter(indicator: string) {
 		const adapter = this.#moduleConfig[indicator].mapperAdapter.map;
-		if (!adapter) throw new Error("Mapper Adapter not found");
+		if (!adapter)
+			throw new AdapterNotFoundError("MapperAdapter", indicator);
 		return adapter;
 	}
 
 	#getHashAdapter(indicator: string) {
 		const adapter = this.#moduleConfig[indicator].hashAdapter;
-		if (!adapter) throw new Error("Hash Adapter not found");
+		if (!adapter) throw new AdapterNotFoundError("HashAdapter", indicator);
 		return adapter;
 	}
 
@@ -70,10 +77,7 @@ export abstract class ScrapeBase {
 
 		const parseAdapter = this.#getParseAdapter(indicator);
 		const parse = parseAdapter.extract(fetch);
-		if (!parse.length)
-			throw new Error(
-				"Error in parse method or fetch method. Cannot extract data"
-			);
+		if (!parse.length) throw new ParseError(indicator, url);
 
 		const hasher = this.#getHashAdapter(indicator);
 		const mapperAdapter = this.#getMapperAdapter(indicator);
@@ -83,7 +87,7 @@ export abstract class ScrapeBase {
 			.map(data => ({ ...data, indicator, module: this.getName() }))
 			.map(data => ({ ...data, key: hasher.generate(data) }));
 
-		const storageAdapter = this.#getStorageAdapter(indicator);
+		const storageAdapter = this.getStorageAdapter(indicator);
 		await storageAdapter.save(data);
 
 		return data;
