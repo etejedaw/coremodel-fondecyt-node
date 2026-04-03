@@ -1,6 +1,7 @@
-import { IndicatorBuilder } from "../../../src/core/utils/indicator-builder";
+import { IndicatorBuilder } from "../../../src/core/IndicatorBuilder";
 import { FetchAdapter } from "../../../src/core/adapters/fetch-adapter/FetchAdapter";
 import { ParseAdapter } from "../../../src/core/adapters/parse-adapter/ParseAdapter";
+import { FREQUENCIES } from "../../../src/core/enums/Frequencies";
 import { z } from "zod";
 
 class MockFetchAdapter implements FetchAdapter {
@@ -24,7 +25,7 @@ describe("Every Indicator Builder instance", () => {
 		const expected = {
 			name: "Test Indicator",
 			url: "https://example.com",
-			frequency: "daily",
+			frequency: FREQUENCIES.daily,
 			fetchAdapter: mockFetch,
 			parseAdapter: mockParse
 		};
@@ -32,7 +33,7 @@ describe("Every Indicator Builder instance", () => {
 		const actual = builder
 			.setName("Test Indicator")
 			.setUrl("https://example.com")
-			.setFrequency("daily")
+			.setFrequency(FREQUENCIES.daily)
 			.setFetchAdapter(mockFetch)
 			.setParseAdapter(mockParse)
 			.build();
@@ -44,7 +45,7 @@ describe("Every Indicator Builder instance", () => {
 		expect(() =>
 			builder
 				.setUrl("https://example.com")
-				.setFrequency("daily")
+				.setFrequency(FREQUENCIES.daily)
 				.setFetchAdapter(mockFetch)
 				.setParseAdapter(mockParse)
 				.build()
@@ -55,7 +56,7 @@ describe("Every Indicator Builder instance", () => {
 		const indicator = builder
 			.setName("Test")
 			.setUrl("https://example.com")
-			.setFrequency("weekly")
+			.setFrequency(FREQUENCIES.weekly)
 			.setFetchAdapter(mockFetch)
 			.setParseAdapter(mockParse)
 			.build();
@@ -73,7 +74,7 @@ describe("Every Indicator Builder instance", () => {
 		expect(() =>
 			builder
 				.setName("Test")
-				.setFrequency("monthly")
+				.setFrequency(FREQUENCIES.monthly)
 				.setFetchAdapter(mockFetch)
 				.setParseAdapter(mockParse)
 				.build()
@@ -85,7 +86,7 @@ describe("Every Indicator Builder instance", () => {
 			builder
 				.setName("Test")
 				.setUrl("url-invalida")
-				.setFrequency("year")
+				.setFrequency(FREQUENCIES.year)
 				.build()
 		).toThrow(z.ZodError);
 	});
