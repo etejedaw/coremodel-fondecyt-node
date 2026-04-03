@@ -1,5 +1,5 @@
 import { ModuleConfig } from "./IndicatorBuilder";
-import { AdapterNotFoundError, ParseError } from "./errors";
+import { ParseError } from "./errors";
 
 export abstract class ScrapeBase {
 	readonly #moduleConfig: ModuleConfig;
@@ -34,34 +34,8 @@ export abstract class ScrapeBase {
 		return this.#moduleConfig[indicator].frequency;
 	}
 
-	#getFetchAdapter(indicator: string) {
-		const adapter = this.#moduleConfig[indicator].fetchAdapter;
-		if (!adapter) throw new AdapterNotFoundError("FetchAdapter", indicator);
-		return adapter;
-	}
-
-	#getParseAdapter(indicator: string) {
-		const adapter = this.#moduleConfig[indicator].parseAdapter;
-		if (!adapter) throw new AdapterNotFoundError("ParseAdapter", indicator);
-		return adapter;
-	}
-
 	getStorageAdapter(indicator: string) {
-		const adapter = this.#moduleConfig[indicator].storageAdapter;
-		if (!adapter) throw new AdapterNotFoundError("StorageAdapter", indicator);
-		return adapter;
-	}
-
-	#getMapperAdapter(indicator: string) {
-		const adapter = this.#moduleConfig[indicator].mapperAdapter.map;
-		if (!adapter) throw new AdapterNotFoundError("MapperAdapter", indicator);
-		return adapter;
-	}
-
-	#getHashAdapter(indicator: string) {
-		const adapter = this.#moduleConfig[indicator].hashAdapter;
-		if (!adapter) throw new AdapterNotFoundError("HashAdapter", indicator);
-		return adapter;
+		return this.#moduleConfig[indicator].storageAdapter;
 	}
 
 	#buildUrl(url: string, params: Record<string, string>) {
@@ -74,22 +48,22 @@ export abstract class ScrapeBase {
 		const indicatorUrl = this.getIndicatorUrl(indicator);
 		const url = this.#buildUrl(indicatorUrl, params);
 
-		const fetchAdapter = this.#getFetchAdapter(indicator);
+		const fetchAdapter = this.#moduleConfig[indicator].fetchAdapter;
 		const fetch = await fetchAdapter.fetch(url);
 
-		const parseAdapter = this.#getParseAdapter(indicator);
+		const parseAdapter = this.#moduleConfig[indicator].parseAdapter;
 		const parse = parseAdapter.extract(fetch);
 		if (!parse.length) throw new ParseError(indicator, url);
 
-		const hasher = this.#getHashAdapter(indicator);
-		const mapperAdapter = this.#getMapperAdapter(indicator);
+		const hasher = this.#moduleConfig[indicator].hashAdapter;
+		const mapperAdapter = this.#moduleConfig[indicator].mapperAdapter.map;
 
 		const data = parse
 			.map(mapperAdapter)
 			.map(data => ({ ...data, indicator, module: this.getName() }))
 			.map(data => ({ ...data, key: hasher.generate(data) }));
 
-		const storageAdapter = this.getStorageAdapter(indicator);
+		const storageAdapter = this.#moduleConfig[indicator].storageAdapter;
 		await storageAdapter.save(data);
 
 		return data;
