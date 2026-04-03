@@ -72,11 +72,11 @@ Los módulos implementados demuestran los distintos tipos de conexión que sopor
 
 ## Fase 8: Capa de cálculo de indicadores CORE
 
-- [ ] Crear `CalculatorAdapter` abstracto en `core/adapters/` (agrega múltiples registros en un valor final)
-- [ ] Agregar `setCalculatorAdapter()` como opcional en el `IndicatorBuilder`
-- [ ] Integrar el paso de cálculo en `ScrapeBase.init()` (después del save, si existe calculator)
-- [ ] Implementar cálculo para Tsunami Drills: suma total de simulacros entre un rango de años
-- [ ] Exponer resultados calculados en un endpoint (ej: `GET /emergencia-desastres/simulacros-2021/calculate`)
+- [x] Crear `CalculatorAdapter` abstracto en `core/adapters/` (agrega múltiples registros en un valor final)
+- [x] Agregar `setCalculatorAdapter()` como opcional en el `IndicatorBuilder`
+- [x] Integrar el paso de cálculo en `ScrapeBase.init()` (después del save, si existe calculator)
+- [x] Implementar cálculo para Tsunami Drills: totalDrills + drillsByCity
+- [x] Respuesta del endpoint incluye `calculated` automáticamente si el indicador tiene calculator
 
 ## Fase 9: Visualización y analíticas con Metabase
 
