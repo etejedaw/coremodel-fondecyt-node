@@ -59,8 +59,8 @@ Los módulos implementados demuestran los distintos tipos de conexión que sopor
 
 - [x] Endpoint API para emergencias-desastres (listar indicadores + ejecutar scrape)
 - [x] Endpoint API para biblioteca-congreso-nacional (listar indicadores + ejecutar scrape con parámetro year)
-- [ ] Endpoint de resumen: listar todos los módulos e indicadores disponibles con su estado
-- [ ] Documentar la API (endpoints disponibles, parámetros, respuestas de ejemplo)
+- [x] Endpoint de resumen: `GET /` lista todos los módulos con sus indicadores (name, url, frequency)
+- [x] Documentar la API con colección Bruno OpenCollection YAML en `docs/api/`
 
 ## Fase 7: Testing y validación
 

@@ -1,0 +1,16 @@
+info:
+  name: Resumen de módulos
+  type: http
+  seq: 1
+
+http:
+  method: GET
+  url: "{{baseUrl}}/"
+
+settings:
+  encodeUrl: true
+
+docs: |-
+  Retorna todos los módulos registrados con sus indicadores.
+
+  Cada indicador incluye: key, name, url y frequency.

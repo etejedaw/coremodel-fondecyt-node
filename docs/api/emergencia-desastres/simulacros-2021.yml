@@ -1,0 +1,16 @@
+info:
+  name: Simulacros 2021
+  type: http
+  seq: 2
+
+http:
+  method: GET
+  url: "{{baseUrl}}/emergencia-desastres/simulacros-2021"
+
+settings:
+  encodeUrl: true
+
+docs: |-
+  Ejecuta el scraping de simulacros del año 2021 desde MINEDUC (Wayback Machine).
+
+  Extrae fecha, lugar y ciudad de cada simulacro y los almacena en MongoDB.

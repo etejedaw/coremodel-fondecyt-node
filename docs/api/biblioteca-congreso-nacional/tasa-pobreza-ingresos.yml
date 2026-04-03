@@ -1,0 +1,22 @@
+info:
+  name: Tasa de Pobreza por Ingresos (Valdivia)
+  type: http
+  seq: 2
+
+http:
+  method: GET
+  url: "{{baseUrl}}/biblioteca-congreso-nacional/valdivia-tasa-pobreza-ingresos"
+  params:
+    - name: year
+      value: "2023"
+      type: query
+
+settings:
+  encodeUrl: true
+
+docs: |-
+  Ejecuta el scraping de la tasa de pobreza por ingresos desde BCN para la comuna de Valdivia.
+
+  Requiere el parámetro `year` para indicar el año del reporte comunal.
+
+  Extrae datos de la tabla HTML con tasas CASEN 2017 y CASEN 2022.
