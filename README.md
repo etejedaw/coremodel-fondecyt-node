@@ -24,6 +24,7 @@ npm run dev
 src
 ├── api
 │   ├── server.ts
+│   ├── error-handler.ts
 │   └── routes
 │       ├── index.ts
 │       ├── emergencia-desastres.route.ts
