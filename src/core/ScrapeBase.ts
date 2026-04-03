@@ -18,6 +18,10 @@ export abstract class ScrapeBase {
 		return this.#moduleName;
 	}
 
+	getIndicatorName(indicator: string) {
+		return this.#moduleConfig[indicator].name;
+	}
+
 	getIndicatorDescription(indicator: string) {
 		return this.#moduleConfig[indicator].description;
 	}
