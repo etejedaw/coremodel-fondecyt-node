@@ -27,7 +27,7 @@ describe("Tasa Pobreza Ingresos - ETL integration", () => {
 		const parsed = parseAdapter.extract(sampleHtml);
 		expect(parsed).toHaveLength(3);
 
-		const mapped = parsed.map(item => mapper.map(item as any));
+		const mapped = parsed.map(item => mapper.map(item));
 		expect(mapped[0].unidadTerritorial).toBe("Valdivia");
 		expect(mapped[0].casen2017).toBe(12.5);
 		expect(mapped[0].casen2022).toBe(10.3);
@@ -61,7 +61,7 @@ describe("Tasa Pobreza Ingresos - ETL integration", () => {
 	it("should generate unique keys for each territory", () => {
 		const parsed = parseAdapter.extract(sampleHtml);
 		const final = parsed
-			.map(item => mapper.map(item as any))
+			.map(item => mapper.map(item))
 			.map(item => ({ ...item, indicator: INDICATOR, module: MODULE }))
 			.map(item => ({ ...item, key: hasher.generate(item) }));
 
@@ -74,7 +74,7 @@ describe("Tasa Pobreza Ingresos - ETL integration", () => {
 describe("Tasa Pobreza Ingresos - Validación contra datos manuales", () => {
 	it("should correctly convert Chilean decimal format to numbers", () => {
 		const parsed = parseAdapter.extract(sampleHtml);
-		const mapped = parsed.map(item => mapper.map(item as any));
+		const mapped = parsed.map(item => mapper.map(item));
 
 		expect(mapped[0].casen2017).toBe(12.5);
 		expect(mapped[0].casen2022).toBe(10.3);
@@ -88,7 +88,7 @@ describe("Tasa Pobreza Ingresos - Validación contra datos manuales", () => {
 
 	it("should preserve territorial unit names exactly as in source", () => {
 		const parsed = parseAdapter.extract(sampleHtml);
-		const mapped = parsed.map(item => mapper.map(item as any));
+		const mapped = parsed.map(item => mapper.map(item));
 
 		expect(mapped[0].unidadTerritorial).toBe("Valdivia");
 		expect(mapped[1].unidadTerritorial).toBe("Región de los Ríos");

@@ -45,7 +45,7 @@ describe("Organizaciones Comunitarias - ETL integration", () => {
 		const parsed = parseAdapter.extract(sampleJson);
 		expect(parsed).toHaveLength(2);
 
-		const mapped = parsed.map(item => mapper.map(item as any));
+		const mapped = parsed.map(item => mapper.map(item));
 		expect(mapped[0].nDeJuntasDeVecinos).toBe(98);
 		expect(mapped[0].anio).toBe(2020);
 		expect(mapped[1].nDeJuntasDeVecinos).toBe(102);
@@ -80,7 +80,7 @@ describe("Organizaciones Comunitarias - ETL integration", () => {
 	it("should generate unique keys per year", () => {
 		const parsed = parseAdapter.extract(sampleJson);
 		const final = parsed
-			.map(item => mapper.map(item as any))
+			.map(item => mapper.map(item))
 			.map(item => ({ ...item, indicator: INDICATOR, module: MODULE }))
 			.map(item => ({ ...item, key: hasher.generate(item) }));
 
@@ -93,7 +93,7 @@ describe("Organizaciones Comunitarias - ETL integration", () => {
 		const run = () => {
 			const parsed = parseAdapter.extract(sampleJson);
 			return parsed
-				.map(item => mapper.map(item as any))
+				.map(item => mapper.map(item))
 				.map(item => ({ ...item, indicator: INDICATOR, module: MODULE }))
 				.map(item => ({ ...item, key: hasher.generate(item) }));
 		};
@@ -107,7 +107,7 @@ describe("Organizaciones Comunitarias - ETL integration", () => {
 describe("Organizaciones Comunitarias - Validación contra datos manuales", () => {
 	it("should correctly map all 11 organization types from source", () => {
 		const parsed = parseAdapter.extract(sampleJson);
-		const mapped = parsed.map(item => mapper.map(item as any));
+		const mapped = parsed.map(item => mapper.map(item));
 
 		const year2020 = mapped[0];
 		expect(year2020.nDeCentrosDeMadres).toBe(12);
@@ -125,7 +125,7 @@ describe("Organizaciones Comunitarias - Validación contra datos manuales", () =
 
 	it("should reflect year-over-year changes in organizations", () => {
 		const parsed = parseAdapter.extract(sampleJson);
-		const mapped = parsed.map(item => mapper.map(item as any));
+		const mapped = parsed.map(item => mapper.map(item));
 
 		expect(mapped[1].nDeJuntasDeVecinos - mapped[0].nDeJuntasDeVecinos).toBe(4);
 		expect(mapped[1].nDeCentrosDeMadres - mapped[0].nDeCentrosDeMadres).toBe(-2);

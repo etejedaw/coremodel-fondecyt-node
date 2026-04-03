@@ -1,10 +1,11 @@
 import cheerio from "cheerio";
 import { ParseAdapter } from "../../../core/adapters/parse-adapter/ParseAdapter";
+import { Input } from "./interfaces";
 
-export class TasaPobrezaIngresosParseAdapter implements ParseAdapter {
-	extract(html: string) {
+export class TasaPobrezaIngresosParseAdapter implements ParseAdapter<Input[]> {
+	extract(html: string): Input[] {
 		const $ = cheerio.load(html);
-		const data = [] as any[];
+		const data: Input[] = [];
 
 		const section = $(
 			'h6:contains("2.1 Tasa de Pobreza por ingresos")'
@@ -24,6 +25,6 @@ export class TasaPobrezaIngresosParseAdapter implements ParseAdapter {
 				}
 			});
 		}
-		return data as Array<Record<string, unknown>>;
+		return data;
 	}
 }

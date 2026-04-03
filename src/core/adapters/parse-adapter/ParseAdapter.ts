@@ -1,3 +1,3 @@
-export abstract class ParseAdapter<T = Array<Record<string, unknown>>> {
+export abstract class ParseAdapter<T = any[]> {
 	abstract extract: (data: string) => T;
 }
