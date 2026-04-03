@@ -10,7 +10,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "lint": "eslint . --ext .ts",
-    "lint:fix": "lint --fix",
+    "lint:fix": "eslint . --ext .ts --fix",
     "prettier": "prettier --write src/**/*.ts"
   },
   "repository": {
