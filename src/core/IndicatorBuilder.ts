@@ -5,6 +5,7 @@ import { FetchAdapter } from "./adapters/fetch-adapter/FetchAdapter";
 import { StorageAdapter } from "./adapters/storage-adapter/StorageAdapter";
 import { MapperAdater } from "./adapters/mapper-adapter/MapperAdapter";
 import { HashAdapter } from "./adapters/hash-adapter/HashAdapter";
+import { CalculatorAdapter } from "./adapters/calculator-adapter/CalculatorAdapter";
 
 export class IndicatorBuilder {
 	#config = {} as Indicator;
@@ -59,6 +60,11 @@ export class IndicatorBuilder {
 		return this;
 	}
 
+	setCalculatorAdapter(calculator: Indicator["calculatorAdapter"]) {
+		this.#config.calculatorAdapter = calculator;
+		return this;
+	}
+
 	build(): Indicator {
 		return {
 			...IndicatorSchema.parse(this.#config),
@@ -66,7 +72,8 @@ export class IndicatorBuilder {
 			parseAdapter: this.#config.parseAdapter,
 			storageAdapter: this.#config.storageAdapter,
 			mapperAdapter: this.#config.mapperAdapter,
-			hashAdapter: this.#config.hashAdapter
+			hashAdapter: this.#config.hashAdapter,
+			calculatorAdapter: this.#config.calculatorAdapter
 		};
 	}
 }
@@ -90,6 +97,7 @@ type Indicator = z.infer<typeof IndicatorSchema> & {
 	storageAdapter: StorageAdapter;
 	mapperAdapter: MapperAdater;
 	hashAdapter: HashAdapter;
+	calculatorAdapter?: CalculatorAdapter;
 };
 
 export type ModuleConfig = Record<string, Indicator>;

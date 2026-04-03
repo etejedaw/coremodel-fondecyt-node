@@ -66,6 +66,9 @@ export abstract class ScrapeBase {
 		const storageAdapter = this.#moduleConfig[indicator].storageAdapter;
 		await storageAdapter.save(data);
 
-		return data;
+		const calculator = this.#moduleConfig[indicator].calculatorAdapter;
+		if (calculator) return { data, calculated: calculator.calculate(data) };
+
+		return { data };
 	}
 }
