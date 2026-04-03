@@ -29,4 +29,13 @@ describe("TsunamiDrillsCalculatorAdapter", () => {
 		expect(result.totalDrills).toBe(0);
 		expect(result.drillsByCity).toEqual({});
 	});
+
+	it("should count single city correctly", () => {
+		const single = [
+			{ date: new Date(2021, 0, 1), place: "Simulacro", city: "Arica" }
+		];
+		const result = calculator.calculate(single);
+		expect(result.totalDrills).toBe(1);
+		expect(result.drillsByCity).toEqual({ Arica: 1 });
+	});
 });
