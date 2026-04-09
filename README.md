@@ -4,15 +4,42 @@ Resiliencia comunitaria ante tsunami en la costa chilena: Modelando escenarios m
 
 Automatización de extracción, normalización y consulta de indicadores sociales desde diversas fuentes abiertas, basado en una arquitectura modular, extensible y documentada.
 
-## Para ejecutar en local:
+## Requisitos
 
-1. Levantar la base de datos
+- Node.js LTS Hydrogen (v18) — el proyecto incluye `.nvmrc`, por lo que basta con ejecutar `nvm use`
+- Docker y Docker Compose
+
+## Para ejecutar en local
+
+1. Instalar dependencias
 
 ```bash
-docker compose up
+npm install
 ```
 
-2. Levantar proyecto en modo desarrollo
+2. Configurar variables de entorno
+
+```bash
+cp .env.example .env
+```
+
+Todas las variables tienen valores por defecto que funcionan con el `docker-compose.yml` incluido, por lo que no es necesario modificar el `.env` para desarrollo local.
+
+3. Levantar la base de datos
+
+```bash
+docker compose up -d
+```
+
+Esto levanta 3 servicios:
+
+| Servicio | Puerto | Descripción |
+|----------|--------|-------------|
+| MongoDB | 27017 | Base de datos |
+| Mongo Express | 8081 | Interfaz web para MongoDB |
+| Metabase | 3001 | Dashboards de visualización |
+
+4. Levantar proyecto en modo desarrollo
 
 ```bash
 npm run dev
@@ -22,6 +49,7 @@ npm run dev
 
 ```
 src
+├── app.ts
 ├── api
 │   ├── server.ts
 │   ├── error-handler.ts
@@ -196,13 +224,7 @@ La documentación completa de la API está disponible como colección Bruno en `
 
 ## Visualización con Metabase
 
-Metabase permite visualizar los datos almacenados en MongoDB a través de dashboards que se actualizan automáticamente a medida que el CronRegistry pobla las colecciones.
-
-```bash
-docker compose up metabase -d
-```
-
-Acceder a `http://localhost:3001`. Los dashboards y queries se persisten en un volumen de Docker, por lo que sobreviven a reinicios del contenedor. La guía completa de configuración y conexión a MongoDB está en `docs/metabase/setup.md`.
+Metabase (`http://localhost:3001`) permite visualizar los datos almacenados en MongoDB a través de dashboards que se actualizan automáticamente a medida que el CronRegistry pobla las colecciones. Los dashboards y queries se persisten en un volumen de Docker, por lo que sobreviven a reinicios del contenedor. La guía de configuración y conexión a MongoDB está en `docs/metabase/setup.md`.
 
 ## Testing
 
@@ -215,3 +237,16 @@ Los tests cubren:
 - Tests de integración del flujo ETL completo (parse → map → hash)
 - Tests de validación de input en las rutas API
 - Validación de datos contra datos manuales de referencia
+
+## Scripts disponibles
+
+| Script | Descripción |
+|--------|-------------|
+| `npm run dev` | Levanta el proyecto en modo desarrollo con nodemon |
+| `npm run build` | Compila TypeScript a JavaScript |
+| `npm start` | Ejecuta la versión compilada (`dist/app.js`) |
+| `npm test` | Ejecuta los tests con Jest |
+| `npm run test:watch` | Ejecuta los tests en modo watch |
+| `npm run lint` | Ejecuta ESLint |
+| `npm run lint:fix` | Ejecuta ESLint y corrige errores automáticamente |
+| `npm run prettier` | Formatea el código con Prettier |
