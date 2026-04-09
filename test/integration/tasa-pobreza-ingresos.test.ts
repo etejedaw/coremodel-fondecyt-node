@@ -1,0 +1,97 @@
+import { TasaPobrezaIngresosParseAdapter } from "../../src/modules/biblioteca-congreso-nacional/tasa-pobreza-ingresos/parse-adapter";
+import { TasaPobrezaMapperAdapter } from "../../src/modules/biblioteca-congreso-nacional/tasa-pobreza-ingresos/mapper";
+import { TasaPobrezaIngresosHashAdapter } from "../../src/modules/biblioteca-congreso-nacional/tasa-pobreza-ingresos/hash";
+
+const MODULE = "biblioteca-congreso-nacional";
+const INDICATOR = "valdivia-tasa-pobreza-ingresos";
+
+const parseAdapter = new TasaPobrezaIngresosParseAdapter();
+const mapper = new TasaPobrezaMapperAdapter();
+const hasher = new TasaPobrezaIngresosHashAdapter();
+
+const sampleHtml = `
+<div class="z-depth-1">
+  <h6>2.1 Tasa de Pobreza por ingresos</h6>
+  <table>
+    <tr><th>Unidad Territorial</th><th>Casen 2017</th><th>Casen 2022</th></tr>
+    <tr><td>(%)</td><td>(%)</td><td>(%)</td></tr>
+    <tr><td>Valdivia</td><td>12,5</td><td>10,3</td></tr>
+    <tr><td>Región de los Ríos</td><td>15,1</td><td>13,7</td></tr>
+    <tr><td>País</td><td>8,6</td><td>6,5</td></tr>
+  </table>
+</div>
+`;
+
+describe("Tasa Pobreza Ingresos - ETL integration", () => {
+	it("should process HTML through the full pipeline: parse → map → hash", () => {
+		const parsed = parseAdapter.extract(sampleHtml);
+		expect(parsed).toHaveLength(3);
+
+		const mapped = parsed.map(item => mapper.map(item));
+		expect(mapped[0].unidadTerritorial).toBe("Valdivia");
+		expect(mapped[0].casen2017).toBe(12.5);
+		expect(mapped[0].casen2022).toBe(10.3);
+
+		const withMetadata = mapped.map(item => ({
+			...item,
+			indicator: INDICATOR,
+			module: MODULE
+		}));
+
+		const final = withMetadata.map(item => ({
+			...item,
+			key: hasher.generate(item)
+		}));
+
+		expect(final).toHaveLength(3);
+		expect(final[0].key).toBe(
+			"valdivia-biblioteca-congreso-nacional-valdivia-tasa-pobreza-ingresos"
+		);
+
+		expect(final[0]).toEqual({
+			unidadTerritorial: "Valdivia",
+			casen2017: 12.5,
+			casen2022: 10.3,
+			indicator: INDICATOR,
+			module: MODULE,
+			key: "valdivia-biblioteca-congreso-nacional-valdivia-tasa-pobreza-ingresos"
+		});
+	});
+
+	it("should generate unique keys for each territory", () => {
+		const parsed = parseAdapter.extract(sampleHtml);
+		const final = parsed
+			.map(item => mapper.map(item))
+			.map(item => ({ ...item, indicator: INDICATOR, module: MODULE }))
+			.map(item => ({ ...item, key: hasher.generate(item) }));
+
+		const keys = final.map(item => item.key);
+		const uniqueKeys = new Set(keys);
+		expect(uniqueKeys.size).toBe(keys.length);
+	});
+});
+
+describe("Tasa Pobreza Ingresos - Validación contra datos manuales", () => {
+	it("should correctly convert Chilean decimal format to numbers", () => {
+		const parsed = parseAdapter.extract(sampleHtml);
+		const mapped = parsed.map(item => mapper.map(item));
+
+		expect(mapped[0].casen2017).toBe(12.5);
+		expect(mapped[0].casen2022).toBe(10.3);
+
+		expect(mapped[1].casen2017).toBe(15.1);
+		expect(mapped[1].casen2022).toBe(13.7);
+
+		expect(mapped[2].casen2017).toBe(8.6);
+		expect(mapped[2].casen2022).toBe(6.5);
+	});
+
+	it("should preserve territorial unit names exactly as in source", () => {
+		const parsed = parseAdapter.extract(sampleHtml);
+		const mapped = parsed.map(item => mapper.map(item));
+
+		expect(mapped[0].unidadTerritorial).toBe("Valdivia");
+		expect(mapped[1].unidadTerritorial).toBe("Región de los Ríos");
+		expect(mapped[2].unidadTerritorial).toBe("País");
+	});
+});

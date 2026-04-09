@@ -1,0 +1,17 @@
+info:
+  name: Organizaciones Comunitarias (Valdivia)
+  type: http
+  seq: 3
+
+http:
+  method: GET
+  url: "{{baseUrl}}/biblioteca-congreso-nacional/valdivia-organizaciones-comunitaras"
+
+settings:
+  encodeUrl: true
+
+docs: |-
+  Ejecuta la extracción de datos de organizaciones comunitarias desde la JSON API de BCN para Valdivia.
+
+  Obtiene la cantidad de juntas de vecinos, clubes deportivos, centros de madres,
+  centros culturales, centros del adulto mayor, compañías de bomberos, entre otros.

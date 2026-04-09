@@ -1,0 +1,68 @@
+{
+  "name": "tesis",
+  "version": "0.0.0",
+  "description": "Resiliencia comunitaria ante tsunami en la costa chilena: Modelando escenarios multidimensionales con una aproximación participativa",
+  "main": "app.js",
+  "scripts": {
+    "build": "tsc -p .",
+    "start": "node dist/app.js",
+    "dev": "nodemon -w './**/*.ts' --exec 'ts-node' src/app.ts",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix",
+    "prettier": "prettier --write src/**/*.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/etejedaw/FONDECYT-scrape-2.git"
+  },
+  "keywords": [],
+  "author": "Esteban Tejeda",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/etejedaw/FONDECYT-scrape-2/issues"
+  },
+  "homepage": "https://github.com/etejedaw/FONDECYT-scrape-2#readme",
+  "devDependencies": {
+    "@total-typescript/ts-reset": "^0.4.2",
+    "@types/cheerio": "^0.22.31",
+    "@types/express": "^4.17.21",
+    "@types/jest": "^29.2.4",
+    "@types/morgan": "^1.9.3",
+    "@types/node-cron": "^3.0.11",
+    "@types/pino-pretty": "^4.7.5",
+    "@types/request": "^2.48.8",
+    "@types/request-promise": "^4.1.48",
+    "@types/slug": "^5.0.9",
+    "@typescript-eslint/eslint-plugin": "^5.40.0",
+    "eslint": "^8.25.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-config-standard-with-typescript": "^23.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-n": "^15.3.0",
+    "eslint-plugin-promise": "^6.1.0",
+    "jest": "^29.1.2",
+    "nodemon": "^3.1.14",
+    "prettier": "2.7.1",
+    "ts-jest": "^29.0.3",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.8.4"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.12",
+    "dotenv": "^16.0.3",
+    "express": "^4.21.2",
+    "mongoose": "^6.6.5",
+    "morgan": "^1.10.0",
+    "node-cron": "^4.2.1",
+    "pino": "^8.21.0",
+    "pino-pretty": "^10.3.1",
+    "puppeteer": "^24.40.0",
+    "request": "^2.88.2",
+    "request-promise": "^4.2.6",
+    "slug": "^8.2.3",
+    "xlsx": "^0.18.5",
+    "zod": "^4.3.6"
+  }
+}

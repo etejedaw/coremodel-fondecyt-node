@@ -1,0 +1,10 @@
+opencollection: 1.0.0
+
+info:
+  name: Resiliencia Comunitaria
+bundled: false
+extensions:
+  bruno:
+    ignore:
+      - node_modules
+      - .git
