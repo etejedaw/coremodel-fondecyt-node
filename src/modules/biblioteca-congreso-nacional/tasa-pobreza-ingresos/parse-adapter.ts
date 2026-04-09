@@ -1,4 +1,4 @@
-import cheerio from "cheerio";
+import * as cheerio from "cheerio";
 import { ParseAdapter } from "../../../core/adapters/parse-adapter/ParseAdapter";
 import { Input } from "./interfaces";
 
