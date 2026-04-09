@@ -88,7 +88,7 @@ const IndicatorSchema = z.object({
 		.refine(value => value === "" || validate(value), {
 			message: "frequency must be a valid cron expression"
 		}),
-	metadata: z.record(z.unknown()).optional()
+	metadata: z.record(z.string(), z.unknown()).optional()
 });
 
 type Indicator = z.infer<typeof IndicatorSchema> & {
