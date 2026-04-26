@@ -110,5 +110,7 @@ dist
 # Others
 
 tmp/
-.claude.DS_Store
+.claude/
+.DS_Store
 docs/tesis/tesis.pdf
+
