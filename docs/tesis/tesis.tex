@@ -1,0 +1,1295 @@
+% =============================================================================
+% TESIS DE PREGRADO - INGENIERIA CIVIL EN INFORMATICA
+% Universidad Austral de Chile
+%
+% Titulo: Sistematizacion del Proceso de Captura de Indicadores Cuantitativos
+%         Sociocomunitarios e Institucionales por Medio de Extraccion de Datos
+%         de la Web para Alimentar un Modelo de Resiliencia Comunitaria
+%
+% Autor: Esteban Nicolas Tejeda Webar
+% Profesor Patrocinante: Cristian Olivares-Rodriguez
+% =============================================================================
+
+\documentclass[12pt,letterpaper,oneside]{report}
+
+% --- Paquetes ---
+\usepackage{fontspec}
+\setmainfont{Times New Roman}
+\setmonofont[Scale=0.83]{Courier New}  % Courier para codigo fuente
+\usepackage[spanish]{babel}
+\usepackage[letterpaper,
+            top=2.5cm,
+            bottom=3cm,
+            left=4cm,
+            right=2.5cm]{geometry}
+\usepackage{setspace}              % Interlineado
+\usepackage{titlesec}              % Formato de titulos
+\usepackage{graphicx}
+\graphicspath{{img/}}
+\usepackage{float}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{caption}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{etoolbox}
+\usepackage{url}
+\usepackage[backend=biber,
+            style=apa,
+            sorting=nyt,
+            natbib=true]{biblatex}
+\addbibresource{referencias.bib}
+
+% --- Interlineado: sencillo dentro de parrafos, doble espacio entre parrafos ---
+\singlespacing
+\setlength{\parskip}{\baselineskip}
+\setlength{\parindent}{0pt}
+
+% --- Nombres de indices segun pauta (mayusculas, centrado) ---
+\addto\captionsspanish{%
+  \renewcommand{\contentsname}{\'INDICE}%
+  \renewcommand{\listtablename}{\'INDICE DE TABLAS}%
+  \renewcommand{\listfigurename}{\'INDICE DE FIGURAS}%
+}
+
+% --- Formato de titulos (TNR 14pt, negrita, mayusculas, margen izquierdo) ---
+\titleformat{\chapter}
+  {\normalfont\fontsize{14}{16}\bfseries\raggedright}
+  {\thechapter.}{0.5em}
+  {\fontsize{14}{16}\bfseries\MakeUppercase}
+\titlespacing*{\chapter}{0pt}{0pt}{\baselineskip}
+
+\titleformat{\section}
+  {\normalfont\fontsize{14}{16}\bfseries}
+  {\thesection.}{0.5em}{}
+
+\titleformat{\subsection}
+  {\normalfont\fontsize{12}{14}\bfseries}
+  {\thesubsection.}{0.5em}{}
+
+\titleformat{\subsubsection}
+  {\normalfont\fontsize{12}{14}\bfseries\itshape}
+  {\thesubsubsection.}{0.5em}{}
+
+% --- Notas al pie en TNR 10pt (segun pauta) ---
+\renewcommand{\footnotesize}{\fontsize{10}{12}\selectfont}
+
+% --- Configuracion de listings para codigo ---
+\lstset{
+  basicstyle=\fontfamily{pcr}\fontsize{10}{12}\selectfont,
+  breaklines=true,
+  frame=single,
+  numbers=left,
+  numberstyle=\tiny,
+  tabsize=2,
+  showstringspaces=false,
+  captionpos=b,
+  keywordstyle=\color{blue},
+  commentstyle=\color{gray},
+  stringstyle=\color{red}
+}
+
+% --- Encabezados y pies de pagina ---
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+
+% --- Hyperref ---
+\hypersetup{
+  colorlinks=true,
+  linkcolor=black,
+  citecolor=black,
+  urlcolor=blue,
+  pdfauthor={Esteban Nicolas Tejeda Webar},
+  pdftitle={Integracion de Datos y Resiliencia Comunitaria}
+}
+
+% --- Cada capitulo en pagina nueva ---
+\patchcmd{\chapter}{\thispagestyle{plain}}{\thispagestyle{fancy}}{}{}
+
+% =============================================================================
+\begin{document}
+
+% =============================================================================
+% PORTADA
+% =============================================================================
+\begin{titlepage}
+
+% --- Escudo y nombre universidad (centrado, parte superior) ---
+\begin{center}
+\vspace*{0.5cm}
+
+\includegraphics[width=0.65\textwidth]{img_01.png}
+
+\vspace{2.5cm}
+
+% --- Titulo de la tesis (centrado, negrita, 14pt segun pauta) ---
+{\fontsize{14}{18}\selectfont\bfseries
+INTEGRACI\'ON DE DATOS Y RESILIENCIA COMUNITARIA EN DIMENSIONES SOCIOCOMUNITARIAS E INSTITUCIONALES}
+
+\end{center}
+
+\vspace{1cm}
+
+% --- Texto de opcion al titulo (alineado a la derecha, pequeno) ---
+\begin{flushright}
+{\small Proyecto para optar al t\'itulo de\\
+\textbf{Ingeniero Civil en Inform\'atica}}
+\end{flushright}
+
+\vspace{1cm}
+
+% --- Profesor patrocinante (alineado a la izquierda) ---
+\noindent
+PROFESOR PATROCINANTE:\\
+CRISTIAN OLIVARES-RODR\'IGUEZ\\
+INGENIERO CIVIL INFORM\'ATICO\\
+MASTER EN VISI\'ON POR COMPUTADORA E INTELIGENCIA ARTIFICIAL\\
+DOCTOR EN INGENIER\'IA
+
+\vfill
+
+% --- Autor, ciudad y anio (centrado, sin espaciado extra) ---
+\begin{center}
+{\large\bfseries ESTEBAN NICOL\'AS TEJEDA WEBAR}\\
+VALDIVIA -- CHILE\\
+2025
+\end{center}
+
+\end{titlepage}
+
+% =============================================================================
+% PAGINAS PRELIMINARES (numeracion romana)
+% =============================================================================
+\pagenumbering{roman}
+
+% --- Dedicatoria (opcional) ---
+\chapter*{Dedicatoria}
+\addcontentsline{toc}{chapter}{Dedicatoria}
+
+% TODO: Escribir dedicatoria
+
+\newpage
+
+% --- Agradecimientos (opcional) ---
+\chapter*{Agradecimientos}
+\addcontentsline{toc}{chapter}{Agradecimientos}
+
+% TODO: Escribir agradecimientos
+
+\newpage
+
+% --- Indice de contenidos ---
+{%
+\setlength{\parskip}{0pt}%
+\tableofcontents
+}
+\newpage
+
+% --- Indice de tablas ---
+{%
+\setlength{\parskip}{0pt}%
+\listoftables
+}
+\newpage
+
+% --- Indice de figuras ---
+{%
+\setlength{\parskip}{0pt}%
+\listoffigures
+}
+\newpage
+
+% --- Resumen ---
+\chapter*{Resumen}
+\addcontentsline{toc}{chapter}{Resumen}
+
+% TODO: Escribir resumen (150-300 palabras)
+% El resumen debe ser una descripcion autosuficiente del Proyecto de Titulo.
+% Debe permitir una lectura comprensiva del problema planteado, el metodo,
+% su significancia y hallazgos.
+
+La presente tesis aborda la sistematizaci\'on del proceso de captura de indicadores cuantitativos sociocomunitarios e institucionales mediante la extracci\'on automatizada de datos de la web, con el objetivo de alimentar el modelo CORE de resiliencia comunitaria ante tsunamis en zonas costeras de Chile.
+
+Se desarroll\'o un sistema de extracci\'on, transformaci\'on y carga (ETL) basado en una arquitectura modular de \textit{adapters} intercambiables, implementado en TypeScript con Node.js y MongoDB. El sistema permite agregar nuevos indicadores y fuentes de datos sin modificar la l\'ogica central, soportando m\'ultiples tipos de conexi\'on: \textit{web scraping} de HTML, extracci\'on de tablas y consumo de APIs JSON.
+
+Se implementaron cinco indicadores distribuidos en dos m\'odulos: simulacros de emergencia (dimensi\'on institucional) y tasa de pobreza junto con organizaciones comunitarias (dimensi\'on sociocomunitaria). El sistema extrajo un total de 29 registros de simulacros, datos de pobreza a nivel comunal, regional y nacional, y 17 registros hist\'oricos de organizaciones comunitarias. Los datos fueron validados contra extracciones manuales y se verific\'o el correcto funcionamiento de los mecanismos de evitaci\'on de duplicados.
+
+Los resultados se disponibilizan mediante una API REST y \textit{dashboards} en Metabase, permitiendo al equipo de investigaci\'on consultar los indicadores de forma directa sin procesamiento manual.
+
+\textbf{Palabras clave:} resiliencia comunitaria, ETL, \textit{web scraping}, modelo CORE, indicadores sociocomunitarios, TypeScript.
+
+\newpage
+
+% --- Abstract ---
+\chapter*{Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
+
+% TODO: Traducir el resumen al ingles
+
+This thesis addresses the systematization of the process of capturing quantitative socio-community and institutional indicators through automated web data extraction, aiming to feed the CORE community resilience model for tsunami-prone coastal areas in Chile.
+
+An extraction, transformation, and loading (ETL) system was developed based on a modular architecture of interchangeable adapters, implemented in TypeScript with Node.js and MongoDB. The system allows adding new indicators and data sources without modifying the core logic, supporting multiple connection types: HTML web scraping, table extraction, and JSON API consumption.
+
+Five indicators were implemented across two modules: emergency drills (institutional dimension) and poverty rate together with community organizations (socio-community dimension). The system extracted a total of 29 drill records, poverty data at municipal, regional, and national levels, and 17 historical records of community organizations. The data was validated against manual extractions and the correct functioning of duplicate avoidance mechanisms was verified.
+
+Results are made available through a REST API and Metabase dashboards, allowing the research team to query indicators directly without manual processing.
+
+\textbf{Keywords:} community resilience, ETL, web scraping, CORE model, socio-community indicators, TypeScript.
+
+\newpage
+
+% =============================================================================
+% CUERPO DEL DOCUMENTO (numeracion arabiga)
+% =============================================================================
+\pagenumbering{arabic}
+
+% =============================================================================
+% CAPITULO 1: INTRODUCCION
+% =============================================================================
+\chapter{INTRODUCCI\'ON}
+\label{ch:introduccion}
+
+La ubicaci\'on geogr\'afica de Chile, situado principalmente entre las placas tect\'onicas de Nazca y Sudam\'erica, determina una alta actividad s\'ismica en el pa\'is. A esto se suma la presencia de fallas geol\'ogicas, actividad volc\'anica y efectos de geolog\'ia local, los cuales pueden provocar desde incendios y erupciones, hasta numerosos sismos y tsunamis.
+
+Uno de los desastres naturales m\'as recordados sigue siendo el ``27F'', en el cual un tsunami impact\'o las costas chilenas, destruyendo localidades y arrasando con poblados enteros. Incluso a d\'ia de hoy, no se puede calcular con exactitud la cantidad de fallecidos en el acontecimiento reci\'en descrito.
+
+Con lo anterior como antecedente, se debe agregar que no es posible predecir un desastre natural como un terremoto. A\'un as\'i, si bien no se puede saber cu\'ando ocurrir\'a, s\'i se puede tener una idea de c\'omo actuar\'a la poblaci\'on afectada y el c\'omo estos pueden sobreponerse a situaciones de adversidad de esta \'indole.
+
+% ---
+\section{Resiliencia comunitaria}
+\label{sec:resiliencia}
+
+Una de las maneras de afrontar esta problem\'atica es utilizando un modelo de resiliencia comunitaria. Si bien no existe una definici\'on espec\'ifica que logre englobar todo lo que este representa, se utiliza la siguiente definici\'on: ``La resiliencia comunitaria se refiere por lo tanto a la capacidad del sistema social y de las instituciones para hacer frente a las adversidades y para reorganizarse posteriormente de modo que mejoren sus funciones, su estructura y su identidad'' \parencite{maguire2008}.
+
+Las diversas investigaciones en el \'area de la resiliencia comunitaria han dado origen a los llamados ``Modelos de resiliencia comunitaria''. Estos modelos var\'ian seg\'un el \'area geogr\'afica, el tipo de comunidad, el comportamiento de las poblaciones y el enfoque que se quiera dar a la investigaci\'on.
+
+Cada modelo de resiliencia comunitaria se basa en el c\'alculo de distintas dimensiones, y a su vez, en cada dimensi\'on se encuentra una diversa variedad de indicadores. Estos indicadores permiten medir los cambios de la resiliencia comunitaria y var\'ian seg\'un el modelo que se est\'e aplicando.
+
+Por lo tanto, algunos estudios afirman que el uso de un modelo de resiliencia comunitaria puede mejorar la preparaci\'on, respuesta y recuperaci\'on ante desastres a nivel comunitario en un corto plazo, y entregar una mejor adaptaci\'on a largo plazo \parencite{cutter2014}. Si bien existen muchos modelos que atienden a determinadas poblaciones espec\'ificas, el modelo que se utiliza en este proyecto es el modelo CORE.
+
+% ---
+\section{Modelo CORE}
+\label{sec:modelo-core}
+
+El modelo CORE es un modelo de resiliencia comunitaria que est\'a centrado en las costas chilenas, utiliza dimensiones f\'isicas, ambientales y sociales donde se encuentran veinti\'un indicadores.
+
+Su iniciativa nace, tal como indica \textcite{villagra2017}, debido a la informaci\'on sobre los indicadores que permiten a las ciudades enfrentar y adaptarse mejor a los impactos de los tsunamis, siendo esta informaci\'on especialmente escasa para los pa\'ises en desarrollo como Chile.
+
+Este modelo permite evaluar el riesgo que presentan las \'areas costeras susceptibles de ser afectadas por tsunamis, y con base en ello prevenir accidentes y desastres, adem\'as de mitigar las posibles consecuencias negativas con el fin de que la poblaci\'on se enfrente de mejor manera a dichos eventos.
+
+Dado que el modelo CORE requiere la obtenci\'on y procesamiento de m\'ultiples indicadores, resulta necesario contar con herramientas que automaticen este proceso. A continuaci\'on se describe el proyecto desarrollado con este fin.
+
+% ---
+\section{Descripci\'on del proyecto}
+\label{sec:descripcion-proyecto}
+
+Como se mencion\'o anteriormente, para el c\'alculo de la resiliencia comunitaria es necesario obtener la informaci\'on de distintas dimensiones, las cuales a su vez requieren de diversos indicadores. Cada uno de estos indicadores posee un gran volumen de datos que debe ser descargado, transformado y calculado.
+
+Hasta ahora, cuando se desea calcular la resiliencia comunitaria, los investigadores consumen gran parte de su tiempo en buscar manualmente dentro de diversas fuentes de internet la ubicaci\'on de esta informaci\'on; ya sea en p\'aginas web que entreguen bases de datos ya establecidas, o en la b\'usqueda de art\'iculos que tengan informaci\'on posiblemente relevante.
+
+% ---
+\subsection{Estado del arte}
+\label{sec:estado-arte}
+
+Actualmente no existe una soluci\'on real a esta problem\'atica. Todas las investigaciones de las que se tiene registro realizan el c\'alculo de la resiliencia comunitaria con una extracci\'on manual de la informaci\'on para luego ser ingresadas y analizadas con diversos programas estad\'isticos como SPSS y R.
+
+En la investigaci\'on realizada por \textcite{cutter2014}, el cual utiliza el modelo BRIC que est\'a centrado en la geograf\'ia de las construcciones, se extrajeron los datos manualmente de diversas fuentes de bases de datos, la mayor\'ia abiertas y gratuitas.
+
+En la investigaci\'on realizada por \textcite{kamara2019}, se extrajo la informaci\'on para el modelo de resiliencia de manera manual e iterativa.
+
+Por \'ultimo, en la investigaci\'on realizada por \textcite{villagra2017}, el cual utiliza el modelo CORE para calcular la resiliencia en las comunidades de zonas costeras; se extrajo la informaci\'on descarg\'andola en bases de datos municipales, tambi\'en descargando bases de datos de la Oficina Nacional de Emergencia del Ministerio del Interior (ONEMI) y en la Corporaci\'on Nacional Forestal (CONAF), entre otros.
+
+% ---
+\subsection{Descripci\'on de la innovaci\'on}
+\label{sec:innovacion}
+
+Se desarroll\'o un sistema que permite la extracci\'on, transformaci\'on y carga de los datos. Este proceso tambi\'en es conocido como ETL (\textit{Extract, Transform and Load}) en el caso de \textit{Business Intelligence} (BI).
+
+Para esto, se debe comenzar con la premisa de que la informaci\'on requerida se encuentra dispersa en internet de diferentes formas. Algunas p\'aginas web permiten la extracci\'on de esa informaci\'on por medio de APIs, otras por medio descarga de archivos en formato CSV, XLSX, entre otros; adem\'as algunas p\'aginas no brindan facilidades para la obtenci\'on de su informaci\'on, por lo que es necesario utilizar t\'ecnicas de \textit{web scraping} para obtenerla.
+
+Una vez que la informaci\'on es extra\'ida, esta debe ser transformada. Para este proceso se debe recordar que cada c\'alculo var\'ia seg\'un el indicador. Por ejemplo en la dimensi\'on social del modelo CORE presentada por \textcite{villagra2017}, se puede encontrar un indicador llamado ``Tsunami Drills'' (Simulacros ante tsunamis) y se calcula con la suma de todos los simulacros realizados entre los a\~nos 2010 y 2015. Por lo tanto, los datos extra\'idos ser\'ian los simulacros entre estos a\~nos, pero la transformaci\'on ser\'ia la suma total de todos estos simulacros.
+
+Finalmente, una vez que la informaci\'on es transformada, esta debe ser almacenada en una base de datos para luego ser cargada en alguna plataforma. De tal manera que el equipo de investigaci\'on pueda acceder a esta f\'acilmente. La plataforma permite visualizar la informaci\'on por medio de distintos gr\'aficos y en funci\'on del tiempo, junto con informaci\'on extra como la web de donde fue obtenida y la fecha en la que fue extra\'ida.
+
+% ---
+\subsection{Impacto del proyecto}
+\label{sec:impacto}
+
+La herramienta desarrollada genera un gran aporte a la investigaci\'on de resiliencia comunitaria, especialmente a la investigaci\'on del modelo CORE, debido al gran ahorro de tiempo que gana el equipo de investigaci\'on, permiti\'endoles un conocimiento completo y oportuno de la resiliencia comunitaria en las regiones de Chile involucradas en el proyecto FONDECYT. Esto significa un apoyo directo a la toma de decisiones en cuanto a planificaci\'on de las ciudades, integrando la resiliencia como un criterio de an\'alisis de las pol\'iticas p\'ublicas.
+
+% ---
+\section{Objetivos}
+\label{sec:objetivos}
+
+\subsection{Objetivo general}
+\label{sec:objetivo-general}
+
+Sistematizar el proceso de captura de indicadores cuantitativos sociocomunitarios e institucionales por medio de la extracci\'on de datos de la web para alimentar un modelo de resiliencia comunitaria.
+
+\subsection{Objetivos espec\'ificos}
+\label{sec:objetivos-especificos}
+
+\begin{enumerate}
+  \item Capturar variables para el c\'alculo de indicadores desde diversas fuentes de informaci\'on para la dimensi\'on institucional v\'alidas para el modelo de resiliencia.
+  \item Capturar variables para el c\'alculo de indicadores desde diversas fuentes de informaci\'on para la dimensi\'on sociocomunitaria v\'alidas para el modelo de resiliencia.
+  \item Disponibilizar los indicadores institucionales y sociocomunitarios por medio de una API y anal\'iticas.
+\end{enumerate}
+
+
+% =============================================================================
+% CAPITULO 2: MARCO TEORICO
+% =============================================================================
+\chapter{MARCO TE\'ORICO}
+\label{ch:marco-teorico}
+
+\section{Objetivo y pregunta de revisi\'on}
+\label{sec:objetivo-revision}
+
+Para el desarrollo de esta aplicaci\'on se tiene la necesidad de conocer c\'omo los distintos modelos de resiliencia comunitaria extraen los datos para su c\'alculo, y a su vez, poder conocer qu\'e tipo de c\'alculos realizan para obtenerlos. Por esta raz\'on, se decidi\'o dar respuesta a la siguiente pregunta de investigaci\'on:
+
+\textbf{?`C\'omo se ha conseguido capturar los datos en los distintos modelos de resiliencia comunitaria en las dimensiones sociocomunitarias e institucionales?}
+
+\section{M\'etodo de revisi\'on}
+\label{sec:metodo-revision}
+
+Para el desarrollo de esta revisi\'on sistem\'atica, lo primero que se hizo fue utilizar la pregunta de investigaci\'on para poder estructurar una cadena de b\'usqueda a aplicar. Posteriormente se seleccionan los art\'iculos que contengan los criterios de selecci\'on dentro de los \textit{abstract}, para luego finalmente analizar y resumir los resultados obtenidos.
+
+\section{Fuentes y estrategias de b\'usquedas}
+\label{sec:fuentes-busqueda}
+
+La fuente para realizar la b\'usqueda es la conocida \textit{Web of Science}.
+
+Dado que la mayor\'ia de art\'iculos publicados son en ingl\'es, se decidi\'o hacer el \textit{string} de b\'usqueda en ese idioma.
+
+Un punto importante en la b\'usqueda es el c\'omo las dem\'as investigaciones capturan o procesan los datos. Por esto se opt\'o por \textit{keywords} como \textit{data processing} y \textit{data sources}.
+
+En ingl\'es, el t\'ermino de ``Resiliencia comunitaria'' se encuentra en dos t\'erminos distintos. Estos son \textit{Community Resilience} que puede verse como una traducci\'on m\'as literal, y tambi\'en se encuentra \textit{Disaster Resilience}, que en el contexto de resiliencia comunitaria, puede ser interpretado como la resiliencia en caso de desastres.
+
+\section{Cadena de b\'usquedas}
+\label{sec:cadena-busqueda}
+
+Con lo anterior, la cadena de b\'usqueda qued\'o definida de la siguiente manera:
+
+\textbf{(``community resilience'' OR ``disaster resilience'') AND (``data processing'' OR ``data sources'')}
+
+\section{Criterios de selecci\'on}
+\label{sec:criterios-seleccion}
+
+Una vez obtenidos los resultados de b\'usqueda, se procedi\'o a seleccionar solo aquellos art\'iculos que presenten dentro de su investigaci\'on alguna referencia en las dimensiones ya se\~naladas anteriormente:
+
+\begin{itemize}
+  \item Dimensi\'on sociocomunitaria.
+  \item Dimensi\'on institucional.
+\end{itemize}
+
+\section{Extracci\'on de la informaci\'on}
+\label{sec:extraccion-info}
+
+Se defini\'o una pauta de extracci\'on de informaci\'on con la finalidad de poder estructurar mejor la informaci\'on encontrada. Esta pauta consta de lo siguiente:
+
+\begin{itemize}
+  \item Indicadores de dimensi\'on sociocomunitaria.
+  \item Indicadores de dimensi\'on institucional.
+  \item M\'etodo de extracci\'on de dimensiones.
+  \item Tecnolog\'ia utilizada.
+  \item M\'etodo de c\'alculo de la dimensi\'on.
+\end{itemize}
+
+\section{Estudios incluidos y excluidos}
+\label{sec:estudios}
+
+Primeramente, al realizar la b\'usqueda con el \textit{string} ya definido, se obtuvo un total de 47 art\'iculos, para luego comenzar a discriminar seg\'un el contenido del \textit{abstract}, lo cual da un total de diez art\'iculos para poder resumir y extraer la informaci\'on pertinente.
+
+Finalmente, de los diez art\'iculos seleccionados, solo siete resultaron ser \'utiles para la investigaci\'on.
+
+Si bien la cantidad de art\'iculos a analizar no es alta, se puede apreciar en la Figura~\ref{fig:articulos-por-anio} el c\'omo las investigaciones de resiliencia comunitaria son contempor\'aneas y han ido en aumento con los a\~nos.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{img_03.png}
+  \caption{N\'umero de art\'iculos por a\~no}
+  \label{fig:articulos-por-anio}
+\end{figure}
+
+\section{Informaci\'on extra\'ida general}
+\label{sec:info-extraida}
+
+Toda la informaci\'on que se encontr\'o relevante en cada art\'iculo seleccionado fue extra\'ida y analizada para posteriormente ser incorporada como ayuda para la elaboraci\'on del proyecto de tesis (ver Tabla~\ref{tab:resumen-articulos}).
+
+\begin{longtable}{|p{2.5cm}|p{2.5cm}|p{2.5cm}|p{2.5cm}|p{2.5cm}|}
+\caption{Resumen de la informaci\'on extra\'ida por art\'iculo} \label{tab:resumen-articulos} \\
+\hline
+\textbf{Autor(es)} & \textbf{Indicadores SC} & \textbf{Indicadores Inst.} & \textbf{M\'etodo extracci\'on} & \textbf{Tecnolog\'ia} \\
+\hline
+\endfirsthead
+\hline
+\textbf{Autor(es)} & \textbf{Indicadores SC} & \textbf{Indicadores Inst.} & \textbf{M\'etodo extracci\'on} & \textbf{Tecnolog\'ia} \\
+\hline
+\endhead
+\hline
+\endfoot
+
+\textcite{cutter2014} & Social Capital, Population Poverty & Emergency Services & Descarga manual de bases de datos p\'ublicas & SPSS \\
+\hline
+\textcite{villagra2017} & Civic Organizations, Population Poverty & Tsunami Drills & Descarga manual de bases de datos municipales y gubernamentales & R \\
+\hline
+\textcite{kamara2019} & Social networks, Community participation & Institutional support & Encuestas y entrevistas & SPSS \\
+\hline
+\textcite{heinzlef2020} & Social vulnerability & Emergency response & Bases de datos geoespaciales & GIS \\
+\hline
+\textcite{rumson2020} & Socioeconomic factors & Governance & Bases de datos ambientales & GIS, R \\
+\hline
+\textcite{moghadas2019} & Social capital & Institutional capacity & Encuestas & SPSS, AHP \\
+\hline
+\textcite{abrash2021} & Public health outcomes & Emergency preparedness & Revisi\'on sistem\'atica & -- \\
+\hline
+\textcite{muhamad2001} & Exposure elements & Disaster databases & Bases de datos locales & GIS \\
+\hline
+\textcite{wang2021} & Community engagement & Information dissemination & Twitter API & Python \\
+\hline
+\end{longtable}
+
+\section{Principales hallazgos y factores claves}
+\label{sec:hallazgos}
+
+Uno de los hallazgos que llaman la atenci\'on a simple vista es que si bien para este estudio se contempla la dimensi\'on ``sociocomunitaria'', en todas las investigaciones analizadas estas aparecen separadas como ``Dimensi\'on social'' y ``Dimensi\'on comunitaria''.
+
+Se realiz\'o un gr\'afico (ver Figura~\ref{fig:dimensiones-analizadas}) para apreciar de mejor manera la cantidad de dimensiones especificadas en cada investigaci\'on:
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{img_04.png}
+  \caption{Cantidad de veces que se analiz\'o cada dimensi\'on en las investigaciones}
+  \label{fig:dimensiones-analizadas}
+\end{figure}
+
+De esta forma, se puede ver c\'omo la dimensi\'on social es la m\'as analizada con cuatro coincidencias en los \textit{papers}, mientras que la menos analizada es la dimensi\'on institucional, con dos coincidencias.
+
+Tambi\'en se agreg\'o la diferencia en la cantidad de indicadores por cada dimensi\'on, como se aprecia en la Figura~\ref{fig:indicadores-por-dimension}:
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{img_05.png}
+  \caption{Cantidad de indicadores totales por dimensi\'on}
+  \label{fig:indicadores-por-dimension}
+\end{figure}
+
+En este caso se aprecia que las dimensiones social y f\'isica son las que agrupan m\'as indicadores en las investigaciones revisadas. Sin embargo, al calcular el promedio de indicadores por cada aparici\'on de dimensi\'on en los art\'iculos (ver Figura~\ref{fig:promedio-indicadores}), se observa que la dimensi\'on institucional, a pesar de ser la menos frecuente, presenta un promedio alto de indicadores cuando aparece.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{img_06.png}
+  \caption{Promedio de indicadores por aparici\'on de dimensi\'on en los art\'iculos}
+  \label{fig:promedio-indicadores}
+\end{figure}
+
+
+% =============================================================================
+% CAPITULO 3: VIABILIDAD DE INDICADORES
+% =============================================================================
+\chapter{VIABILIDAD DE INDICADORES}
+\label{ch:viabilidad}
+
+En este cap\'itulo se analiza la viabilidad de extracci\'on autom\'atica de cada indicador del modelo CORE en las dimensiones sociocomunitaria e institucional. Para cada indicador se identifican las fuentes de datos disponibles, el formato en que se encuentran, la segmentaci\'on geogr\'afica y las tareas necesarias para su incorporaci\'on al sistema.
+
+Dentro del modelo CORE se especifican los indicadores de la dimensi\'on social que ser\'an objeto de an\'alisis (ver Anexo~\ref{app:indicadores-core}). La finalidad de esta b\'usqueda es analizar cu\'ales indicadores son viables para realizar la extracci\'on autom\'atica de sus datos.
+
+\section{Population Poverty (PP)}
+\label{sec:pp}
+
+PP hace referencia a la tasa de pobreza de la poblaci\'on. El indicador puede expresarse como porcentaje directo o calcularse a partir de datos en bruto.
+
+Los resultados de la investigaci\'on se pueden apreciar en la Tabla~\ref{tab:pp}:
+
+\begin{table}[H]
+\centering
+\caption{Resumen de la investigaci\'on sobre Population Poverty}
+\label{tab:pp}
+\begin{tabular}{|p{3cm}|p{2.5cm}|p{2cm}|p{2cm}|p{3cm}|}
+\hline
+\textbf{Fuente} & \textbf{Tipo dato} & \textbf{Segm.} & \textbf{Formato} & \textbf{Notas} \\
+\hline
+BCN \parencite{bcn-a} & Porcentaje y datos en bruto & Comunal & Tabla HTML & Requiere \textit{web scraping} \\
+\hline
+Statista \parencite{statista} & Porcentaje & Nacional & Tabla & Requiere pago \\
+\hline
+DataSocial \parencite{datasocial} & Datos en bruto & Regional & .xls & Descarga directa \\
+\hline
+\end{tabular}
+\end{table}
+
+En este caso se observa que la informaci\'on de la BCN requiere t\'ecnicas de \textit{web scraping} para obtener los datos de las tablas HTML, mientras que la fuente de Statista fue descartada por requerir una suscripci\'on pagada. La fuente del Ministerio de Desarrollo Social ofrece la descarga directa en formato XLS.
+
+\section{Social Capital -- Civic Participation (SCCP)}
+\label{sec:sccp}
+
+SCCP hace referencia al porcentaje de la poblaci\'on que participa activamente en procesos c\'ivicos (votaciones).
+
+\begin{table}[H]
+\centering
+\caption{Resumen de la investigaci\'on sobre Civic Participation}
+\label{tab:sccp}
+\begin{tabular}{|p{3cm}|p{2.5cm}|p{2cm}|p{2cm}|p{3cm}|}
+\hline
+\textbf{Fuente} & \textbf{Tipo dato} & \textbf{Segm.} & \textbf{Formato} & \textbf{Notas} \\
+\hline
+SERVEL \parencite{servel} & Datos en bruto & Comunal & .csv & \'Unica fuente identificada \\
+\hline
+\end{tabular}
+\end{table}
+
+La informaci\'on es compleja de encontrar debido a que solo se identific\'o una fuente. El Servicio Electoral de Chile (SERVEL) provee datos en formato CSV que pueden ser descargados directamente.
+
+\section{Social Capital -- Civic Organizations (SCCO)}
+\label{sec:scco}
+
+SCCO hace referencia a la raz\'on de organizaciones civiles por cada 1.000 habitantes por territorio.
+
+\begin{table}[H]
+\centering
+\caption{Resumen de la investigaci\'on sobre Civic Organizations}
+\label{tab:scco}
+\begin{tabular}{|p{3cm}|p{2.5cm}|p{2cm}|p{2cm}|p{3cm}|}
+\hline
+\textbf{Fuente} & \textbf{Tipo dato} & \textbf{Segm.} & \textbf{Formato} & \textbf{Notas} \\
+\hline
+BCN \parencite{bcn-b} & Datos en bruto & Comunal & JSON, XLS, CSV, Tabla & M\'ultiples formatos disponibles \\
+\hline
+\end{tabular}
+\end{table}
+
+La BCN provee datos de organizaciones comunitarias en m\'ultiples formatos, incluyendo una API JSON que facilita la extracci\'on autom\'atica. Cada municipio posee sus propias fuentes de datos, pero la BCN centraliza esta informaci\'on a nivel comunal.
+
+\section{Social Capital -- Emergency Organizations (SCEO)}
+\label{sec:sceo}
+
+SCEO hace referencia a la raz\'on de voluntarios en organizaciones de emergencia por cada 1.000 habitantes.
+
+No se encontr\'o una fuente de datos p\'ublica centralizada para este indicador. La informaci\'on sobre voluntarios en organizaciones de emergencia depende de cada municipalidad y no se encuentra disponible de manera uniforme. Por esta raz\'on, este indicador no pudo ser implementado en el sistema.
+
+\section{Tsunami Drills}
+\label{sec:td}
+
+Tsunami Drills hace referencia a la cantidad de simulacros de tsunami realizados en un per\'iodo de tiempo definido.
+
+\begin{table}[H]
+\centering
+\caption{Resumen de la investigaci\'on sobre Tsunami Drills}
+\label{tab:td}
+\begin{tabular}{|p{3cm}|p{2.5cm}|p{2cm}|p{2cm}|p{3cm}|}
+\hline
+\textbf{Fuente} & \textbf{Tipo dato} & \textbf{Segm.} & \textbf{Formato} & \textbf{Notas} \\
+\hline
+ONEMI \parencite{onemi} & Datos en bruto & Nacional & Tabla HTML & Requiere \textit{web scraping} \\
+\hline
+MINEDUC \parencite{mineduc2022} & Datos en bruto & Nacional & Art\'iculo HTML & Requiere \textit{web scraping} \\
+\hline
+\end{tabular}
+\end{table}
+
+En este caso se observa que ninguno de los sitios que contienen informaci\'on sobre los simulacros de tsunami presenta los datos en un formato listo para ser trabajado. La \'unica forma de obtener esta informaci\'on es por medio de t\'ecnicas de \textit{web scraping}.
+
+\section{Special Needs Population (SNP)}
+\label{sec:snp}
+
+SNP hace referencia al porcentaje de la poblaci\'on que padece alg\'un tipo de discapacidad.
+
+\begin{table}[H]
+\centering
+\caption{Resumen de la investigaci\'on sobre Special Needs Population}
+\label{tab:snp}
+\begin{tabular}{|p{3cm}|p{2.5cm}|p{2cm}|p{2cm}|p{3cm}|}
+\hline
+\textbf{Fuente} & \textbf{Tipo dato} & \textbf{Segm.} & \textbf{Formato} & \textbf{Notas} \\
+\hline
+Obs. Social \parencite{observatoriosocial} & Porcentaje y datos en bruto & Comunal & .xls, .sav, .dta & Descarga directa \\
+\hline
+INE \parencite{ine-b} & Datos en bruto & Regional & .sav, .dat & Descarga directa \\
+\hline
+BCN \parencite{bcn-c} & Datos en bruto & Comunal & Tabla HTML & Requiere \textit{scraping} m\'inimo \\
+\hline
+\end{tabular}
+\end{table}
+
+La mayor\'ia de los datos se encuentra en un formato listo para ser utilizado y solo en un sitio web es necesario realizar t\'ecnicas de \textit{web scraping}.
+
+\section{Conclusiones del an\'alisis de viabilidad}
+\label{sec:conclusiones-viabilidad}
+
+Las conclusiones obtenidas en este apartado investigativo son m\'ultiples:
+
+En primer lugar se observa que muchos de estos datos requeridos se encuentran en un formato de f\'acil acceso y listos para ser descargados. En estos casos se puede dise\~nar el software para que tenga un fuerte \'enfasis en la descarga de informaci\'on omitiendo el \textit{scraping} y pasando directamente a ser transformada.
+
+En segundo lugar, la mayor\'ia de los datos se presenta en formato de tabla, por lo que el software podr\'ia implementar un mecanismo de detecci\'on autom\'atica de tablas.
+
+En tercer lugar, los datos que dependen de cada municipalidad requieren una b\'usqueda espec\'ifica por sitio web, lo que implica m\'odulos de extracci\'on personalizados.
+
+En cuarto lugar, los formatos no est\'andar requieren m\'odulos espec\'ificos de \textit{scraping} adaptados a la estructura HTML de cada fuente.
+
+
+% =============================================================================
+% CAPITULO 4: HERRAMIENTAS DE DESARROLLO
+% =============================================================================
+\chapter{HERRAMIENTAS DE DESARROLLO}
+\label{ch:herramientas}
+
+Para la elecci\'on de las herramientas de desarrollo a utilizar se consideraron diversos par\'ametros, entre ellos:
+
+\begin{itemize}
+  \item Herramientas que cuadren con las necesidades que busca resolver el equipo de investigadores.
+  \item La popularidad y uso de las tecnolog\'ias. De esta manera se facilita la b\'usqueda de desarrolladores para mantener y escalar el software a largo plazo.
+  \item Tecnolog\'ias con las cuales ya se posee cierta experiencia.
+\end{itemize}
+
+\section{Lenguaje de programaci\'on}
+\label{sec:lenguaje}
+
+El lenguaje de programaci\'on elegido para el desarrollo del software es TypeScript. Un lenguaje que permite el desarrollo tanto en el \textit{frontend} como en el \textit{backend}.
+
+TypeScript es un superconjunto de funcionalidades que extienden la sintaxis de Javascript, dot\'andolo de tipado est\'atico y de objetos basados en clases \parencite{typescript}. En resumen, permite aumentar la probabilidad de detectar errores en el c\'odigo, como tambi\'en hacer este m\'as legible.
+
+La elecci\'on de este lenguaje es debido principalmente a la gran popularidad que posee Javascript, siendo en estos momentos uno de los lenguajes m\'as utilizados a nivel mundial, con un 68,62\% de preferencia seg\'un una encuesta realizada en el a\~no 2021 \parencite{stackoverflow2021}.
+
+\section{Base de datos}
+\label{sec:base-datos}
+
+Se decidi\'o utilizar una base de datos no relacional. Espec\'ificamente la base de datos MongoDB.
+
+La elecci\'on de esta base de datos es debido a la informaci\'on que se desea almacenar. Los datos deseados no poseen un esquema previamente definido, ya que cada indicador del modelo CORE posee una estructura distinta. Por lo que utilizar una base de datos relacional (como MySQL o PostgreSQL) aumentar\'ia la complejidad en caso de querer realizar cambios en una etapa avanzada del proyecto.
+
+Adicionalmente, MongoDB permite almacenar documentos con estructuras heterog\'eneas dentro de una misma colecci\'on, lo cual facilita la persistencia de datos provenientes de fuentes diversas sin necesidad de migraciones complejas.
+
+\section{Entorno de ejecuci\'on}
+\label{sec:entorno}
+
+El entorno de ejecuci\'on predilecto actualmente para el desarrollo de programas con Javascript/TypeScript es Node.js.
+
+Node.js posee una madurez de m\'as de trece a\~nos. Est\'a dise\~nado para crear aplicaciones escalables y orientado al uso de eventos as\'incronos.
+
+Su simplicidad permite desarrollar aplicaciones en poco tiempo, posee un sistema de paquetes (npm) en constante crecimiento que permite a los desarrolladores implementar m\'ultiples herramientas y m\'odulos. Adem\'as, al poseer un n\'ucleo liviano, da una ventaja en el tama\~no final del software, ya que se utilizan solo las funcionalidades que se deseen implementar.
+
+A continuaci\'on se muestra una lista de las librer\'ias principales y secundarias m\'as relevantes que se utilizan, junto con una peque\~na descripci\'on.
+
+\subsection{Librer\'ias principales}
+\label{sec:librerias-principales}
+
+\begin{itemize}
+  \item \textbf{cheerio}: Permite analizar la estructura de las p\'aginas web permitiendo la extracci\'on y manipulaci\'on de los datos. Se utiliza para el \textit{parsing} de HTML en los m\'odulos que requieren \textit{web scraping}.
+  \item \textbf{express}: Es actualmente el \textit{framework} m\'as popular de Node.js. Permite el manejo de peticiones HTTP y desarrollo de APIs.
+  \item \textbf{mongoose}: Es un ODM que permite escribir consultas y crear esquemas para la base de datos MongoDB. Se utiliza para definir los modelos de datos de cada indicador y gestionar el almacenamiento.
+  \item \textbf{request-promise}: Permite hacer llamadas HTTP. Se utiliza para obtener el HTML de una p\'agina web o realizar peticiones a APIs externas.
+  \item \textbf{puppeteer}: Permite la automatizaci\'on de un navegador web. Se utiliza para extraer informaci\'on de p\'aginas que renderizan su contenido mediante Javascript, donde \textit{cheerio} no es suficiente.
+  \item \textbf{zod}: Librer\'ia de validaci\'on y declaraci\'on de esquemas. Se utiliza para validar la configuraci\'on de los indicadores en tiempo de construcci\'on, asegurando que cada indicador posea los campos requeridos antes de ser registrado en el sistema.
+  \item \textbf{pino}: Librer\'ia de \textit{logging} de alto rendimiento. Se utiliza como \textit{logger} centralizado del sistema, generando registros tanto en consola (durante el desarrollo) como en archivos de log para auditor\'ia.
+  \item \textbf{node-cron}: Permite la programaci\'on de tareas peri\'odicas mediante expresiones cron. Se utiliza para automatizar la ejecuci\'on de los procesos de extracci\'on seg\'un la frecuencia definida para cada indicador.
+\end{itemize}
+
+\subsection{Librer\'ias secundarias}
+\label{sec:librerias-secundarias}
+
+\begin{itemize}
+  \item \textbf{eslint}: Es una herramienta que permite ayudar en la detecci\'on de errores de c\'odigo y mantener este m\'as legible.
+  \item \textbf{prettier}: Es una herramienta de formateo de c\'odigo que asegura un estilo consistente en todo el proyecto.
+  \item \textbf{nodemon}: Es una herramienta que permite actualizar autom\'aticamente la ejecuci\'on de la aplicaci\'on en cuanto detecta cambios en el desarrollo.
+  \item \textbf{typescript}: Permite escribir c\'odigo de TypeScript y transpilarlo a c\'odigo de Javascript.
+  \item \textbf{jest}: \textit{Framework} que permite realizar pruebas unitarias y de integraci\'on.
+\end{itemize}
+
+\section{Contenedores}
+\label{sec:contenedores}
+
+Para facilitar el despliegue y la reproducibilidad del entorno de desarrollo, se utiliza Docker junto con Docker Compose.
+
+Docker permite crear contenedores aislados que encapsulan la aplicaci\'on y sus dependencias, mientras que Docker Compose permite definir y orquestar m\'ultiples servicios de forma declarativa. En el caso de este proyecto, se definen tres servicios: la base de datos MongoDB, una interfaz de administraci\'on (Mongo Express) y una herramienta de visualizaci\'on de datos (Metabase).
+
+Esta decisi\'on permite que cualquier integrante del equipo de investigaci\'on pueda levantar el entorno completo con un solo comando, sin necesidad de instalar ni configurar cada servicio de forma manual.
+
+\section{Visualizaci\'on de datos}
+\label{sec:visualizacion}
+
+Para la visualizaci\'on de los datos almacenados se utiliza Metabase, una herramienta de \textit{Business Intelligence} de c\'odigo abierto que permite crear \textit{dashboards} y consultas sobre bases de datos sin necesidad de escribir c\'odigo.
+
+Metabase se conecta directamente a MongoDB y permite a los investigadores visualizar los indicadores extra\'idos por medio de gr\'aficos, tablas y filtros. Los \textit{dashboards} se actualizan autom\'aticamente cada vez que se consultan, reflejando los datos m\'as recientes almacenados en la base de datos.
+
+La elecci\'on de Metabase por sobre un \textit{frontend} personalizado (como Angular o React) se debe a que el objetivo principal del proyecto es la extracci\'on y el procesamiento de datos, no la construcci\'on de una interfaz gr\'afica. Metabase permite cumplir con el objetivo de disponibilizar los datos mediante anal\'iticas sin requerir desarrollo adicional.
+
+\section{Sistema de control de versiones}
+\label{sec:control-versiones}
+
+Un sistema de control de versiones permite rastrear y gestionar los cambios que son realizados dentro de un c\'odigo de software. Estas herramientas ayudan a los equipos de desarrollo a gestionar los cambios en el c\'odigo fuente \parencite{atlassian}.
+
+En este caso, se opt\'o por utilizar Git. Un sistema de control de versiones creado por Linus Torvalds, el cual est\'a centrado en ser eficiente, confiable y mantenible. Actualmente es utilizado por m\'as de un 93\% de los desarrolladores \parencite{stackoverflow2021}, convirti\'endose en una de las tecnolog\'ias indispensables para el desarrollo de software.
+
+
+% =============================================================================
+% CAPITULO 5: DISENO DE PROTOTIPO
+% =============================================================================
+\chapter{DISE\~NO DE PROTOTIPO}
+\label{ch:prototipo}
+
+El tema central que se busca en el desarrollo de la aplicaci\'on es realizar de manera correcta la extracci\'on de los indicadores previamente descritos. Para esto, antes de comenzar con la arquitectura final del software, se decidi\'o crear un prototipo encargado de extraer los datos de alguna p\'agina en particular que entregue informaci\'on de alguna dimensi\'on.
+
+El prototipo inicial permiti\'o identificar los desaf\'ios principales del proceso de extracci\'on: cada p\'agina web posee su propia estructura HTML, los formatos de datos var\'ian entre fuentes (tablas HTML, archivos CSV, APIs JSON), y la transformaci\'on de los datos debe adaptarse a cada caso. Estas observaciones fueron fundamentales para dise\~nar la arquitectura modular que se describe en el siguiente cap\'itulo.
+
+Los aprendizajes obtenidos del prototipo se pueden resumir en los siguientes puntos:
+
+En primer lugar, la dificultad en el proceso de ETL radica principalmente en la extracci\'on de la informaci\'on. Cada p\'agina web posee su formato HTML definido, por lo que el c\'odigo escrito para extraer esta informaci\'on debe adaptarse a cada p\'agina web y en ciertos casos a cada dato que se quiere extraer.
+
+En segundo lugar, los datos extra\'idos se encuentran en un formato gen\'erico que impide su correcto almacenamiento en la base de datos. Por ende deben ser transformados seg\'un el tipo de dato esperado (num\'erico, fecha, texto).
+
+En tercer lugar, el almacenamiento debe contemplar la evitaci\'on de duplicados, ya que el sistema ejecutar\'a la extracci\'on de forma peri\'odica y no debe insertar registros que ya existen.
+
+Estos aprendizajes motivaron la decisi\'on de dise\~nar una arquitectura basada en el patr\'on Adapter, donde cada etapa del proceso (extracci\'on, transformaci\'on, almacenamiento) es intercambiable seg\'un la fuente de datos.
+
+A continuaci\'on se presentan los artefactos generados durante el desarrollo del prototipo inicial, los cuales sirvieron como base para las decisiones arquitect\'onicas posteriores.
+
+Se realiz\'o una b\'usqueda manual en internet para encontrar p\'aginas web que dispusieran de informaci\'on pertinente a los indicadores. Si bien se encontraron diversas fuentes, la mayor\'ia ya se encontraba en formatos descargables. En la Figura~\ref{fig:proto-pobreza} y Figura~\ref{fig:proto-servicios} se muestran ejemplos de la informaci\'on sociocomunitaria encontrada.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{img_08.png}
+  \caption{Informaci\'on sociocomunitaria sobre tasa de pobreza en el a\~no 2017}
+  \label{fig:proto-pobreza}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{img_09.png}
+  \caption{Informaci\'on sociocomunitaria sobre poblaci\'on carente de servicios b\'asicos y hogares hacinados en el a\~no 2018}
+  \label{fig:proto-servicios}
+\end{figure}
+
+Para el modelo de la base de datos, se comenz\'o con la idea de almacenar la informaci\'on de la p\'agina web como tal, para luego ir desglosando la informaci\'on en modelos m\'as espec\'ificos. En la Figura~\ref{fig:proto-interface-web} se presenta la \textit{interface} inicial.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{img_10.png}
+  \caption{\textit{Interface} para la informaci\'on de la p\'agina web}
+  \label{fig:proto-interface-web}
+\end{figure}
+
+Una vez obtenida la informaci\'on base, se continu\'o con los modelos para cada indicador (ver Figuras~\ref{fig:proto-interface-pobreza} y~\ref{fig:proto-interface-servicios}).
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{img_11.png}
+  \caption{\textit{Interface} para tasa de pobreza}
+  \label{fig:proto-interface-pobreza}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.6\textwidth]{img_12.png}
+  \caption{\textit{Interface} para poblaci\'on carente de servicios b\'asicos y hogares hacinados}
+  \label{fig:proto-interface-servicios}
+\end{figure}
+
+Para la extracci\'on, se crearon tres clases (ver Figura~\ref{fig:proto-clases}) encargadas de las distintas etapas del proceso.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.5\textwidth]{img_13.png}
+  \caption{Lista de clases utilizadas para la extracci\'on de la informaci\'on}
+  \label{fig:proto-clases}
+\end{figure}
+
+
+% =============================================================================
+% CAPITULO 6: DESARROLLO E IMPLEMENTACION
+% =============================================================================
+\chapter{DESARROLLO E IMPLEMENTACI\'ON}
+\label{ch:desarrollo}
+
+En este cap\'itulo se describe la arquitectura del software desarrollado, los patrones de dise\~no utilizados y la implementaci\'on de los m\'odulos de extracci\'on de datos. La arquitectura fue dise\~nada con el objetivo de que agregar un nuevo indicador al sistema requiera el m\'inimo esfuerzo posible, manteniendo la separaci\'on de responsabilidades y la reutilizaci\'on de componentes.
+
+\section{Arquitectura general}
+\label{sec:arquitectura}
+
+El sistema se estructura en tres capas principales: el \textit{core}, los m\'odulos y la API. El \textit{core} contiene las clases base, los \textit{adapters} abstractos y la l\'ogica de orquestaci\'on del flujo ETL. Los m\'odulos son implementaciones concretas para cada fuente de datos. La API expone los indicadores al exterior mediante \textit{endpoints} HTTP.
+
+\begin{figure}[H]
+  \centering
+  % TODO: Insertar diagrama de arquitectura general del sistema
+  % \includegraphics[width=0.9\textwidth]{img/arquitectura-general.png}
+  \caption{Diagrama de arquitectura general del sistema mostrando las tres capas: core, m\'odulos y API}
+  \label{fig:arquitectura-general}
+\end{figure}
+
+La comunicaci\'on entre las capas sigue un flujo unidireccional: la API recibe la solicitud, el \textit{ScraperFactory} obtiene el m\'odulo correspondiente, y el m\'odulo ejecuta el flujo ETL utilizando los \textit{adapters} configurados para ese indicador.
+
+\section{Patrones de dise\~no}
+\label{sec:patrones}
+
+Se utilizaron diversos patrones de dise\~no para lograr una arquitectura extensible y con bajo acoplamiento. A continuaci\'on se describen los m\'as relevantes.
+
+\subsection{Patr\'on Builder}
+\label{sec:patron-builder}
+
+El \textit{IndicatorBuilder} permite configurar cada indicador de forma declarativa, encadenando los m\'etodos de configuraci\'on y validando los datos con la librer\'ia Zod al momento de construir el indicador. Esto asegura que un indicador no pueda ser registrado en el sistema si le falta informaci\'on obligatoria como el nombre o la URL de la fuente.
+
+\begin{figure}[H]
+  \centering
+  % TODO: Insertar ejemplo de codigo del IndicatorBuilder
+  % \includegraphics[width=0.9\textwidth]{img/indicator-builder-ejemplo.png}
+  \caption{Ejemplo de configuraci\'on de un indicador mediante el \textit{IndicatorBuilder}}
+  \label{fig:indicator-builder}
+\end{figure}
+
+\subsection{Patr\'on Adapter}
+\label{sec:patron-adapter}
+
+Cada etapa del flujo ETL se define mediante un \textit{adapter} abstracto que establece la interfaz que deben implementar las clases concretas. Esto permite que un m\'odulo utilice un \textit{adapter} distinto para cada etapa sin modificar la l\'ogica central del sistema. Los \textit{adapters} definidos son:
+
+\begin{itemize}
+  \item \textbf{FetchAdapter}: Define c\'omo se obtienen los datos de la fuente (HTML, JSON, archivo).
+  \item \textbf{ParseAdapter}: Define c\'omo se extrae la informaci\'on estructurada de los datos crudos.
+  \item \textbf{MapperAdapter}: Define c\'omo se transforman los datos extra\'idos al formato que se almacena en la base de datos.
+  \item \textbf{HashAdapter}: Genera una clave \'unica por registro para evitar duplicados.
+  \item \textbf{StorageAdapter}: Controla el almacenamiento de los datos procesados.
+  \item \textbf{CalculatorAdapter} (opcional): Calcula un resultado agregado a partir de los datos almacenados y lo persiste en una colecci\'on separada.
+\end{itemize}
+
+\begin{figure}[H]
+  \centering
+  % TODO: Insertar diagrama de clases de los adapters
+  % \includegraphics[width=0.9\textwidth]{img/diagrama-adapters.png}
+  \caption{Diagrama de clases de los \textit{adapters} con sus m\'etodos abstractos}
+  \label{fig:diagrama-adapters}
+\end{figure}
+
+\subsection{Patr\'on Factory y Singleton}
+\label{sec:patron-factory}
+
+El \textit{ScraperFactory} es una clase \textit{Singleton} que funciona como registro central de m\'odulos. Cada m\'odulo se registra en el \textit{factory} al iniciar la aplicaci\'on, y puede ser obtenido por nombre para ejecutar la extracci\'on de un indicador espec\'ifico. Esto desacopla la l\'ogica de registro de la l\'ogica de ejecuci\'on.
+
+De manera similar, el \textit{CronRegistry} es un \textit{Singleton} que registra tareas programadas para cada indicador seg\'un su frecuencia configurada, permitiendo la ejecuci\'on autom\'atica y peri\'odica del proceso de extracci\'on.
+
+\subsection{Clase abstracta ScrapeBase}
+\label{sec:scrape-base}
+
+Todos los m\'odulos extienden la clase abstracta \textit{ScrapeBase}, la cual implementa el flujo ETL completo. El m\'etodo \texttt{init} orquesta las etapas en el siguiente orden:
+
+\begin{enumerate}
+  \item Se construye la URL reemplazando los par\'ametros din\'amicos (como el a\~no).
+  \item El \textit{FetchAdapter} obtiene los datos crudos de la fuente.
+  \item El \textit{ParseAdapter} extrae la informaci\'on estructurada.
+  \item El \textit{MapperAdapter} normaliza la estructura de los datos.
+  \item El \textit{HashAdapter} genera la clave \'unica de cada registro.
+  \item El \textit{StorageAdapter} almacena los datos en MongoDB, ignorando duplicados.
+  \item Si existe un \textit{CalculatorAdapter}, se calcula el resultado agregado y se almacena en la colecci\'on \texttt{indicator-results}, solo si el resultado difiere del \'ultimo almacenado.
+\end{enumerate}
+
+\begin{figure}[H]
+  \centering
+  % TODO: Insertar diagrama de secuencia del flujo ETL completo
+  % \includegraphics[width=0.9\textwidth]{img/diagrama-secuencia-etl.png}
+  \caption{Diagrama de secuencia del flujo ETL completo}
+  \label{fig:diagrama-secuencia}
+\end{figure}
+
+\section{Tipos de conexi\'on implementados}
+\label{sec:tipos-conexion}
+
+La arquitectura soporta distintos tipos de conexi\'on a fuentes de datos, cada uno implementado como un \textit{FetchAdapter} concreto. Los m\'odulos desarrollados demuestran tres de estos tipos:
+
+\begin{table}[H]
+\centering
+\caption{Tipos de conexi\'on implementados en los m\'odulos}
+\label{tab:tipos-conexion}
+\begin{tabular}{|p{4cm}|p{4cm}|p{4.5cm}|}
+\hline
+\textbf{FetchAdapter} & \textbf{Tipo de conexi\'on} & \textbf{M\'odulo} \\
+\hline
+RequestPromiseAdapter & \textit{Web scraping} de HTML & emergencias-desastres \\
+\hline
+RequestPromiseAdapter & Extracci\'on de tablas HTML & BCN tasa-pobreza-ingresos \\
+\hline
+JsonFetchAdapter & Consumo de API JSON & BCN organizaciones-comunitarias \\
+\hline
+\end{tabular}
+\end{table}
+
+Adicionalmente, el \textit{core} incluye dos \textit{adapters} listos para ser utilizados en futuros m\'odulos:
+
+\begin{table}[H]
+\centering
+\caption{\textit{Adapters} disponibles para futuros m\'odulos}
+\label{tab:adapters-futuros}
+\begin{tabular}{|p{5cm}|p{7cm}|}
+\hline
+\textbf{FetchAdapter} & \textbf{Tipo de conexi\'on} \\
+\hline
+PuppeteerAdapter & P\'aginas renderizadas con Javascript \\
+\hline
+DownloadAdapter & Descarga de archivos (CSV, XLSX) \\
+\hline
+\end{tabular}
+\end{table}
+
+Estos \textit{adapters} no fueron utilizados en los m\'odulos implementados debido a que las fuentes de datos seleccionadas no lo requer\'ian, pero su existencia demuestra la extensibilidad de la arquitectura.
+
+\section{M\'odulos implementados}
+\label{sec:modulos}
+
+\subsection{M\'odulo emergencias-desastres}
+\label{sec:modulo-ed}
+
+Este m\'odulo extrae informaci\'on sobre simulacros de emergencia desde el sitio web de la Unidad de Riesgos y Desastres del MINEDUC. Dado que los \textit{links} originales de esta p\'agina ya no se encuentran disponibles, se accede a las versiones archivadas mediante Wayback Machine (\url{https://web.archive.org}).
+
+El m\'odulo contiene tres indicadores: simulacros del a\~no 2021, 2022 y 2023. Cada uno utiliza un \textit{ParseAdapter} basado en Cheerio que extrae la fecha, el tipo de evento y la ciudad de cada simulacro a partir de la estructura HTML de la p\'agina.
+
+Este m\'odulo adem\'as implementa un \textit{CalculatorAdapter} que calcula el total de simulacros y la cantidad por ciudad para cada a\~no, almacenando los resultados en la colecci\'on \texttt{indicator-results}. Antes de guardar un nuevo resultado, se compara con el \'ultimo almacenado para evitar registros duplicados cuando los datos de origen no ha cambiado.
+
+\begin{figure}[H]
+  \centering
+  % TODO: Insertar ejemplo de datos extraidos por el modulo emergencias-desastres
+  % \includegraphics[width=0.9\textwidth]{img/ejemplo-datos-ed.png}
+  \caption{Ejemplo de los datos extra\'idos por el m\'odulo emergencias-desastres en formato JSON}
+  \label{fig:datos-ed}
+\end{figure}
+
+\subsection{M\'odulo biblioteca-congreso-nacional}
+\label{sec:modulo-bcn}
+
+Este m\'odulo contiene dos sub-indicadores que extraen informaci\'on desde la Biblioteca del Congreso Nacional de Chile (BCN).
+
+El primer sub-indicador, \textit{tasa-pobreza-ingresos}, extrae la tasa de pobreza por ingresos desde la secci\'on de reportes comunales de la BCN. Se utiliza un \textit{ParseAdapter} basado en Cheerio que identifica la tabla de la secci\'on ``2.1 Tasa de Pobreza por ingresos'' y extrae las filas correspondientes a la comuna, la regi\'on y el pa\'is, junto con los valores de las encuestas CASEN 2017 y CASEN 2022.
+
+El segundo sub-indicador, \textit{organizaciones-comunitarias}, extrae la cantidad de organizaciones comunitarias por tipo y a\~no desde la API JSON de estad\'isticas territoriales de la BCN. Se utiliza un \textit{JsonFetchAdapter} que obtiene el JSON directamente y un \textit{ParseAdapter} que extrae el campo \texttt{datosTemaN} que contiene los datos hist\'oricos.
+
+\begin{figure}[H]
+  \centering
+  % TODO: Insertar ejemplo de datos extraidos por cada sub-indicador de BCN
+  % \includegraphics[width=0.9\textwidth]{img/ejemplo-datos-bcn.png}
+  \caption{Ejemplo de los datos extra\'idos por cada sub-indicador del m\'odulo BCN}
+  \label{fig:datos-bcn}
+\end{figure}
+
+\section{Manejo de errores}
+\label{sec:errores}
+
+El sistema implementa una jerarqu\'ia de errores tipados que permite identificar el origen y el contexto de cada fallo. Los errores se dividen en dos categor\'ias:
+
+\begin{itemize}
+  \item \textbf{DomainError}: Errores propios de la l\'ogica del negocio, como un indicador no encontrado (\textit{ParseError}) o un m\'odulo no registrado (\textit{ScraperNotFoundError}).
+  \item \textbf{ServiceError}: Errores de servicios externos, como fallos en la conexi\'on HTTP (\textit{FetchError}), en el almacenamiento (\textit{StorageError}) o en la ejecuci\'on de tareas programadas (\textit{CronExecutionError}).
+\end{itemize}
+
+Todos los errores heredan de una clase base \textit{BaseError} que incluye un campo de contexto con informaci\'on adicional. A nivel de la API, un \textit{middleware} centralizado captura estos errores y retorna respuestas JSON con el mensaje correspondiente, evitando que el servidor se detenga ante un fallo.
+
+\section{Automatizaci\'on}
+\label{sec:automatizacion}
+
+El \textit{CronRegistry} permite que el sistema ejecute la extracci\'on de indicadores de forma peri\'odica sin intervenci\'on manual. Al iniciar la aplicaci\'on, el \textit{CronRegistry} recorre todos los m\'odulos registrados y programa una tarea cron para cada indicador que tenga una frecuencia definida.
+
+Las frecuencias se expresan mediante la sintaxis cron est\'andar y est\'an disponibles como un \textit{enum} predefinido que incluye valores para ejecuci\'on diaria, semanal, mensual, anual y \'unica. La ejecuci\'on \'unica se utiliza para fuentes hist\'oricas que no se actualizan, como es el caso de los simulacros obtenidos desde Wayback Machine.
+
+\section{API REST}
+\label{sec:api-rest}
+
+El sistema expone una API REST que permite consultar los m\'odulos, ejecutar la extracci\'on de indicadores y obtener los resultados calculados. Los \textit{endpoints} implementados son los siguientes:
+
+\begin{table}[H]
+\centering
+\caption{\textit{Endpoints} de la API REST}
+\label{tab:endpoints}
+\begin{tabular}{|l|p{6cm}|p{5cm}|}
+\hline
+\textbf{M\'etodo} & \textbf{Endpoint} & \textbf{Descripci\'on} \\
+\hline
+GET & \texttt{/} & Lista todos los m\'odulos con sus indicadores \\
+\hline
+GET & \texttt{/emergencia-desastres} & Lista los indicadores del m\'odulo \\
+\hline
+GET & \texttt{/emergencia-desastres/:indicator} & Ejecuta la extracci\'on del indicador \\
+\hline
+GET & \texttt{/emergencia-desastres/:indicator/result} & Consulta el \'ultimo resultado calculado \\
+\hline
+GET & \texttt{/biblioteca-congreso-nacional} & Lista los indicadores del m\'odulo \\
+\hline
+GET & \texttt{/biblioteca-congreso-nacional/:indicator} & Ejecuta la extracci\'on del indicador \\
+\hline
+\end{tabular}
+\end{table}
+
+Cada \textit{endpoint} valida que el indicador solicitado exista antes de ejecutar la extracci\'on. En caso de que no exista, se retorna un error 404 con un mensaje descriptivo.
+
+\begin{figure}[H]
+  \centering
+  % TODO: Insertar captura de pantalla de la coleccion Bruno con los endpoints documentados
+  % \includegraphics[width=0.9\textwidth]{img/bruno-collection.png}
+  \caption{Colecci\'on Bruno con los \textit{endpoints} documentados}
+  \label{fig:bruno-collection}
+\end{figure}
+
+\section{Testing}
+\label{sec:testing}
+
+Se implementaron pruebas automatizadas utilizando el \textit{framework} Jest. Las pruebas se organizan en tres niveles:
+
+En primer lugar, se crearon pruebas unitarias para cada \textit{ParseAdapter}, \textit{MapperAdapter}, \textit{HashAdapter} y \textit{CalculatorAdapter}. Estas pruebas verifican que cada componente funcione de forma aislada con datos de entrada controlados.
+
+En segundo lugar, se crearon pruebas de integraci\'on que verifican el flujo ETL completo para cada m\'odulo, desde el \textit{parsing} hasta la generaci\'on de la clave \'unica, utilizando datos realistas que simulan la estructura de las fuentes reales.
+
+En tercer lugar, se crearon pruebas de validaci\'on que comparan los datos extra\'idos contra datos de referencia verificados manualmente. Por ejemplo, se verifica que el formato decimal chileno (con coma) sea convertido correctamente al formato num\'erico est\'andar (con punto), que las fechas sean parseadas correctamente a partir de los meses en espa\~nol, y que los nombres de las unidades territoriales se preserven tal como aparecen en la fuente.
+
+El total de pruebas implementadas es de 49, distribuidas en 16 \textit{suites} de pruebas.
+
+\section{Volatilidad de las fuentes web}
+\label{sec:volatilidad}
+
+Uno de los desaf\'ios m\'as significativos que enfrenta un sistema de extracci\'on de datos de la web es la naturaleza cambiante de las fuentes. A diferencia de una base de datos controlada, las p\'aginas web son mantenidas por terceros que pueden modificar su estructura, migrar su contenido o simplemente dejar de estar disponibles sin previo aviso. Un proceso de \textit{scraping} que funciona hoy no necesariamente funcionar\'a ma\~nana.
+
+Durante el desarrollo de este proyecto se experiment\'o directamente esta problem\'atica. Los \textit{links} originales del sitio web de la Unidad de Riesgos y Desastres del MINEDUC dejaron de estar disponibles antes de completar la implementaci\'on del m\'odulo \textit{emergencias-desastres}. Las p\'aginas que conten\'ian los simulacros de los a\~nos 2021, 2022 y 2023 fueron removidas del servidor sin que existiera una redirecci\'on o aviso previo. Esto implic\'o que los datos necesarios para el indicador \textit{Tsunami Drills} ya no eran accesibles desde su fuente original.
+
+Para resolver esta situaci\'on, se recurri\'o a Wayback Machine (\url{https://web.archive.org}), un servicio de archivo digital de Internet Archive que almacena instant\'aneas hist\'oricas de p\'aginas web. Mediante este servicio se accedi\'o a las versiones archivadas de las p\'aginas del MINEDUC, lo cual permiti\'o completar la extracci\'on de los datos. Sin embargo, esta soluci\'on no es generalizable: Wayback Machine no archiva todas las p\'aginas ni con la misma frecuencia, y su disponibilidad depende de un servicio externo.
+
+Este caso evidencia un conjunto de riesgos inherentes a la extracci\'on de datos desde la web que deben ser considerados en el dise\~no de sistemas ETL de este tipo:
+
+\begin{itemize}
+  \item \textbf{Cambios en la estructura HTML}: Una p\'agina puede redise\~nar su interfaz sin modificar la URL, invalidando los selectores CSS o XPath que el \textit{ParseAdapter} utiliza para extraer los datos. Este tipo de cambio es silencioso, ya que el sistema no recibe un error expl\'icito sino que extrae datos incorrectos o vac\'ios.
+  \item \textbf{Eliminaci\'on o migraci\'on de contenido}: Las fuentes gubernamentales y acad\'emicas reorganizan sus portales peri\'odicamente. URLs que funcionaban durante meses pueden retornar errores 404 o redirigir a p\'aginas gen\'ericas.
+  \item \textbf{Cambios en las APIs}: Las APIs p\'ublicas pueden modificar sus par\'ametros, estructura de respuesta o pol\'iticas de acceso (como la implementaci\'on de autenticaci\'on o l\'imites de tasa).
+  \item \textbf{Bloqueo de acceso automatizado}: Algunos sitios implementan mecanismos anti-bot como CAPTCHAs, l\'imites por IP o detecci\'on de \textit{user-agent}, lo cual puede impedir el acceso al sistema de extracci\'on.
+\end{itemize}
+
+La arquitectura modular basada en \textit{adapters} mitiga parcialmente estos riesgos, ya que un cambio en la estructura de una fuente solo requiere modificar el \textit{ParseAdapter} correspondiente sin afectar al resto del sistema. No obstante, la detecci\'on del cambio sigue siendo manual: el sistema no distingue entre una extracci\'on que retorna datos vac\'ios por un error en la fuente y una fuente que simplemente no tiene datos nuevos.
+
+Como trabajo futuro, se propone implementar mecanismos de monitoreo que alerten cuando una extracci\'on retorna resultados inesperados (cero registros, cambios abruptos en la cantidad de datos o en su estructura), permitiendo una respuesta temprana ante cambios en las fuentes.
+
+
+% =============================================================================
+% CAPITULO 7: RESULTADOS
+% =============================================================================
+\chapter{RESULTADOS}
+\label{ch:resultados}
+
+En este cap\'itulo se presentan los resultados obtenidos por el sistema desarrollado, tanto en t\'erminos de los datos extra\'idos como de la validaci\'on del correcto funcionamiento de la arquitectura.
+
+\section{Datos extra\'idos}
+\label{sec:datos-extraidos}
+
+\subsection{Tsunami Drills}
+\label{sec:resultado-td}
+
+El m\'odulo \textit{emergencias-desastres} extrajo un total de 29 registros de simulacros distribuidos en tres a\~nos:
+
+\begin{table}[H]
+\centering
+\caption{Registros extra\'idos por indicador de simulacros}
+\label{tab:registros-simulacros}
+\begin{tabular}{|l|c|}
+\hline
+\textbf{Indicador} & \textbf{Registros extra\'idos} \\
+\hline
+simulacros-2021 & 9 \\
+\hline
+simulacros-2022 & 11 \\
+\hline
+simulacros-2023 & 9 \\
+\hline
+\end{tabular}
+\end{table}
+
+Cada registro contiene la fecha del simulacro, el tipo de evento (sismo, tsunami, incendio forestal, entre otros) y la ciudad o regi\'on donde se realiz\'o. Los datos fueron almacenados en la colecci\'on \texttt{emergencia-desastres} de MongoDB.
+
+\begin{figure}[H]
+  \centering
+  % TODO: Insertar tabla con registros extraidos de simulacros-2021
+  % \includegraphics[width=0.9\textwidth]{img/registros-simulacros-2021.png}
+  \caption{Registros extra\'idos de simulacros-2021 mostrando fecha, tipo y ciudad}
+  \label{fig:registros-simulacros}
+\end{figure}
+
+\subsection{Resultados calculados de Tsunami Drills}
+\label{sec:resultado-calculator}
+
+El \textit{CalculatorAdapter} proces\'o los datos extra\'idos y almacen\'o los resultados en la colecci\'on \texttt{indicator-results}:
+
+\begin{table}[H]
+\centering
+\caption{Resultados calculados por indicador de simulacros}
+\label{tab:resultados-calculados}
+\begin{tabular}{|l|c|c|}
+\hline
+\textbf{Indicador} & \textbf{Total de simulacros} & \textbf{Ciudades \'unicas} \\
+\hline
+simulacros-2021 & 9 & 9 \\
+\hline
+simulacros-2022 & 11 & 11 \\
+\hline
+simulacros-2023 & 9 & 9 \\
+\hline
+\end{tabular}
+\end{table}
+
+Estos resultados permiten a los investigadores consultar de forma directa la cantidad de simulacros realizados por a\~no y su distribuci\'on geogr\'afica, sin necesidad de procesar los datos crudos manualmente.
+
+\begin{figure}[H]
+  \centering
+  % TODO: Insertar dashboard de Metabase con grafico de barras de simulacros por anio
+  % \includegraphics[width=0.9\textwidth]{img/metabase-simulacros.png}
+  \caption{\textit{Dashboard} de Metabase con el gr\'afico de barras de simulacros por a\~no}
+  \label{fig:metabase-simulacros}
+\end{figure}
+
+\subsection{Tasa de Pobreza por Ingresos}
+\label{sec:resultado-pobreza}
+
+El sub-indicador \textit{tasa-pobreza-ingresos} extrajo tres registros correspondientes a la comuna de Valdivia, la Regi\'on de Los R\'ios y el pa\'is:
+
+\begin{table}[H]
+\centering
+\caption{Datos extra\'idos de tasa de pobreza por ingresos}
+\label{tab:pobreza}
+\begin{tabular}{|l|c|c|}
+\hline
+\textbf{Unidad Territorial} & \textbf{CASEN 2017} & \textbf{CASEN 2022} \\
+\hline
+Comuna de Valdivia & 7,6\% & 9,8\% \\
+\hline
+Regi\'on de Los R\'ios & 12,1\% & 12,2\% \\
+\hline
+Pa\'is & 8,6\% & 10,8\% \\
+\hline
+\end{tabular}
+\end{table}
+
+Los porcentajes fueron convertidos correctamente del formato decimal chileno (con coma) al formato num\'erico est\'andar (con punto), permitiendo su uso directo en c\'alculos posteriores.
+
+\begin{figure}[H]
+  \centering
+  % TODO: Insertar dashboard de Metabase con grafico comparativo de pobreza
+  % \includegraphics[width=0.9\textwidth]{img/metabase-pobreza.png}
+  \caption{\textit{Dashboard} de Metabase con el gr\'afico comparativo de pobreza CASEN 2017 vs CASEN 2022}
+  \label{fig:metabase-pobreza}
+\end{figure}
+
+\subsection{Organizaciones Comunitarias}
+\label{sec:resultado-orgs}
+
+El sub-indicador \textit{organizaciones-comunitarias} extrajo 17 registros correspondientes a los a\~nos 2008 a 2024 para la comuna de Valdivia. Cada registro contiene la cantidad de once tipos de organizaciones comunitarias: juntas de vecinos, clubes deportivos, centros de madres, centros culturales, centros del adulto mayor, uniones comunales, centros de padres y apoderados, compa\~n\'ias de bomberos, entre otros.
+
+\begin{figure}[H]
+  \centering
+  % TODO: Insertar dashboard de Metabase con grafico de linea temporal
+  % \includegraphics[width=0.9\textwidth]{img/metabase-organizaciones.png}
+  \caption{\textit{Dashboard} de Metabase con el gr\'afico de l\'inea temporal de organizaciones comunitarias}
+  \label{fig:metabase-organizaciones}
+\end{figure}
+
+\section{Validaci\'on de la extracci\'on}
+\label{sec:validacion}
+
+Para validar que los datos extra\'idos por el sistema son correctos, se realiz\'o una comparaci\'on con datos obtenidos de forma manual desde las mismas fuentes.
+
+En el caso de la tasa de pobreza, se verific\'o manualmente que los valores presentados en la tabla de la BCN coincidieran con los valores almacenados en la base de datos. La conversi\'on del formato decimal chileno fue validada en las pruebas automatizadas.
+
+En el caso de los simulacros, se verific\'o que las fechas extra\'idas correspondieran a los meses correctos, considerando que la fuente utiliza abreviaciones en espa\~nol (Ene, Feb, Mar, etc.). Las pruebas automatizadas validan que cada abreviaci\'on sea convertida al \'indice de mes correcto.
+
+En el caso de las organizaciones comunitarias, se verific\'o que la suma total de organizaciones reportada por la BCN coincidiera con la suma de los tipos individuales extra\'idos por el sistema.
+
+\section{Evitaci\'on de duplicados}
+\label{sec:duplicados}
+
+El sistema fue ejecutado m\'ultiples veces sobre las mismas fuentes de datos para verificar que los mecanismos de evitaci\'on de duplicados funcionaran correctamente. El \textit{HashAdapter} genera una clave \'unica para cada registro (basada en la fecha y ciudad para simulacros, en la unidad territorial para pobreza, y en el a\~no para organizaciones), y los esquemas de MongoDB declaran este campo como \'unico. En cada ejecuci\'on posterior a la primera, el sistema detect\'o los duplicados y los ignor\'o sin generar errores.
+
+De manera similar, el \textit{CalculatorAdapter} compar\'o los resultados calculados con el \'ultimo resultado almacenado y no cre\'o registros nuevos cuando los datos de origen no hab\'ia cambiado.
+
+\section{Ejecuci\'on automatizada}
+\label{sec:ejecucion-automatizada}
+
+Se verific\'o que el \textit{CronRegistry} programe correctamente las tareas de extracci\'on. Los indicadores de la BCN fueron configurados con frecuencia anual (expresi\'on cron \texttt{0 0 1 1 *}) y los simulacros con frecuencia \'unica (sin expresi\'on cron), lo cual es coherente con la naturaleza de cada fuente: los datos de la BCN se actualizan peri\'odicamente, mientras que los datos de Wayback Machine son est\'aticos.
+
+
+% =============================================================================
+% CAPITULO 8: CONCLUSIONES
+% =============================================================================
+\chapter{CONCLUSIONES}
+\label{ch:conclusiones}
+
+\section{Conclusiones generales}
+\label{sec:conclusiones-generales}
+
+El presente proyecto logr\'o desarrollar un sistema de extracci\'on, transformaci\'on y carga de datos que sistematiza el proceso de captura de indicadores para el modelo CORE de resiliencia comunitaria. La arquitectura modular basada en \textit{adapters} permite agregar nuevos indicadores y fuentes de datos sin modificar la l\'ogica central del sistema, lo cual constituye el principal aporte t\'ecnico del trabajo.
+
+El sistema demostr\'o ser funcional para tres tipos de fuentes de datos distintas (\textit{web scraping} de HTML, extracci\'on de tablas y consumo de APIs JSON), extrayendo y almacenando datos de cinco indicadores distribuidos en dos m\'odulos. Adem\'as, la validaci\'on realizada confirm\'o que los datos extra\'idos coinciden con los obtenidos de forma manual, y que los mecanismos de evitaci\'on de duplicados operan correctamente ante ejecuciones repetidas.
+
+\section{Conclusiones por objetivo}
+\label{sec:conclusiones-objetivos}
+
+\subsection{Objetivo Espec\'ifico 1}
+\label{sec:conclusion-oe1}
+
+El indicador \textit{Tsunami Drills} fue implementado exitosamente, extrayendo un total de 29 registros de simulacros de emergencia entre los a\~nos 2021 y 2023 desde el sitio web del MINEDUC. El \textit{CalculatorAdapter} permiti\'o calcular autom\'aticamente el total de simulacros y su distribuci\'on geogr\'afica.
+
+El indicador \textit{Emergency Organizations} (SCEO) no pudo ser implementado debido a la inexistencia de una fuente de datos p\'ublica que centralice esta informaci\'on. Como se document\'o en el cap\'itulo de viabilidad de indicadores, estos datos dependen de cada municipalidad y no se encuentran disponibles en una plataforma accesible desde la web. Esta limitaci\'on es inherente al dominio de la extracci\'on de datos web: el sistema solo puede capturar informaci\'on de fuentes que existen y son accesibles. La arquitectura desarrollada permite incorporar este indicador en el futuro si se identifica una fuente viable.
+
+\subsection{Objetivo Espec\'ifico 2}
+\label{sec:conclusion-oe2}
+
+Se implementaron dos indicadores: \textit{Population Poverty} mediante la extracci\'on de la tasa de pobreza por ingresos desde la BCN, y \textit{Civic Organizations} mediante la extracci\'on de organizaciones comunitarias desde la API JSON de la BCN.
+
+Los indicadores \textit{Civic Participation} (SCCP) y \textit{Special Needs Population} (SNP) no fueron implementados dentro del alcance de este proyecto, aunque se identificaron sus fuentes de datos en el cap\'itulo de viabilidad (SERVEL para SCCP, CASEN e INE \parencite{ine-a} para SNP). Dado que estas fuentes ofrecen descargas directas en formato CSV y XLSX, la arquitectura desarrollada ya los soporta mediante el \textit{DownloadAdapter} existente, lo cual facilita su incorporaci\'on sin modificaciones al \textit{core} del sistema.
+
+\subsection{Objetivo Espec\'ifico 3}
+\label{sec:conclusion-oe3}
+
+Se logr\'o disponibilizar los indicadores por medio de una API REST y anal\'iticas. La API permite listar los m\'odulos e indicadores disponibles, ejecutar la extracci\'on de datos y consultar los resultados calculados. Los datos almacenados en MongoDB son visualizados mediante \textit{dashboards} en Metabase, los cuales se actualizan autom\'aticamente a medida que se pueblan las colecciones.
+
+\section{Limitaciones}
+\label{sec:limitaciones}
+
+Durante el desarrollo del proyecto se identificaron las siguientes limitaciones:
+
+En primer lugar, la volatilidad de las fuentes web represent\'o el mayor desaf\'io del proyecto. Como se detall\'o en la secci\'on~\ref{sec:volatilidad}, los \textit{links} originales del sitio web del MINEDUC dejaron de estar disponibles durante el transcurso del desarrollo, obligando a recurrir a Wayback Machine para acceder a versiones archivadas. Este no es un caso aislado: la naturaleza cambiante de la web implica que un proceso de \textit{scraping} que funciona hoy puede dejar de funcionar en cualquier momento debido a redise\~nos de p\'aginas, migraciones de contenido o cambios en las pol\'iticas de acceso. Esta realidad debe ser considerada como una restricci\'on fundamental en todo sistema que dependa de la extracci\'on automatizada de datos desde fuentes web no controladas.
+
+En segundo lugar, el indicador SCEO (\textit{Emergency Organizations}) no pudo ser implementado debido a la ausencia de una fuente de datos p\'ublica centralizada. La informaci\'on sobre voluntarios en organizaciones de emergencia depende de cada municipalidad y no se encuentra disponible de manera uniforme.
+
+En tercer lugar, la plataforma Statista fue descartada como fuente para el indicador de pobreza debido a que requiere un pago o suscripci\'on para acceder a sus datos.
+
+En cuarto lugar, la librer\'ia \textit{request-promise} utilizada para las peticiones HTTP se encuentra deprecada. Si bien esto no afecta el funcionamiento actual del sistema, representa una deuda t\'ecnica que debe ser abordada en futuras iteraciones.
+
+\section{Trabajo futuro}
+\label{sec:trabajo-futuro}
+
+Con base en las limitaciones identificadas y la extensibilidad de la arquitectura, se proponen las siguientes l\'ineas de trabajo futuro:
+
+\begin{itemize}
+  \item Implementar los indicadores pendientes (SCCP, SNP) utilizando el \textit{DownloadAdapter} ya disponible en el \textit{core} para la descarga de archivos CSV y XLSX.
+  \item Migrar la librer\'ia \textit{request-promise} a \textit{fetch} nativo o \textit{axios} para resolver la deuda t\'ecnica asociada a la dependencia deprecada.
+  \item Agregar un mecanismo de \textit{retry} con \textit{backoff} exponencial en los \textit{FetchAdapters} para manejar de forma robusta los fallos temporales en las fuentes externas.
+  \item Explorar un enfoque h\'ibrido que combine la arquitectura modular con modelos de lenguaje (LLM) como mecanismo de \textit{fallback} para el \textit{parsing} adaptativo cuando una fuente cambia su estructura HTML.
+  \item Generalizar los m\'odulos de la BCN para soportar m\'ultiples comunas mediante par\'ametros din\'amicos en la URL.
+  \item Desarrollar un \textit{frontend} personalizado como alternativa a Metabase para casos donde se requiera mayor control sobre la visualizaci\'on de los datos.
+\end{itemize}
+
+
+% =============================================================================
+% REFERENCIAS
+% =============================================================================
+\printbibliography[title={REFERENCIAS}]
+\addcontentsline{toc}{chapter}{REFERENCIAS}
+
+
+% =============================================================================
+% ANEXOS
+% =============================================================================
+\appendix
+
+\chapter{Indicadores del modelo CORE}
+\label{app:indicadores-core}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.55\textwidth]{img_07.png}
+  \caption{Indicadores de la dimensi\'on social del modelo CORE}
+  \label{fig:indicadores-social}
+\end{figure}
+
+\end{document}
