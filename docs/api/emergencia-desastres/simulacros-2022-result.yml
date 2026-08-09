@@ -13,4 +13,4 @@ settings:
 docs: |-
   Consulta el último resultado calculado para simulacros 2022.
 
-  Retorna el total de simulacros y el desglose por ciudad desde la colección `indicator-results`.
+  Retorna el total de simulacros y el desglose por región desde la colección `indicator-results`.
