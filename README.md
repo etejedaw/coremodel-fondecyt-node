@@ -4,6 +4,14 @@ Resiliencia comunitaria ante tsunami en la costa chilena: Modelando escenarios m
 
 Automatización de extracción, normalización y consulta de indicadores sociales desde diversas fuentes abiertas, basado en una arquitectura modular, extensible y documentada.
 
+## Documentación
+
+| Documento                                            | Contenido                                      |
+| ---------------------------------------------------- | ---------------------------------------------- |
+| [`docs/tesis/README.md`](docs/tesis/README.md)       | Compilación del documento de tesis en LaTeX    |
+| [`docs/metabase/README.md`](docs/metabase/README.md) | Configuración de Metabase y conexión a MongoDB |
+| [`docs/api/`](docs/api/)                             | Colección Bruno con los endpoints de la API    |
+
 ## Requisitos
 
 - Node.js LTS Hydrogen (v18) — el proyecto incluye `.nvmrc`, por lo que basta con ejecutar `nvm use`
@@ -33,11 +41,13 @@ docker compose up -d
 
 Esto levanta 3 servicios:
 
-| Servicio | Puerto | Descripción |
-|----------|--------|-------------|
-| MongoDB | 27017 | Base de datos |
-| Mongo Express | 8081 | Interfaz web para MongoDB |
-| Metabase | 3001 | Dashboards de visualización |
+| Servicio      | Puerto | Descripción                 |
+| ------------- | ------ | --------------------------- |
+| MongoDB       | 27017  | Base de datos               |
+| Mongo Express | 8081   | Interfaz web para MongoDB   |
+| Metabase      | 3001   | Dashboards de visualización |
+
+El `docker-compose.yml` define además un servicio `tesis` para compilar el documento de tesis. Está bajo el perfil `docs`, por lo que `docker compose up` lo ignora por completo (ver [Documento de tesis](#documento-de-tesis)).
 
 4. Levantar proyecto en modo desarrollo
 
@@ -122,17 +132,17 @@ import { MiStorageAdapter } from "./storage-adapter";
 import { MiCalculatorAdapter } from "./calculator-adapter";
 
 export const MI_NUEVO_MODULO_CONFIG = {
-  "indicador-prueba": new IndicatorBuilder()
-    .setName("Indicador Prueba")
-    .setUrl("https://ejemplo.cl/data/{{year}}")
-    .setFrequency(FREQUENCIES.year)
-    .setFetchAdapter(new MiCustomFetchAdapter())
-    .setParseAdapter(new MiCustomParseAdapter())
-    .setMapperAdapter(new MiMapperAdapter())
-    .setHashAdapter(new MiHashAdapter())
-    .setStorageAdapter(new MiStorageAdapter())
-    .setCalculatorAdapter(new MiCalculatorAdapter()) // opcional
-    .build()
+	"indicador-prueba": new IndicatorBuilder()
+		.setName("Indicador Prueba")
+		.setUrl("https://ejemplo.cl/data/{{year}}")
+		.setFrequency(FREQUENCIES.year)
+		.setFetchAdapter(new MiCustomFetchAdapter())
+		.setParseAdapter(new MiCustomParseAdapter())
+		.setMapperAdapter(new MiMapperAdapter())
+		.setHashAdapter(new MiHashAdapter())
+		.setStorageAdapter(new MiStorageAdapter())
+		.setCalculatorAdapter(new MiCalculatorAdapter()) // opcional
+		.build()
 };
 ```
 
@@ -158,9 +168,9 @@ import { ScrapeBase } from "../../core/ScrapeBase";
 import { MI_NUEVO_MODULO_CONFIG } from "./config";
 
 export class MiNuevoModuloScraper extends ScrapeBase {
-  constructor() {
-    super("mi-nuevo-modulo", MI_NUEVO_MODULO_CONFIG);
-  }
+	constructor() {
+		super("mi-nuevo-modulo", MI_NUEVO_MODULO_CONFIG);
+	}
 }
 ```
 
@@ -187,25 +197,25 @@ scraperFactory.register(new MiNuevoModuloScraper());
 
 ### Resumen
 
-| Método | Endpoint | Descripción |
-|--------|----------|-------------|
-| GET | `/` | Lista todos los módulos con sus indicadores |
-| GET | `/emergencia-desastres` | Lista indicadores del módulo |
-| GET | `/emergencia-desastres/:indicator` | Ejecuta scraping del indicador |
-| GET | `/emergencia-desastres/:indicator/result` | Consulta el resultado calculado |
-| GET | `/biblioteca-congreso-nacional` | Lista indicadores del módulo |
-| GET | `/biblioteca-congreso-nacional/:indicator?year=YYYY` | Ejecuta scraping del indicador |
+| Método | Endpoint                                             | Descripción                                 |
+| ------ | ---------------------------------------------------- | ------------------------------------------- |
+| GET    | `/`                                                  | Lista todos los módulos con sus indicadores |
+| GET    | `/emergencia-desastres`                              | Lista indicadores del módulo                |
+| GET    | `/emergencia-desastres/:indicator`                   | Ejecuta scraping del indicador              |
+| GET    | `/emergencia-desastres/:indicator/result`            | Consulta el resultado calculado             |
+| GET    | `/biblioteca-congreso-nacional`                      | Lista indicadores del módulo                |
+| GET    | `/biblioteca-congreso-nacional/:indicator?year=YYYY` | Ejecuta scraping del indicador              |
 
-La documentación completa de la API está disponible como colección Bruno en `docs/api/`.
+La documentación completa de la API está disponible como colección Bruno en [`docs/api/`](docs/api/).
 
 ## Tipos de conexión soportados
 
-| FetchAdapter | Tipo | Módulo que lo demuestra |
-|-------------|------|------------------------|
-| RequestPromiseAdapter | HTML scraping | emergencias-desastres, BCN tasa-pobreza |
-| JsonFetchAdapter | JSON API | BCN organizaciones-comunitarias |
-| PuppeteerAdapter | Páginas renderizadas con JS | Disponible en core |
-| DownloadAdapter | Descarga de archivos CSV/XLSX | Disponible en core |
+| FetchAdapter          | Tipo                          | Módulo que lo demuestra                 |
+| --------------------- | ----------------------------- | --------------------------------------- |
+| RequestPromiseAdapter | HTML scraping                 | emergencias-desastres, BCN tasa-pobreza |
+| JsonFetchAdapter      | JSON API                      | BCN organizaciones-comunitarias         |
+| PuppeteerAdapter      | Páginas renderizadas con JS   | Disponible en core                      |
+| DownloadAdapter       | Descarga de archivos CSV/XLSX | Disponible en core                      |
 
 ## Evitación de duplicados
 
@@ -215,16 +225,12 @@ La documentación completa de la API está disponible como colección Bruno en `
 
 ## Colecciones en MongoDB
 
-| Colección | Contenido |
-|-----------|-----------|
-| `emergencia-desastres` | Data cruda de simulacros (fecha, lugar, ciudad) |
-| `tasa-pobreza-ingresos` | Data cruda de pobreza por ingresos (CASEN 2017/2022) |
-| `organizaciones-comunitarias` | Data cruda de organizaciones comunitarias por año |
-| `indicator-results` | Resultados calculados por el CalculatorAdapter |
-
-## Visualización con Metabase
-
-Metabase (`http://localhost:3001`) permite visualizar los datos almacenados en MongoDB a través de dashboards que se actualizan automáticamente a medida que el CronRegistry pobla las colecciones. Los dashboards y queries se persisten en un volumen de Docker, por lo que sobreviven a reinicios del contenedor. La guía de configuración y conexión a MongoDB está en `docs/metabase/setup.md`.
+| Colección                     | Contenido                                            |
+| ----------------------------- | ---------------------------------------------------- |
+| `emergencia-desastres`        | Data cruda de simulacros (fecha, lugar, ciudad)      |
+| `tasa-pobreza-ingresos`       | Data cruda de pobreza por ingresos (CASEN 2017/2022) |
+| `organizaciones-comunitarias` | Data cruda de organizaciones comunitarias por año    |
+| `indicator-results`           | Resultados calculados por el CalculatorAdapter       |
 
 ## Testing
 
@@ -233,6 +239,7 @@ npm test
 ```
 
 Los tests cubren:
+
 - Tests unitarios para cada ParseAdapter, MapperAdapter y HashAdapter
 - Tests de integración del flujo ETL completo (parse → map → hash)
 - Tests de validación de input en las rutas API
@@ -240,13 +247,27 @@ Los tests cubren:
 
 ## Scripts disponibles
 
-| Script | Descripción |
-|--------|-------------|
-| `npm run dev` | Levanta el proyecto en modo desarrollo con nodemon |
-| `npm run build` | Compila TypeScript a JavaScript |
-| `npm start` | Ejecuta la versión compilada (`dist/app.js`) |
-| `npm test` | Ejecuta los tests con Jest |
-| `npm run test:watch` | Ejecuta los tests en modo watch |
-| `npm run lint` | Ejecuta ESLint |
-| `npm run lint:fix` | Ejecuta ESLint y corrige errores automáticamente |
-| `npm run prettier` | Formatea el código con Prettier |
+| Script               | Descripción                                        |
+| -------------------- | -------------------------------------------------- |
+| `npm run dev`        | Levanta el proyecto en modo desarrollo con nodemon |
+| `npm run build`      | Compila TypeScript a JavaScript                    |
+| `npm start`          | Ejecuta la versión compilada (`dist/app.js`)       |
+| `npm test`           | Ejecuta los tests con Jest                         |
+| `npm run test:watch` | Ejecuta los tests en modo watch                    |
+| `npm run lint`       | Ejecuta ESLint                                     |
+| `npm run lint:fix`   | Ejecuta ESLint y corrige errores automáticamente   |
+| `npm run prettier`   | Formatea el código con Prettier                    |
+
+## Visualización con Metabase
+
+Metabase (`http://localhost:3001`) permite visualizar los datos almacenados en MongoDB a través de dashboards que se actualizan automáticamente a medida que el CronRegistry pobla las colecciones. Los dashboards y queries se persisten en un volumen de Docker, por lo que sobreviven a reinicios del contenedor. La guía de configuración y conexión a MongoDB está en [`docs/metabase/README.md`](docs/metabase/README.md).
+
+## Documento de tesis
+
+El documento de tesis está en `docs/tesis/` y se compila dentro de un contenedor Docker, por lo que no es necesario instalar TeX Live en la máquina:
+
+```bash
+docker compose run --rm tesis
+```
+
+El PDF queda en `docs/tesis/tesis.pdf`. La guía completa (edición, limpieza, detalles del servicio Docker y tipografía) está en [`docs/tesis/README.md`](docs/tesis/README.md).
