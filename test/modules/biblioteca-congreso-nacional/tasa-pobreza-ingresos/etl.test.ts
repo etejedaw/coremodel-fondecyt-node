@@ -1,6 +1,6 @@
-import { TasaPobrezaIngresosParseAdapter } from "../../src/modules/biblioteca-congreso-nacional/tasa-pobreza-ingresos/parse-adapter";
-import { TasaPobrezaMapperAdapter } from "../../src/modules/biblioteca-congreso-nacional/tasa-pobreza-ingresos/mapper";
-import { TasaPobrezaIngresosHashAdapter } from "../../src/modules/biblioteca-congreso-nacional/tasa-pobreza-ingresos/hash";
+import { TasaPobrezaIngresosParseAdapter } from "../../../../src/modules/biblioteca-congreso-nacional/tasa-pobreza-ingresos/parse-adapter";
+import { TasaPobrezaMapperAdapter } from "../../../../src/modules/biblioteca-congreso-nacional/tasa-pobreza-ingresos/mapper";
+import { TasaPobrezaIngresosHashAdapter } from "../../../../src/modules/biblioteca-congreso-nacional/tasa-pobreza-ingresos/hash";
 
 const MODULE = "biblioteca-congreso-nacional";
 const INDICATOR = "valdivia-tasa-pobreza-ingresos";

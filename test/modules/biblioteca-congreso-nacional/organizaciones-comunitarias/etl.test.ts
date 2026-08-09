@@ -1,6 +1,6 @@
-import { OrganizacionesComunitariasParseAdapter } from "../../src/modules/biblioteca-congreso-nacional/organizaciones-comunitarias/parse-adapter";
-import { OrganizacionesComunitariasMapperAdapter } from "../../src/modules/biblioteca-congreso-nacional/organizaciones-comunitarias/mapper";
-import { OrganizacionesComunitariasHashAdapter } from "../../src/modules/biblioteca-congreso-nacional/organizaciones-comunitarias/hash";
+import { OrganizacionesComunitariasParseAdapter } from "../../../../src/modules/biblioteca-congreso-nacional/organizaciones-comunitarias/parse-adapter";
+import { OrganizacionesComunitariasMapperAdapter } from "../../../../src/modules/biblioteca-congreso-nacional/organizaciones-comunitarias/mapper";
+import { OrganizacionesComunitariasHashAdapter } from "../../../../src/modules/biblioteca-congreso-nacional/organizaciones-comunitarias/hash";
 
 const MODULE = "biblioteca-congreso-nacional";
 const INDICATOR = "valdivia-organizaciones-comunitarias";

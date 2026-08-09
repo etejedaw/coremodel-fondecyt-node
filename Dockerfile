@@ -7,7 +7,7 @@ FROM node:jod-alpine AS builder
 WORKDIR "/usr/app"
 COPY --from=base "/usr/app/node_modules" "./node_modules"
 COPY src ./src
-COPY tsconfig.json ./
+COPY tsconfig.json tsconfig.build.json ./
 COPY package*.json ./
 RUN npm run build
 

@@ -1,5 +1,5 @@
-import { ScraperFactory } from "../../src/core/ScraperFactory";
-import { BibliotecaCongresoNacionalScraper } from "../../src/modules/biblioteca-congreso-nacional";
+import { ScraperFactory } from "../../../src/core/ScraperFactory";
+import { BibliotecaCongresoNacionalScraper } from "../../../src/modules/biblioteca-congreso-nacional";
 
 const factory = ScraperFactory.getInstance();
 

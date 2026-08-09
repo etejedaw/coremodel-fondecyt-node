@@ -1,5 +1,5 @@
-import { ScraperFactory } from "../../src/core/ScraperFactory";
-import { EmergenciaDesastresScraper } from "../../src/modules/emergencias-desastres";
+import { ScraperFactory } from "../../../src/core/ScraperFactory";
+import { EmergenciaDesastresScraper } from "../../../src/modules/emergencias-desastres";
 
 const factory = ScraperFactory.getInstance();
 factory.register(new EmergenciaDesastresScraper());

@@ -1,6 +1,6 @@
-import { DateParserAdapter } from "../../src/modules/emergencias-desastres/parse-adapter";
-import { EmergenciaDesastresMapper } from "../../src/modules/emergencias-desastres/mapper";
-import { EmergenciaDesastresHashAdapter } from "../../src/modules/emergencias-desastres/hash";
+import { DateParserAdapter } from "../../../src/modules/emergencias-desastres/parse-adapter";
+import { EmergenciaDesastresMapper } from "../../../src/modules/emergencias-desastres/mapper";
+import { EmergenciaDesastresHashAdapter } from "../../../src/modules/emergencias-desastres/hash";
 
 const MODULE = "emergencia-desastres";
 const INDICATOR = "simulacros-2021";

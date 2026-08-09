@@ -1,0 +1,13 @@
+{
+	/* Configuracion de compilacion: emite dist/ a partir de src/ unicamente.
+	   El tsconfig.json raiz abarca ademas test/ para que el editor y el
+	   type-check cubran las pruebas, pero esos archivos no deben emitirse. */
+	"extends": "./tsconfig.json",
+	"compilerOptions": {
+		"rootDir": "./src",
+		"outDir": "./dist",
+		"types": ["node"]
+	},
+	"include": ["src", "reset.d.ts"],
+	"exclude": ["node_modules", "dist", "src/legacy", "test"]
+}
