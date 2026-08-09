@@ -14,7 +14,7 @@ Automatización de extracción, normalización y consulta de indicadores sociale
 
 ## Requisitos
 
-- Node.js LTS Hydrogen (v18) — el proyecto incluye `.nvmrc`, por lo que basta con ejecutar `nvm use`
+- Node.js LTS Jod (v22) — el proyecto incluye `.nvmrc`, por lo que basta con ejecutar `nvm use`
 - Docker y Docker Compose
 
 ## Para ejecutar en local
