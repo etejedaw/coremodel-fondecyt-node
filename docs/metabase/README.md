@@ -34,10 +34,10 @@ El host es `mongo` (no `localhost`) porque Metabase se conecta dentro de la red 
 
 | Colección | Contenido |
 |-----------|-----------|
-| `emergencia-desastres` | Simulacros por fecha y ciudad (2021-2023) |
+| `emergencia-desastres` | Simulacros por fecha y región (2021-2023) |
 | `tasa-pobreza-ingresos` | Tasa de pobreza CASEN 2017/2022 por unidad territorial |
 | `organizaciones-comunitarias` | Organizaciones comunitarias por tipo y año (2008-2024) |
-| `indicator-results` | Resultados calculados (totalDrills, drillsByCity) |
+| `indicator-results` | Resultados calculados (totalDrills, drillsByRegion) |
 
 ## 5. Queries sugeridas para dashboards
 
@@ -48,13 +48,26 @@ El host es `mongo` (no `localhost`) porque Metabase se conecta dentro de la red 
 - Mostrar: totalDrills agrupado por indicator
 - Tipo de gráfico: barras
 
-### Simulacros por ciudad (2021)
+### Simulacros por región (2021)
 
 - Colección: `emergencia-desastres`
 - Filtro: indicator = "simulacros-2021"
-- Agrupar por: city
+- Agrupar por: region
 - Contar registros
 - Tipo de gráfico: barras horizontales o mapa
+
+Agrupar por `region` y no por `regionSource`: la fuente nombra la misma región
+de formas distintas según el año (`Aysén` y `Aysén- Cochrane`, `O'Higgins` y
+`O´Higgins`), por lo que `regionSource` partiría una región en varias barras.
+El campo `regionSource` conserva el texto original para auditar la extracción.
+
+### Simulacros por región, acumulado 2021-2023
+
+- Colección: `emergencia-desastres`
+- Sin filtro de indicador
+- Agrupar por: region
+- Contar registros
+- Tipo de gráfico: mapa de Chile o barras horizontales
 
 ### Evolución de pobreza por territorio
 

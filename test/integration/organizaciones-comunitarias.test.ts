@@ -3,7 +3,7 @@ import { OrganizacionesComunitariasMapperAdapter } from "../../src/modules/bibli
 import { OrganizacionesComunitariasHashAdapter } from "../../src/modules/biblioteca-congreso-nacional/organizaciones-comunitarias/hash";
 
 const MODULE = "biblioteca-congreso-nacional";
-const INDICATOR = "valdivia-organizaciones-comunitaras";
+const INDICATOR = "valdivia-organizaciones-comunitarias";
 
 const parseAdapter = new OrganizacionesComunitariasParseAdapter();
 const mapper = new OrganizacionesComunitariasMapperAdapter();

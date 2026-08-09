@@ -8,8 +8,8 @@ import { Output } from "./interfaces";
 export class EmergenciaDesastresHashAdapter implements HashAdapter {
 	generate(data: Output & Base): string {
 		const date = data.date.toISOString().split("T")[0];
-		const city = data.city;
-		const concat = `${date}-${city}`;
+		const region = data.region;
+		const concat = `${date}-${region}`;
 		return slug(concat);
 	}
 }

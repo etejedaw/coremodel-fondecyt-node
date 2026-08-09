@@ -17,7 +17,7 @@ export class DateParserAdapter implements ParseAdapter {
 				const placeElem = $(elem).find(".card-body");
 				const place = {
 					type: $(placeElem).find(".card-title a").text().trim(),
-					city: $(placeElem).find(".card-title.pb-3").text().trim()
+					region: $(placeElem).find(".card-title.pb-3").text().trim()
 				};
 				return { date, place };
 			})

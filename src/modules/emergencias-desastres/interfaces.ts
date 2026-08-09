@@ -11,11 +11,12 @@ interface DateInput {
 
 interface PlaceInput {
 	type: string;
-	city: string;
+	region: string;
 }
 
 export interface Output {
 	date: Date;
 	place: string;
-	city: string;
+	region: string;
+	regionSource: string;
 }

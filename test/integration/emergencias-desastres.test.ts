@@ -14,26 +14,26 @@ const sampleHtml = `
   <div class="item">
     <div class="card">
       <div class="caja-date">
-        <span class="dat_day">25</span>
-        <span class="dat_mes">Mar</span>
+        <span class="dat_day">27</span>
+        <span class="dat_mes">May</span>
         <span class="dat_year">2021</span>
       </div>
       <div class="card-body">
-        <h5 class="card-title"><a>Simulacro Tsunami</a></h5>
-        <h5 class="card-title pb-3">Valdivia</h5>
+        <h5 class="card-title"><a>Sismo Tsunami - Sector Educación</a></h5>
+        <h5 class="card-title pb-3">Arica</h5>
       </div>
     </div>
   </div>
   <div class="item">
     <div class="card">
       <div class="caja-date">
-        <span class="dat_day">3</span>
-        <span class="dat_mes">Nov</span>
+        <span class="dat_day">7</span>
+        <span class="dat_mes">Jun</span>
         <span class="dat_year">2021</span>
       </div>
       <div class="card-body">
-        <h5 class="card-title"><a>Simulacro Terremoto</a></h5>
-        <h5 class="card-title pb-3">Concepción</h5>
+        <h5 class="card-title"><a>Remoción en Masa</a></h5>
+        <h5 class="card-title pb-3">Tarapacá</h5>
       </div>
     </div>
   </div>
@@ -47,8 +47,8 @@ describe("Emergencias Desastres - ETL integration", () => {
 
 		const mapped = parsed.map(item => mapper.map(item));
 		expect(mapped[0].date).toBeInstanceOf(Date);
-		expect(mapped[0].place).toBe("Simulacro Tsunami");
-		expect(mapped[0].city).toBe("Valdivia");
+		expect(mapped[0].place).toBe("Sismo Tsunami - Sector Educación");
+		expect(mapped[0].region).toBe("Arica y Parinacota");
 
 		const withMetadata = mapped.map(item => ({
 			...item,
@@ -62,16 +62,17 @@ describe("Emergencias Desastres - ETL integration", () => {
 		}));
 
 		expect(final).toHaveLength(2);
-		expect(final[0].key).toBe("2021-03-25-valdivia");
-		expect(final[1].key).toBe("2021-11-03-concepcion");
+		expect(final[0].key).toBe("2021-05-27-arica-y-parinacota");
+		expect(final[1].key).toBe("2021-06-07-tarapaca");
 
 		expect(final[0]).toEqual({
-			date: new Date(2021, 2, 25),
-			place: "Simulacro Tsunami",
-			city: "Valdivia",
+			date: new Date(2021, 4, 27),
+			place: "Sismo Tsunami - Sector Educación",
+			region: "Arica y Parinacota",
+			regionSource: "Arica",
 			indicator: INDICATOR,
 			module: MODULE,
-			key: "2021-03-25-valdivia"
+			key: "2021-05-27-arica-y-parinacota"
 		});
 	});
 
@@ -86,6 +87,16 @@ describe("Emergencias Desastres - ETL integration", () => {
 		const uniqueKeys = new Set(keys);
 		expect(uniqueKeys.size).toBe(keys.length);
 	});
+
+	it("should preserve the source spelling alongside the canonical region", () => {
+		const parsed = parseAdapter.extract(sampleHtml);
+		const mapped = parsed.map(item => mapper.map(item));
+
+		// La normalizacion no debe destruir el dato publicado: se conserva para
+		// poder auditar la extraccion contra la fuente original.
+		expect(mapped[0].regionSource).toBe("Arica");
+		expect(mapped[0].region).toBe("Arica y Parinacota");
+	});
 });
 
 describe("Emergencias Desastres - Validación contra datos manuales", () => {
@@ -97,13 +108,13 @@ describe("Emergencias Desastres - Validación contra datos manuales", () => {
 			.map(item => ({ ...item, key: hasher.generate(item) }));
 
 		expect(result[0].date.getFullYear()).toBe(2021);
-		expect(result[0].date.getMonth()).toBe(2);
-		expect(result[0].date.getDate()).toBe(25);
-		expect(result[0].city).toBe("Valdivia");
+		expect(result[0].date.getMonth()).toBe(4);
+		expect(result[0].date.getDate()).toBe(27);
+		expect(result[0].region).toBe("Arica y Parinacota");
 
 		expect(result[1].date.getFullYear()).toBe(2021);
-		expect(result[1].date.getMonth()).toBe(10);
-		expect(result[1].date.getDate()).toBe(3);
-		expect(result[1].city).toBe("Concepción");
+		expect(result[1].date.getMonth()).toBe(5);
+		expect(result[1].date.getDate()).toBe(7);
+		expect(result[1].region).toBe("Tarapacá");
 	});
 });
