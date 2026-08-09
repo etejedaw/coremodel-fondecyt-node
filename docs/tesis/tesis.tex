@@ -42,6 +42,8 @@
 \usepackage{hyperref}
 \usepackage{listings}
 \usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning, calc, fit, shapes.multipart}
 \usepackage{fancyhdr}
 \usepackage{etoolbox}
 \usepackage{url}
@@ -96,7 +98,7 @@
 
 % --- Configuracion de listings para codigo ---
 \lstset{
-  basicstyle=\fontfamily{pcr}\fontsize{10}{12}\selectfont,
+  basicstyle=\ttfamily\fontsize{10}{12}\selectfont,
   breaklines=true,
   frame=single,
   numbers=left,
@@ -107,6 +109,56 @@
   keywordstyle=\color{blue},
   commentstyle=\color{gray},
   stringstyle=\color{red}
+}
+
+% --- Dialecto TypeScript: listings no lo trae definido ---
+\lstdefinelanguage{TypeScript}{
+  keywords={abstract, as, async, await, break, case, catch, class, const,
+    constructor, continue, declare, default, delete, do, else, enum, export,
+    extends, false, finally, for, from, function, get, if, implements, import,
+    in, instanceof, interface, let, new, null, private, protected, public,
+    readonly, return, set, static, super, switch, this, throw, true, try, type,
+    typeof, undefined, var, void, while, yield},
+  % Sin \bfseries: TeX Gyre Cursor no define variante negrita y el color ya
+  % distingue las palabras reservadas.
+  keywordstyle=\color{blue},
+  ndkeywords={string, number, boolean, Record, Promise, Date, Array},
+  ndkeywordstyle=\color{teal},
+  sensitive=true,
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  commentstyle=\color{gray}\itshape,
+  stringstyle=\color{red},
+  morestring=[b]',
+  morestring=[b]",
+  morestring=[b]`
+}
+
+% --- Dialecto JSON, para los ejemplos de datos extraidos ---
+\lstdefinelanguage{JSON}{
+  keywords={true, false, null},
+  keywordstyle=\color{teal},
+  sensitive=true,
+  stringstyle=\color{red},
+  morestring=[b]"
+}
+
+% --- Estilo comun para los listados del documento ---
+\lstdefinestyle{codigo}{
+  basicstyle=\ttfamily\fontsize{9}{11}\selectfont,
+  breaklines=true,
+  frame=single,
+  numbers=none,
+  tabsize=2,
+  showstringspaces=false,
+  captionpos=b,
+  columns=fullflexible,
+  upquote=true,
+  extendedchars=true,
+  literate=
+    {á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+    {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
+    {ñ}{{\~n}}1 {Ñ}{{\~N}}1 {ü}{{\"u}}1 {¿}{{?`}}1 {°}{{\textdegree}}1
 }
 
 % --- Encabezados y pies de pagina ---
@@ -912,13 +964,60 @@ En este cap\'itulo se describe la arquitectura del software desarrollado, los pa
 \section{Arquitectura general}
 \label{sec:arquitectura}
 
-El sistema se estructura en tres capas principales: el \textit{core}, los m\'odulos y la API. El \textit{core} contiene las clases base, los \textit{adapters} abstractos y la l\'ogica de orquestaci\'on del flujo ETL. Los m\'odulos son implementaciones concretas para cada fuente de datos. La API expone los indicadores al exterior mediante \textit{endpoints} HTTP.
+El sistema se estructura en tres capas principales: el \textit{core}, los m\'odulos y la API, tal como se muestra en la Figura~\ref{fig:arquitectura-general}. El \textit{core} contiene las clases base, los \textit{adapters} abstractos y la l\'ogica de orquestaci\'on del flujo ETL. Los m\'odulos son implementaciones concretas para cada fuente de datos. La API expone los indicadores al exterior mediante \textit{endpoints} HTTP.
 
 \begin{figure}[H]
   \centering
-  % TODO: Insertar diagrama de arquitectura general del sistema
-  % \includegraphics[width=0.9\textwidth]{img/arquitectura-general.png}
-  \caption{Diagrama de arquitectura general del sistema mostrando las tres capas: core, m\'odulos y API}
+  \begin{tikzpicture}[
+    font=\scriptsize,
+    caja/.style={draw, rounded corners=2pt, align=center, minimum height=6mm,
+                 inner xsep=2pt},
+    capa/.style={draw, dashed, rounded corners=3pt, inner sep=4pt},
+    flecha/.style={-{Stealth[length=1.8mm]}},
+    externo/.style={caja, fill=black!8}
+  ]
+
+  % --- Capa API ---
+  \node[caja, minimum width=26mm] (rutas)  at (2.0,0)    {Rutas HTTP};
+  \node[caja, minimum width=26mm] (errh)   at (5.2,0)    {Manejador de errores};
+  \node[capa, fit=(rutas)(errh),
+        label={[font=\scriptsize\bfseries, xshift=-1mm]left:API}] (capaapi) {};
+
+  % --- Capa Core ---
+  \node[caja, minimum width=24mm] (factory) at (1.55,-2.05) {ScraperFactory};
+  \node[caja, minimum width=20mm] (base)    at (4.15,-2.05) {ScrapeBase};
+  \node[caja, minimum width=24mm] (builder) at (6.65,-2.05) {IndicatorBuilder};
+  \node[caja, minimum width=22mm] (cron)    at (9.15,-2.05) {CronRegistry};
+  \node[caja, minimum width=94mm] (adapters) at (5.35,-3.05)
+       {\textit{Adapters} abstractos:
+        Fetch $\cdot$ Parse $\cdot$ Mapper $\cdot$ Hash $\cdot$ Storage $\cdot$ Calculator};
+  \node[capa, fit=(factory)(cron)(adapters),
+        label={[font=\scriptsize\bfseries, xshift=-1mm]left:Core}] (capacore) {};
+
+  % --- Capa Modulos ---
+  \node[caja, minimum width=42mm] (med)  at (2.35,-5.1) {emergencias-desastres};
+  \node[caja, minimum width=48mm] (mbcn) at (7.35,-5.1)
+       {biblioteca-congreso-nacional};
+  \node[capa, fit=(med)(mbcn),
+        label={[font=\scriptsize\bfseries, xshift=-1mm]left:M\'odulos}] (capamod) {};
+
+  % --- Elementos externos ---
+  \node[externo, minimum width=24mm] (mongo) at (5.35,-6.75) {MongoDB};
+  \node[externo, align=center] (fuentes) at (5.35,1.75)
+       {Fuentes web\\MINEDUC $\cdot$ BCN};
+
+  % --- Relaciones verticales ---
+  \draw[flecha] (capaapi.south) -- node[right=1pt] {solicita indicador}
+        (capacore.north);
+  \draw[flecha] (capacore.south) -- node[right=1pt] {ejecuta flujo ETL}
+        (capamod.north);
+  \draw[flecha] (capamod.south) -- node[right=1pt] {persiste} (mongo.north);
+
+  % --- Los modulos consultan las fuentes, no la API ---
+  \draw[flecha] (capamod.east) -| node[below right=0pt and 1pt, pos=0.25]
+        {consulta} (11.9,-5.1) -- (11.9,1.75) -- (fuentes.east);
+  \end{tikzpicture}
+  \caption{Arquitectura general del sistema: las tres capas y su relaci\'on con las fuentes externas y la base de datos}
   \label{fig:arquitectura-general}
 \end{figure}
 
@@ -932,15 +1031,28 @@ Se utilizaron diversos patrones de dise\~no para lograr una arquitectura extensi
 \subsection{Patr\'on Builder}
 \label{sec:patron-builder}
 
-El \textit{IndicatorBuilder} permite configurar cada indicador de forma declarativa, encadenando los m\'etodos de configuraci\'on y validando los datos con la librer\'ia Zod al momento de construir el indicador. Esto asegura que un indicador no pueda ser registrado en el sistema si le falta informaci\'on obligatoria como el nombre o la URL de la fuente.
+El \textit{IndicatorBuilder} permite configurar cada indicador de forma declarativa, encadenando los m\'etodos de configuraci\'on y validando los datos con la librer\'ia Zod al momento de construir el indicador. Esto asegura que un indicador no pueda ser registrado en el sistema si le falta informaci\'on obligatoria como el nombre o la URL de la fuente. La Figura~\ref{fig:indicator-builder} muestra la configuraci\'on completa de uno de los indicadores implementados.
 
 \begin{figure}[H]
-  \centering
-  % TODO: Insertar ejemplo de codigo del IndicatorBuilder
-  % \includegraphics[width=0.9\textwidth]{img/indicator-builder-ejemplo.png}
-  \caption{Ejemplo de configuraci\'on de un indicador mediante el \textit{IndicatorBuilder}}
-  \label{fig:indicator-builder}
+\begin{lstlisting}[style=codigo, language=TypeScript]
+"simulacros-2021": new IndicatorBuilder()
+  .setName("Simulacros 2021")
+  .setUrl("https://web.archive.org/web/20211026024955/https://" +
+          "emergenciaydesastres.mineduc.cl/simulacros-2021/")
+  .setFrequency(FREQUENCIES.once)
+  .setFetchAdapter(new RequestPromiseAdapter())
+  .setParseAdapter(new DateParserAdapter())
+  .setMapperAdapter(new EmergenciaDesastresMapper())
+  .setHashAdapter(new EmergenciaDesastresHashAdapter())
+  .setStorageAdapter(new EmergenciasDesastresStorageAdapter())
+  .setCalculatorAdapter(new TsunamiDrillsCalculatorAdapter())
+  .build()
+\end{lstlisting}
+\caption{Configuraci\'on del indicador \texttt{simulacros-2021} mediante el \textit{IndicatorBuilder}}
+\label{fig:indicator-builder}
 \end{figure}
+
+El indicador queda descrito por completo en esta declaraci\'on: no existe c\'odigo procedural asociado a \texttt{simulacros-2021} fuera de los \textit{adapters} que aqu\'i se le asignan. Agregar un indicador nuevo consiste en escribir un bloque equivalente y, cuando la fuente lo exige, implementar los \textit{adapters} que difieran de los ya disponibles. La llamada final a \texttt{build()} valida la configuraci\'on con Zod, de modo que un indicador incompleto falla al iniciar la aplicaci\'on y no en el momento de ejecutar la extracci\'on.
 
 \subsection{Patr\'on Adapter}
 \label{sec:patron-adapter}
@@ -956,10 +1068,62 @@ Cada etapa del flujo ETL se define mediante un \textit{adapter} abstracto que es
   \item \textbf{CalculatorAdapter} (opcional): Calcula un resultado agregado a partir de los datos almacenados y lo persiste en una colecci\'on separada.
 \end{itemize}
 
+La Figura~\ref{fig:diagrama-adapters} presenta estos \textit{adapters} con sus m\'etodos abstractos, junto con las implementaciones concretas disponibles para la etapa de obtenci\'on de datos.
+
 \begin{figure}[H]
   \centering
-  % TODO: Insertar diagrama de clases de los adapters
-  % \includegraphics[width=0.9\textwidth]{img/diagrama-adapters.png}
+  \begin{tikzpicture}[
+    font=\scriptsize,
+    clase/.style={draw, rectangle split, rectangle split parts=2,
+                  rectangle split part align=left, align=left,
+                  text width=34mm, inner sep=3pt},
+    abstracta/.style={clase, fill=black!5},
+    herencia/.style={-{Triangle[open, length=2.5mm, width=2.5mm]}},
+    nota/.style={font=\scriptsize\itshape}
+  ]
+
+  % --- Fila 1: adapters abstractos ---
+  \node[abstracta] (fetch) {
+    \textbf{\textlangle\textlangle abstract\textrangle\textrangle}\\\textbf{FetchAdapter}
+    \nodepart{two}\texttt{fetch(url): Promise}};
+  \node[abstracta, right=5mm of fetch] (parse) {
+    \textbf{\textlangle\textlangle abstract\textrangle\textrangle}\\\textbf{ParseAdapter}
+    \nodepart{two}\texttt{extract(raw): T[]}};
+  \node[abstracta, right=5mm of parse] (mapper) {
+    \textbf{\textlangle\textlangle abstract\textrangle\textrangle}\\\textbf{MapperAdapter}
+    \nodepart{two}\texttt{map(input): Output}};
+
+  % --- Fila 2 ---
+  \node[abstracta, below=7mm of fetch] (hash) {
+    \textbf{\textlangle\textlangle abstract\textrangle\textrangle}\\\textbf{HashAdapter}
+    \nodepart{two}\texttt{generate(data): string}};
+  \node[abstracta, below=7mm of parse] (storage) {
+    \textbf{\textlangle\textlangle abstract\textrangle\textrangle}\\\textbf{StorageAdapter}
+    \nodepart{two}\texttt{save(data): Promise}\\\texttt{find(): Promise}};
+  \node[abstracta, below=7mm of mapper] (calc) {
+    \textbf{\textlangle\textlangle abstract\textrangle\textrangle}\\\textbf{CalculatorAdapter}
+    \nodepart{two}\texttt{calculate(data): R}\\\texttt{save(r, ind, mod)}\\\texttt{find(ind, mod)}};
+
+  % --- Implementaciones concretas del FetchAdapter ---
+  \node[clase, below=12mm of hash.south west, anchor=north west,
+        text width=76mm] (concretos) {
+    \textbf{Implementaciones concretas de FetchAdapter}
+    \nodepart{two}
+    \texttt{RequestPromiseAdapter} --- HTML est\'atico\\
+    \texttt{JsonFetchAdapter} --- API JSON\\
+    \texttt{PuppeteerAdapter} --- p\'aginas renderizadas con Javascript\\
+    \texttt{DownloadAdapter} --- descarga de archivos CSV y XLSX};
+
+  % Se rutea por la izquierda para no atravesar la caja de HashAdapter.
+  \draw[herencia] (concretos.west) -- ++(-4mm,0) |- (fetch.west);
+
+  \node[nota, right=5mm of concretos, text width=32mm, align=left] {
+    Cada indicador declara\\
+    una implementaci\'on\\
+    por cada \textit{adapter};\\
+    el \textit{Calculator} es\\
+    el \'unico opcional.};
+  \end{tikzpicture}
   \caption{Diagrama de clases de los \textit{adapters} con sus m\'etodos abstractos}
   \label{fig:diagrama-adapters}
 \end{figure}
@@ -986,10 +1150,54 @@ Todos los m\'odulos extienden la clase abstracta \textit{ScrapeBase}, la cual im
   \item Si existe un \textit{CalculatorAdapter}, se calcula el resultado agregado y se almacena en la colecci\'on \texttt{indicator-results}, solo si el resultado difiere del \'ultimo almacenado.
 \end{enumerate}
 
+La Figura~\ref{fig:diagrama-secuencia} representa esta secuencia y las decisiones que la condicionan: la interrupci\'on del flujo cuando la extracci\'on no devuelve registros, el descarte de duplicados en el almacenamiento y la escritura condicional del resultado calculado.
+
 \begin{figure}[H]
   \centering
-  % TODO: Insertar diagrama de secuencia del flujo ETL completo
-  % \includegraphics[width=0.9\textwidth]{img/diagrama-secuencia-etl.png}
+  \begin{tikzpicture}[
+    font=\scriptsize,
+    actor/.style={draw, fill=black!5, minimum height=6mm, inner xsep=3pt,
+                  align=center},
+    linea/.style={dashed, gray},
+    msj/.style={-{Stealth[length=1.8mm]}},
+    ret/.style={-{Stealth[length=1.8mm]}, dashed}
+  ]
+
+  % --- Lineas de vida ---
+  \def\lifeline{-88mm}
+  \node[actor] (a1) at (0,0) {Cliente\\API};
+  \node[actor] (a2) at (2.6,0) {ScrapeBase};
+  \node[actor] (a3) at (5.4,0) {Fetch\\Adapter};
+  \node[actor] (a4) at (7.9,0) {Parse\\Adapter};
+  \node[actor] (a5) at (10.2,0) {Mapper +\\Hash};
+  \node[actor] (a6) at (12.6,0) {Storage +\\Calculator};
+
+  \foreach \n in {a1,a2,a3,a4,a5,a6}
+    \draw[linea] (\n.south) -- ++(0,\lifeline);
+
+  % --- Mensajes ---
+  \draw[msj] ($(a1.south)+(0,-8mm)$) -- node[above]{\texttt{init(indicador, params)}}
+             ($(a2.south)+(0,-8mm)$);
+  \draw[msj] ($(a2.south)+(0,-13mm)$) -- node[above]{\texttt{fetch(url)}}
+             ($(a3.south)+(0,-13mm)$);
+  \draw[ret] ($(a3.south)+(0,-20mm)$) -- node[above]{datos crudos}
+             ($(a2.south)+(0,-20mm)$);
+  \draw[msj] ($(a2.south)+(0,-29mm)$) -- node[above]{\texttt{extract(raw)}}
+             ($(a4.south)+(0,-29mm)$);
+  \draw[ret] ($(a4.south)+(0,-36mm)$) -- node[above]{registros}
+             ($(a2.south)+(0,-36mm)$);
+  \draw[msj] ($(a2.south)+(0,-45mm)$) -- node[above]{\texttt{map()} y \texttt{generate()}}
+             ($(a5.south)+(0,-45mm)$);
+  \draw[ret] ($(a5.south)+(0,-52mm)$) -- node[above]{registros con clave}
+             ($(a2.south)+(0,-52mm)$);
+  \draw[msj] ($(a2.south)+(0,-61mm)$) -- node[above]{\texttt{save()} y \texttt{calculate()}}
+             ($(a6.south)+(0,-61mm)$);
+  \draw[ret] ($(a6.south)+(0,-68mm)$) -- node[above]{confirmaci\'on}
+             ($(a2.south)+(0,-68mm)$);
+  \draw[ret] ($(a2.south)+(0,-77mm)$) -- node[above]{datos procesados}
+             ($(a1.south)+(0,-77mm)$);
+
+  \end{tikzpicture}
   \caption{Diagrama de secuencia del flujo ETL completo}
   \label{fig:diagrama-secuencia}
 \end{figure}
@@ -1045,15 +1253,25 @@ Este m\'odulo extrae informaci\'on sobre simulacros de emergencia desde el sitio
 
 El m\'odulo contiene tres indicadores: simulacros del a\~no 2021, 2022 y 2023. Cada uno utiliza un \textit{ParseAdapter} basado en Cheerio que extrae la fecha, el tipo de evento y la ciudad de cada simulacro a partir de la estructura HTML de la p\'agina.
 
-Este m\'odulo adem\'as implementa un \textit{CalculatorAdapter} que calcula el total de simulacros y la cantidad por ciudad para cada a\~no, almacenando los resultados en la colecci\'on \texttt{indicator-results}. Antes de guardar un nuevo resultado, se compara con el \'ultimo almacenado para evitar registros duplicados cuando los datos de origen no ha cambiado.
+Este m\'odulo adem\'as implementa un \textit{CalculatorAdapter} que calcula el total de simulacros y la cantidad por regi\'on para cada a\~no, almacenando los resultados en la colecci\'on \texttt{indicator-results}. Antes de guardar un nuevo resultado, se compara con el \'ultimo almacenado para evitar registros duplicados cuando los datos de origen no han cambiado. La Figura~\ref{fig:datos-ed} muestra un registro tal como queda almacenado.
 
 \begin{figure}[H]
-  \centering
-  % TODO: Insertar ejemplo de datos extraidos por el modulo emergencias-desastres
-  % \includegraphics[width=0.9\textwidth]{img/ejemplo-datos-ed.png}
-  \caption{Ejemplo de los datos extra\'idos por el m\'odulo emergencias-desastres en formato JSON}
-  \label{fig:datos-ed}
+\begin{lstlisting}[style=codigo, language=JSON]
+{
+  "key": "2021-05-27-arica-y-parinacota",
+  "date": "2021-05-27T04:00:00.000Z",
+  "place": "Sismo Tsunami - Sector Educación",
+  "region": "Arica y Parinacota",
+  "regionSource": "Arica",
+  "indicator": "simulacros-2021",
+  "module": "emergencia-desastres"
+}
+\end{lstlisting}
+\caption{Registro almacenado por el m\'odulo emergencias-desastres}
+\label{fig:datos-ed}
 \end{figure}
+
+El campo \texttt{region} contiene el nombre can\'onico de la unidad territorial, mientras que \texttt{regionSource} conserva el texto tal como lo publica la fuente. Esta distinci\'on responde a que el MINEDUC nombra una misma regi\'on de formas distintas seg\'un el a\~no; el tratamiento de este problema se detalla en la secci\'on~\ref{sec:normalizacion}.
 
 \subsection{M\'odulo biblioteca-congreso-nacional}
 \label{sec:modulo-bcn}
@@ -1062,15 +1280,73 @@ Este m\'odulo contiene dos sub-indicadores que extraen informaci\'on desde la Bi
 
 El primer sub-indicador, \textit{tasa-pobreza-ingresos}, extrae la tasa de pobreza por ingresos desde la secci\'on de reportes comunales de la BCN. Se utiliza un \textit{ParseAdapter} basado en Cheerio que identifica la tabla de la secci\'on ``2.1 Tasa de Pobreza por ingresos'' y extrae las filas correspondientes a la comuna, la regi\'on y el pa\'is, junto con los valores de las encuestas CASEN 2017 y CASEN 2022.
 
-El segundo sub-indicador, \textit{organizaciones-comunitarias}, extrae la cantidad de organizaciones comunitarias por tipo y a\~no desde la API JSON de estad\'isticas territoriales de la BCN. Se utiliza un \textit{JsonFetchAdapter} que obtiene el JSON directamente y un \textit{ParseAdapter} que extrae el campo \texttt{datosTemaN} que contiene los datos hist\'oricos.
+El segundo sub-indicador, \textit{organizaciones-comunitarias}, extrae la cantidad de organizaciones comunitarias por tipo y a\~no desde la API JSON de estad\'isticas territoriales de la BCN. Se utiliza un \textit{JsonFetchAdapter} que obtiene el JSON directamente y un \textit{ParseAdapter} que extrae el campo \texttt{datosTemaN} que contiene los datos hist\'oricos. En la Figura~\ref{fig:datos-bcn} se muestra un registro de cada sub-indicador.
 
 \begin{figure}[H]
-  \centering
-  % TODO: Insertar ejemplo de datos extraidos por cada sub-indicador de BCN
-  % \includegraphics[width=0.9\textwidth]{img/ejemplo-datos-bcn.png}
-  \caption{Ejemplo de los datos extra\'idos por cada sub-indicador del m\'odulo BCN}
-  \label{fig:datos-bcn}
+\begin{lstlisting}[style=codigo, language=JSON]
+{
+  "key": "comuna-de-valdivia-biblioteca-congreso-nacional-...",
+  "unidadTerritorial": "Comuna de Valdivia",
+  "casen2017": 7.6,
+  "casen2022": 3.4,
+  "indicator": "valdivia-tasa-pobreza-ingresos",
+  "module": "biblioteca-congreso-nacional"
+}
+
+{
+  "key": "0yhktp6",
+  "anio": 2024,
+  "nDeJuntasDeVecinos": 175,
+  "nDeClubesDeportivos": 180,
+  "nDeCentrosUOrganizacionesDelAdultoMayor": 92,
+  "nDeCentrosDePadresYApoderados": 35,
+  "nCentrosCulturales": 37,
+  "nDeCompaniasDeBomberos": 10,
+  "nDeUnionesComunales": 2,
+  "nDeOrganizacionesComunitariasSumaTotal": 531,
+  "indicator": "valdivia-organizaciones-comunitarias",
+  "module": "biblioteca-congreso-nacional"
+}
+\end{lstlisting}
+\caption{Registros almacenados por cada sub-indicador del m\'odulo BCN: tasa de pobreza (arriba) y organizaciones comunitarias (abajo)}
+\label{fig:datos-bcn}
 \end{figure}
+
+Los porcentajes de pobreza se almacenan como valores num\'ericos, convertidos desde el formato decimal chileno con coma que utiliza la fuente. En el caso de las organizaciones comunitarias, el segundo registro se muestra abreviado: cada documento contiene once tipos de organizaci\'on, de los cuales se omiten aqu\'i los que no aportan a la lectura del ejemplo.
+
+\section{Normalizaci\'on de unidades territoriales}
+\label{sec:normalizacion}
+
+Durante la validaci\'on de los datos extra\'idos se detect\'o que la fuente del MINEDUC no aplica ninguna convenci\'on al nombrar el territorio donde se realiza cada simulacro. Una misma regi\'on aparece escrita de formas distintas seg\'un el a\~no de publicaci\'on, tal como se detalla en la Tabla~\ref{tab:grafias}.
+
+\begin{table}[H]
+\centering
+\caption{Grafias distintas de una misma regi\'on en la fuente del MINEDUC}
+\label{tab:grafias}
+\begin{tabular}{|p{4cm}|p{6.5cm}|c|}
+\hline
+\textbf{Regi\'on} & \textbf{Grafias en la fuente} & \textbf{Simulacros} \\
+\hline
+Arica y Parinacota & \texttt{Arica} $\cdot$ \texttt{Arica y Parinacota} & 2 \\
+\hline
+Magallanes & \texttt{Magallanes} $\cdot$ \texttt{Magallanes y de la Ant\'artica Chilena} & 3 \\
+\hline
+La Araucan\'ia & \texttt{La Araucan\'ia} $\cdot$ \texttt{Lonquimay-Araucan\'ia} & 2 \\
+\hline
+O'Higgins & \texttt{O'Higgins} $\cdot$ \texttt{O´Higgins} & 2 \\
+\hline
+Ays\'en & \texttt{Ays\'en} $\cdot$ \texttt{Ays\'en- Cochrane} & 3 \\
+\hline
+\end{tabular}
+\end{table}
+
+El caso de O'Higgins es particularmente ilustrativo, porque la diferencia entre ambas grafias es un \'unico car\'acter invisible a simple vista: un ap\'ostrofo tipogr\'afico frente a un acento agudo. Sin un tratamiento expl\'icito, los veintinueve simulacros extra\'idos producen veinti\'un territorios distintos, en un pa\'is que tiene diecis\'eis regiones.
+
+Es importante precisar el alcance real del problema. Dentro de un mismo a\~no ninguna regi\'on se repite, por lo que los totales por indicador no se ven afectados: los conteos de 9, 11 y 9 simulacros para 2021, 2022 y 2023 son correctos con o sin normalizaci\'on. La colisi\'on solo se manifiesta al agregar los datos entre a\~nos, que es precisamente lo que requiere el indicador \textit{Tsunami Drills} del modelo CORE --- definido como la suma de simulacros en un per\'iodo --- y lo que muestran los \textit{dashboards} de Metabase. Se trata, por lo tanto, de un defecto latente antes que de un error en los resultados obtenidos.
+
+La soluci\'on adoptada consiste en asignar a cada texto territorial su regi\'on can\'onica mediante coincidencia sobre el nombre sin diacr\'iticos ni may\'usculas, de modo que los prefijos y sufijos que agrega la fuente (\texttt{Regi\'on de}, \texttt{- Provincia de San Antonio}) no impidan la identificaci\'on. El registro almacenado conserva ambos valores: el nombre can\'onico en el campo \texttt{region} y el texto original en \texttt{regionSource}, lo que permite auditar la extracci\'on contra la fuente sin perder la capacidad de agregar los datos.
+
+Un territorio que no coincida con ninguna de las diecis\'eis regiones se conserva sin modificar y se registra en el \textit{log}. Esta decisi\'on es deliberada: descartar el dato ocultar\'ia que la fuente introdujo un territorio nuevo o cambi\'o su forma de nombrarlos, mientras que conservarlo hace visible el cambio sin interrumpir la extracci\'on.
 
 \section{Manejo de errores}
 \label{sec:errores}
@@ -1121,12 +1397,31 @@ GET & \texttt{/biblioteca-congreso-nacional/:indicator} & Ejecuta la extracci\'o
 
 Cada \textit{endpoint} valida que el indicador solicitado exista antes de ejecutar la extracci\'on. En caso de que no exista, se retorna un error 404 con un mensaje descriptivo.
 
+La API se documenta mediante una colecci\'on Bruno en formato OpenCollection, versionada junto al c\'odigo en el directorio \texttt{docs/api/}. A diferencia de una documentaci\'on redactada aparte, esta colecci\'on es ejecutable: cada \textit{endpoint} queda descrito en un archivo YAML que puede ser invocado directamente para verificar la respuesta del sistema. La Figura~\ref{fig:bruno-collection} muestra la definici\'on de uno de ellos.
+
 \begin{figure}[H]
-  \centering
-  % TODO: Insertar captura de pantalla de la coleccion Bruno con los endpoints documentados
-  % \includegraphics[width=0.9\textwidth]{img/bruno-collection.png}
-  \caption{Colecci\'on Bruno con los \textit{endpoints} documentados}
-  \label{fig:bruno-collection}
+\begin{lstlisting}[style=codigo, language=JSON]
+info:
+  name: Simulacros 2021
+  type: http
+  seq: 2
+
+http:
+  method: GET
+  url: "{{baseUrl}}/emergencia-desastres/simulacros-2021"
+
+settings:
+  encodeUrl: true
+
+docs: |-
+  Ejecuta el scraping de simulacros del año 2021 desde
+  MINEDUC (Wayback Machine).
+
+  Extrae fecha, lugar y región de cada simulacro y los
+  almacena en MongoDB.
+\end{lstlisting}
+\caption{Definici\'on de un \textit{endpoint} en la colecci\'on Bruno OpenCollection}
+\label{fig:bruno-collection}
 \end{figure}
 
 \section{Testing}
@@ -1140,7 +1435,7 @@ En segundo lugar, se crearon pruebas de integraci\'on que verifican el flujo ETL
 
 En tercer lugar, se crearon pruebas de validaci\'on que comparan los datos extra\'idos contra datos de referencia verificados manualmente. Por ejemplo, se verifica que el formato decimal chileno (con coma) sea convertido correctamente al formato num\'erico est\'andar (con punto), que las fechas sean parseadas correctamente a partir de los meses en espa\~nol, y que los nombres de las unidades territoriales se preserven tal como aparecen en la fuente.
 
-El total de pruebas implementadas es de 49, distribuidas en 16 \textit{suites} de pruebas.
+El total de pruebas implementadas es de 76, distribuidas en 17 \textit{suites}. Entre ellas se incluye una bater\'ia dedicada a la normalizaci\'on de unidades territoriales descrita en la secci\'on~\ref{sec:normalizacion}, que verifica cada una de las grafias observadas en la fuente contra su regi\'on can\'onica.
 
 \section{Volatilidad de las fuentes web}
 \label{sec:volatilidad}
