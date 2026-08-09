@@ -14,8 +14,16 @@
 
 % --- Paquetes ---
 \usepackage{fontspec}
-\setmainfont{Times New Roman}
-\setmonofont[Scale=0.83]{Courier New}  % Courier para codigo fuente
+% La pauta exige Times New Roman (texto) y Courier (codigo). Ambas son fuentes
+% propietarias de Microsoft y no estan disponibles en Linux ni en las imagenes
+% de TeX Live, por lo que se usan como respaldo las clones libres de TeX Gyre,
+% metricamente identicas: Termes (Times) y Cursor (Courier).
+\IfFontExistsTF{Times New Roman}
+  {\setmainfont{Times New Roman}}
+  {\setmainfont{TeX Gyre Termes}}
+\IfFontExistsTF{Courier New}
+  {\setmonofont[Scale=0.83]{Courier New}}
+  {\setmonofont[Scale=0.83]{TeX Gyre Cursor}}
 \usepackage[spanish]{babel}
 \usepackage[letterpaper,
             top=2.5cm,
@@ -37,6 +45,7 @@
 \usepackage{fancyhdr}
 \usepackage{etoolbox}
 \usepackage{url}
+\usepackage{csquotes}              % Requerido por biblatex con babel
 \usepackage[backend=biber,
             style=apa,
             sorting=nyt,
@@ -53,7 +62,15 @@
   \renewcommand{\contentsname}{\'INDICE}%
   \renewcommand{\listtablename}{\'INDICE DE TABLAS}%
   \renewcommand{\listfigurename}{\'INDICE DE FIGURAS}%
+  % babel-spanish nombra las tablas como "Cuadro"; la pauta exige "Tabla".
+  \renewcommand{\tablename}{Tabla}%
 }
+
+% --- Numeracion de tablas y figuras consecutiva en todo el documento ---
+% La clase report numera por capitulo (Tabla 2.1, Figura 3.4); la pauta exige
+% numeracion arabiga correlativa a lo largo del documento completo.
+\counterwithout{table}{chapter}
+\counterwithout{figure}{chapter}
 
 % --- Formato de titulos (TNR 14pt, negrita, mayusculas, margen izquierdo) ---
 \titleformat{\chapter}
