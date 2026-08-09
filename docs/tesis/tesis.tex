@@ -663,6 +663,51 @@ Para la elecci\'on de las herramientas de desarrollo a utilizar se consideraron 
   \item Tecnolog\'ias con las cuales ya se posee cierta experiencia.
 \end{itemize}
 
+Con la finalidad de que el entorno de desarrollo sea reproducible por el equipo de investigaci\'on, en la Tabla~\ref{tab:stack} se declaran las versiones exactas con las que fue construido y validado el sistema. Las secciones siguientes justifican cada una de estas elecciones.
+
+\begin{table}[H]
+\centering
+\caption{Stack tecnol\'ogico y versiones utilizadas}
+\label{tab:stack}
+\begin{tabular}{|p{4cm}|p{4.5cm}|p{3cm}|}
+\hline
+\textbf{Componente} & \textbf{Tecnolog\'ia} & \textbf{Versi\'on} \\
+\hline
+Lenguaje & TypeScript & 5.9.3 \\
+\hline
+Entorno de ejecuci\'on & Node.js & 22 LTS (\textit{jod}) \\
+\hline
+Base de datos & MongoDB & 6 \\
+\hline
+\textit{Framework} web & Express & 4.22.2 \\
+\hline
+{\itshape ODM} & Mongoose & 6.13.10 \\
+\hline
+\textit{Parsing} de HTML & Cheerio & 1.2.0 \\
+\hline
+Cliente HTTP & request-promise & 4.2.6 \\
+\hline
+Navegador automatizado & Puppeteer & 24.40.0 \\
+\hline
+Validaci\'on de esquemas & Zod & 4.3.6 \\
+\hline
+\textit{Logging} & Pino & 8.21.0 \\
+\hline
+Tareas programadas & node-cron & 4.2.1 \\
+\hline
+Pruebas & Jest & 29.7.0 \\
+\hline
+Contenedores & Docker Compose & \textit{Compose Specification} \\
+\hline
+Visualizaci\'on & Metabase & \texttt{latest} \\
+\hline
+Control de versiones & Git & --- \\
+\hline
+\end{tabular}
+\end{table}
+
+La versi\'on de Node.js se fija mediante el archivo \texttt{.nvmrc} con el alias \texttt{lts/jod}, que corresponde a la l\'inea 22 de soporte extendido. Esta decisi\'on responde a que las versiones recientes de Cheerio y de sus dependencias transitivas requieren caracter\'isticas de m\'odulos ECMAScript no disponibles en las l\'ineas anteriores.
+
 \section{Lenguaje de programaci\'on}
 \label{sec:lenguaje}
 
@@ -675,7 +720,7 @@ La elecci\'on de este lenguaje es debido principalmente a la gran popularidad qu
 \section{Base de datos}
 \label{sec:base-datos}
 
-Se decidi\'o utilizar una base de datos no relacional. Espec\'ificamente la base de datos MongoDB.
+Se decidi\'o utilizar una base de datos no relacional. Espec\'ificamente la base de datos MongoDB \parencite{mongodb}.
 
 La elecci\'on de esta base de datos es debido a la informaci\'on que se desea almacenar. Los datos deseados no poseen un esquema previamente definido, ya que cada indicador del modelo CORE posee una estructura distinta. Por lo que utilizar una base de datos relacional (como MySQL o PostgreSQL) aumentar\'ia la complejidad en caso de querer realizar cambios en una etapa avanzada del proyecto.
 
@@ -684,7 +729,7 @@ Adicionalmente, MongoDB permite almacenar documentos con estructuras heterog\'en
 \section{Entorno de ejecuci\'on}
 \label{sec:entorno}
 
-El entorno de ejecuci\'on predilecto actualmente para el desarrollo de programas con Javascript/TypeScript es Node.js.
+El entorno de ejecuci\'on predilecto actualmente para el desarrollo de programas con Javascript/TypeScript es Node.js \parencite{nodejs}.
 
 Node.js posee una madurez de m\'as de trece a\~nos. Est\'a dise\~nado para crear aplicaciones escalables y orientado al uso de eventos as\'incronos.
 
@@ -699,7 +744,7 @@ A continuaci\'on se muestra una lista de las librer\'ias principales y secundari
   \item \textbf{cheerio}: Permite analizar la estructura de las p\'aginas web permitiendo la extracci\'on y manipulaci\'on de los datos. Se utiliza para el \textit{parsing} de HTML en los m\'odulos que requieren \textit{web scraping}.
   \item \textbf{express}: Es actualmente el \textit{framework} m\'as popular de Node.js. Permite el manejo de peticiones HTTP y desarrollo de APIs.
   \item \textbf{mongoose}: Es un ODM que permite escribir consultas y crear esquemas para la base de datos MongoDB. Se utiliza para definir los modelos de datos de cada indicador y gestionar el almacenamiento.
-  \item \textbf{request-promise}: Permite hacer llamadas HTTP. Se utiliza para obtener el HTML de una p\'agina web o realizar peticiones a APIs externas.
+  \item \textbf{request-promise}: Permite hacer llamadas HTTP. Se utiliza para obtener el HTML de una p\'agina web o realizar peticiones a APIs externas.\footnote{El desarrollo inicial del prototipo utilizaba la librer\'ia \textit{request}, de interfaz basada en \textit{callbacks}. Se migr\'o a \textit{request-promise}, que envuelve la misma implementaci\'on exponiendo promesas, con el fin de integrarla con la sintaxis \texttt{async/await} que emplea el flujo ETL. Ambas librer\'ias fueron declaradas \textit{deprecated} por sus autores en febrero de 2020 \parencite{requestpromise}; su reemplazo se aborda en la secci\'on~\ref{sec:trabajo-futuro} como deuda t\'ecnica.}
   \item \textbf{puppeteer}: Permite la automatizaci\'on de un navegador web. Se utiliza para extraer informaci\'on de p\'aginas que renderizan su contenido mediante Javascript, donde \textit{cheerio} no es suficiente.
   \item \textbf{zod}: Librer\'ia de validaci\'on y declaraci\'on de esquemas. Se utiliza para validar la configuraci\'on de los indicadores en tiempo de construcci\'on, asegurando que cada indicador posea los campos requeridos antes de ser registrado en el sistema.
   \item \textbf{pino}: Librer\'ia de \textit{logging} de alto rendimiento. Se utiliza como \textit{logger} centralizado del sistema, generando registros tanto en consola (durante el desarrollo) como en archivos de log para auditor\'ia.
@@ -720,7 +765,7 @@ A continuaci\'on se muestra una lista de las librer\'ias principales y secundari
 \section{Contenedores}
 \label{sec:contenedores}
 
-Para facilitar el despliegue y la reproducibilidad del entorno de desarrollo, se utiliza Docker junto con Docker Compose.
+Para facilitar el despliegue y la reproducibilidad del entorno de desarrollo, se utiliza Docker junto con Docker Compose \parencite{docker}.
 
 Docker permite crear contenedores aislados que encapsulan la aplicaci\'on y sus dependencias, mientras que Docker Compose permite definir y orquestar m\'ultiples servicios de forma declarativa. En el caso de este proyecto, se definen tres servicios: la base de datos MongoDB, una interfaz de administraci\'on (Mongo Express) y una herramienta de visualizaci\'on de datos (Metabase).
 
@@ -729,7 +774,7 @@ Esta decisi\'on permite que cualquier integrante del equipo de investigaci\'on p
 \section{Visualizaci\'on de datos}
 \label{sec:visualizacion}
 
-Para la visualizaci\'on de los datos almacenados se utiliza Metabase, una herramienta de \textit{Business Intelligence} de c\'odigo abierto que permite crear \textit{dashboards} y consultas sobre bases de datos sin necesidad de escribir c\'odigo.
+Para la visualizaci\'on de los datos almacenados se utiliza Metabase \parencite{metabase}, una herramienta de \textit{Business Intelligence} de c\'odigo abierto que permite crear \textit{dashboards} y consultas sobre bases de datos sin necesidad de escribir c\'odigo.
 
 Metabase se conecta directamente a MongoDB y permite a los investigadores visualizar los indicadores extra\'idos por medio de gr\'aficos, tablas y filtros. Los \textit{dashboards} se actualizan autom\'aticamente cada vez que se consultan, reflejando los datos m\'as recientes almacenados en la base de datos.
 
@@ -749,23 +794,23 @@ En este caso, se opt\'o por utilizar Git. Un sistema de control de versiones cre
 \chapter{DISE\~NO DE PROTOTIPO}
 \label{ch:prototipo}
 
-El tema central que se busca en el desarrollo de la aplicaci\'on es realizar de manera correcta la extracci\'on de los indicadores previamente descritos. Para esto, antes de comenzar con la arquitectura final del software, se decidi\'o crear un prototipo encargado de extraer los datos de alguna p\'agina en particular que entregue informaci\'on de alguna dimensi\'on.
+Antes de comprometerse con una arquitectura definitiva, se construy\'o un prototipo cuyo prop\'osito no era producir software de producci\'on sino responder emp\'iricamente una pregunta de dise\~no: ?`qu\'e parte del proceso ETL var\'ia entre una fuente de datos y otra, y qu\'e parte permanece constante? La respuesta a esa pregunta determina qu\'e debe ser fijo en el n\'ucleo del sistema y qu\'e debe ser intercambiable.
 
-El prototipo inicial permiti\'o identificar los desaf\'ios principales del proceso de extracci\'on: cada p\'agina web posee su propia estructura HTML, los formatos de datos var\'ian entre fuentes (tablas HTML, archivos CSV, APIs JSON), y la transformaci\'on de los datos debe adaptarse a cada caso. Estas observaciones fueron fundamentales para dise\~nar la arquitectura modular que se describe en el siguiente cap\'itulo.
+Este cap\'itulo describe el prototipo construido, los artefactos que produjo y las limitaciones que revel\'o. Las decisiones arquitect\'onicas que se derivan de estas limitaciones se detallan en el Cap\'itulo~\ref{ch:desarrollo}.
 
-Los aprendizajes obtenidos del prototipo se pueden resumir en los siguientes puntos:
+\section{Alcance del prototipo}
+\label{sec:alcance-prototipo}
 
-En primer lugar, la dificultad en el proceso de ETL radica principalmente en la extracci\'on de la informaci\'on. Cada p\'agina web posee su formato HTML definido, por lo que el c\'odigo escrito para extraer esta informaci\'on debe adaptarse a cada p\'agina web y en ciertos casos a cada dato que se quiere extraer.
+El prototipo se acot\'o deliberadamente a dos indicadores de la dimensi\'on sociocomunitaria --- tasa de pobreza y poblaci\'on carente de servicios b\'asicos --- extra\'idos desde una \'unica fuente. Esta restricci\'on fue intencional: con dos indicadores distintos sobre una misma fuente es posible observar qu\'e c\'odigo se repite entre ambos y cu\'al es espec\'ifico de cada uno, que es precisamente la informaci\'on que se buscaba.
 
-En segundo lugar, los datos extra\'idos se encuentran en un formato gen\'erico que impide su correcto almacenamiento en la base de datos. Por ende deben ser transformados seg\'un el tipo de dato esperado (num\'erico, fecha, texto).
+El prototipo cubri\'o las tres etapas del proceso ETL de extremo a extremo: obtenci\'on del HTML, extracci\'on de los valores y persistencia en MongoDB. No se implementaron en esta etapa la programaci\'on de tareas peri\'odicas, el manejo de errores tipados ni la exposici\'on mediante una API, por no ser necesarios para responder la pregunta de dise\~no planteada.
 
-En tercer lugar, el almacenamiento debe contemplar la evitaci\'on de duplicados, ya que el sistema ejecutar\'a la extracci\'on de forma peri\'odica y no debe insertar registros que ya existen.
-
-Estos aprendizajes motivaron la decisi\'on de dise\~nar una arquitectura basada en el patr\'on Adapter, donde cada etapa del proceso (extracci\'on, transformaci\'on, almacenamiento) es intercambiable seg\'un la fuente de datos.
-
-A continuaci\'on se presentan los artefactos generados durante el desarrollo del prototipo inicial, los cuales sirvieron como base para las decisiones arquitect\'onicas posteriores.
+\section{Fuentes de datos exploradas}
+\label{sec:fuentes-exploradas}
 
 Se realiz\'o una b\'usqueda manual en internet para encontrar p\'aginas web que dispusieran de informaci\'on pertinente a los indicadores. Si bien se encontraron diversas fuentes, la mayor\'ia ya se encontraba en formatos descargables. En la Figura~\ref{fig:proto-pobreza} y Figura~\ref{fig:proto-servicios} se muestran ejemplos de la informaci\'on sociocomunitaria encontrada.
+
+La observaci\'on relevante de esta exploraci\'on es que ambos indicadores, pese a provenir del mismo portal y presentarse con el mismo formato visual, no compart\'ian estructura HTML: difer\'ian en la cantidad de columnas, en el orden de las filas y en la forma de expresar los valores. Es decir, la variabilidad entre fuentes no depende del proveedor de los datos sino de cada p\'agina en particular.
 
 \begin{figure}[H]
   \centering
@@ -781,7 +826,10 @@ Se realiz\'o una b\'usqueda manual en internet para encontrar p\'aginas web que 
   \label{fig:proto-servicios}
 \end{figure}
 
-Para el modelo de la base de datos, se comenz\'o con la idea de almacenar la informaci\'on de la p\'agina web como tal, para luego ir desglosando la informaci\'on en modelos m\'as espec\'ificos. En la Figura~\ref{fig:proto-interface-web} se presenta la \textit{interface} inicial.
+\section{Modelo de datos inicial}
+\label{sec:modelo-datos-inicial}
+
+Para el modelo de la base de datos, se comenz\'o con la idea de almacenar la informaci\'on de la p\'agina web como tal --- URL de origen y fecha de extracci\'on --- para luego ir desglosando la informaci\'on en modelos m\'as espec\'ificos. En la Figura~\ref{fig:proto-interface-web} se presenta la \textit{interface} inicial.
 
 \begin{figure}[H]
   \centering
@@ -790,7 +838,7 @@ Para el modelo de la base de datos, se comenz\'o con la idea de almacenar la inf
   \label{fig:proto-interface-web}
 \end{figure}
 
-Una vez obtenida la informaci\'on base, se continu\'o con los modelos para cada indicador (ver Figuras~\ref{fig:proto-interface-pobreza} y~\ref{fig:proto-interface-servicios}).
+Una vez obtenida la informaci\'on base, se continu\'o con los modelos para cada indicador (ver Figuras~\ref{fig:proto-interface-pobreza} y~\ref{fig:proto-interface-servicios}). Cada indicador requiri\'o su propia \textit{interface}, ya que los campos de la tasa de pobreza no coinciden con los de la poblaci\'on carente de servicios b\'asicos. Esta constataci\'on --- que el esquema de datos es propio de cada indicador y no puede unificarse --- fue el argumento decisivo para optar por una base de datos documental por sobre una relacional, seg\'un se justific\'o en la secci\'on~\ref{sec:base-datos}.
 
 \begin{figure}[H]
   \centering
@@ -806,6 +854,9 @@ Una vez obtenida la informaci\'on base, se continu\'o con los modelos para cada 
   \label{fig:proto-interface-servicios}
 \end{figure}
 
+\section{Clases de extracci\'on}
+\label{sec:clases-extraccion-prototipo}
+
 Para la extracci\'on, se crearon tres clases (ver Figura~\ref{fig:proto-clases}) encargadas de las distintas etapas del proceso.
 
 \begin{figure}[H]
@@ -814,6 +865,40 @@ Para la extracci\'on, se crearon tres clases (ver Figura~\ref{fig:proto-clases})
   \caption{Lista de clases utilizadas para la extracci\'on de la informaci\'on}
   \label{fig:proto-clases}
 \end{figure}
+
+La organizaci\'on de estas clases es en s\'i misma el hallazgo m\'as importante del prototipo. La clase \texttt{Getter} concentra la obtenci\'on del contenido de una URL y es reutilizable entre indicadores. En cambio, \texttt{ScrapePoverty} y \texttt{ScrapePopulation} son una clase completa por cada indicador, y dentro de cada una conviven la extracci\'on de los valores desde el HTML, su transformaci\'on al tipo de dato esperado y su persistencia en la base de datos.
+
+Esta estructura presenta dos problemas que impiden escalarla a los veinti\'un indicadores del modelo CORE. El primero es que agregar un indicador obliga a escribir una clase nueva que reimplementa las tres etapas desde cero, aunque dos de ellas sean casi id\'enticas a las ya existentes. El segundo es que, al estar las tres etapas mezcladas en un mismo m\'etodo, no es posible probar la extracci\'on de forma aislada ni sustituir una etapa sin reescribir las otras: un cambio en la estructura HTML de la fuente obliga a intervenir el mismo c\'odigo que realiza el guardado.
+
+\section{Aprendizajes y transici\'on a la arquitectura final}
+\label{sec:aprendizajes-prototipo}
+
+El prototipo permiti\'o distinguir con evidencia qu\'e var\'ia entre indicadores y qu\'e permanece constante. Lo que var\'ia es la forma de acceder a la fuente, la manera de localizar los datos dentro del contenido obtenido, la transformaci\'on al tipo esperado y el criterio que identifica un registro como \'unico. Lo que permanece constante es el orden en que estas etapas se ejecutan.
+
+Esta distinci\'on es la que define la arquitectura del sistema final: la secuencia de etapas pertenece al n\'ucleo y se escribe una sola vez, mientras que el contenido de cada etapa se declara por indicador. La Tabla~\ref{tab:prototipo-arquitectura} resume c\'omo cada limitaci\'on observada en el prototipo se traduce en un mecanismo concreto de la arquitectura final.
+
+\begin{table}[H]
+\centering
+\caption{Limitaciones del prototipo y su resoluci\'on en la arquitectura final}
+\label{tab:prototipo-arquitectura}
+\begin{tabular}{|p{6cm}|p{6cm}|}
+\hline
+\textbf{Limitaci\'on observada en el prototipo} & \textbf{Mecanismo en la arquitectura final} \\
+\hline
+El acceso a la fuente var\'ia (HTML est\'atico, JSON, archivo descargable) y estaba resuelto solo para HTML & \textit{FetchAdapter} con implementaciones concretas por tipo de conexi\'on (secci\'on~\ref{sec:tipos-conexion}) \\
+\hline
+Localizar los datos exige c\'odigo distinto por cada p\'agina, incluso dentro de un mismo portal & \textit{ParseAdapter} declarado por indicador (secci\'on~\ref{sec:patron-adapter}) \\
+\hline
+Los valores se obtienen como texto gen\'erico y deben convertirse al tipo esperado & \textit{MapperAdapter} (secci\'on~\ref{sec:patron-adapter}) \\
+\hline
+La ejecuci\'on peri\'odica reinsertar\'ia registros ya existentes & \textit{HashAdapter} y restricci\'on de unicidad en el esquema (secci\'on~\ref{sec:duplicados}) \\
+\hline
+Las tres etapas conviven en una clase por indicador, impidiendo probarlas o sustituirlas por separado & \textit{ScrapeBase} orquesta la secuencia; cada m\'odulo solo aporta sus \textit{adapters} (secci\'on~\ref{sec:scrape-base}) \\
+\hline
+\end{tabular}
+\end{table}
+
+En s\'intesis, el prototipo no se descart\'o ni se traslad\'o tal cual: su estructura de tres etapas se conserv\'o como el flujo del sistema, pero se invirti\'o la relaci\'on entre lo gen\'erico y lo espec\'ifico. Donde el prototipo ten\'ia una clase por indicador que implementaba las tres etapas, la arquitectura final tiene una implementaci\'on \'unica de las tres etapas que recibe, por indicador, la porci\'on que efectivamente cambia.
 
 
 % =============================================================================
