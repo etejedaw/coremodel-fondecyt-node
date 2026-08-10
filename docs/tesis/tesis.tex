@@ -344,7 +344,7 @@ Por lo tanto, algunos estudios afirman que el uso de un modelo de resiliencia co
 \section{Modelo CORE}
 \label{sec:modelo-core}
 
-El modelo CORE es un modelo de resiliencia comunitaria que est\'a centrado en las costas chilenas, utiliza dimensiones f\'isicas, ambientales y sociales donde se encuentran veinti\'un indicadores.
+El modelo CORE es un modelo de resiliencia comunitaria que est\'a centrado en las costas chilenas, utiliza dimensiones f\'isicas, ambientales y sociales donde se encuentran 21 indicadores.
 
 Su iniciativa nace, tal como indica \textcite{villagra2017}, debido a la informaci\'on sobre los indicadores que permiten a las ciudades enfrentar y adaptarse mejor a los impactos de los tsunamis, siendo esta informaci\'on especialmente escasa para los pa\'ises en desarrollo como Chile.
 
@@ -937,7 +937,7 @@ Para la extracci\'on, se crearon tres clases (ver Figura~\ref{fig:proto-clases})
 
 La organizaci\'on de estas clases es en s\'i misma el hallazgo m\'as importante del prototipo. La clase \texttt{Getter} concentra la obtenci\'on del contenido de una URL y es reutilizable entre indicadores. En cambio, \texttt{ScrapePoverty} y \texttt{ScrapePopulation} son una clase completa por cada indicador, y dentro de cada una conviven la extracci\'on de los valores desde el HTML, su transformaci\'on al tipo de dato esperado y su persistencia en la base de datos.
 
-Esta estructura presenta dos problemas que impiden escalarla a los veinti\'un indicadores del modelo CORE. El primero es que agregar un indicador obliga a escribir una clase nueva que reimplementa las tres etapas desde cero, aunque dos de ellas sean casi id\'enticas a las ya existentes. El segundo es que, al estar las tres etapas mezcladas en un mismo m\'etodo, no es posible probar la extracci\'on de forma aislada ni sustituir una etapa sin reescribir las otras: un cambio en la estructura HTML de la fuente obliga a intervenir el mismo c\'odigo que realiza el guardado.
+Esta estructura presenta dos problemas que impiden escalarla a los 21 indicadores del modelo CORE. El primero es que agregar un indicador obliga a escribir una clase nueva que reimplementa las tres etapas desde cero, aunque dos de ellas sean casi id\'enticas a las ya existentes. El segundo es que, al estar las tres etapas mezcladas en un mismo m\'etodo, no es posible probar la extracci\'on de forma aislada ni sustituir una etapa sin reescribir las otras: un cambio en la estructura HTML de la fuente obliga a intervenir el mismo c\'odigo que realiza el guardado.
 
 \section{Aprendizajes y transici\'on a la arquitectura final}
 \label{sec:aprendizajes-prototipo}
@@ -1329,7 +1329,7 @@ El segundo sub-indicador, \textit{organizaciones-comunitarias}, extrae la cantid
 \label{fig:datos-bcn}
 \end{figure}
 
-Los porcentajes de pobreza se almacenan como valores num\'ericos, convertidos desde el formato decimal chileno con coma que utiliza la fuente. En el caso de las organizaciones comunitarias, el segundo registro se muestra abreviado: cada documento contiene once tipos de organizaci\'on, de los cuales se omiten aqu\'i los que no aportan a la lectura del ejemplo.
+Los porcentajes de pobreza se almacenan como valores num\'ericos, convertidos desde el formato decimal chileno con coma que utiliza la fuente. En el caso de las organizaciones comunitarias, el segundo registro se muestra abreviado: cada documento contiene 11 tipos de organizaci\'on, de los cuales se omiten aqu\'i los que no aportan a la lectura del ejemplo.
 
 \section{Normalizaci\'on de unidades territoriales}
 \label{sec:normalizacion}
@@ -1342,7 +1342,7 @@ Durante la validaci\'on de los datos extra\'idos se detect\'o que la fuente del 
 \label{tab:grafias}
 \begin{tabular}{|p{4cm}|p{6.5cm}|c|}
 \hline
-\textbf{Regi\'on} & \textbf{Grafias en la fuente} & \textbf{Simulacros} \\
+\textbf{Regi\'on} & \textbf{Graf\'ias en la fuente} & \textbf{Simulacros} \\
 \hline
 Arica y Parinacota & \texttt{Arica} $\cdot$ \texttt{Arica y Parinacota} & 2 \\
 \hline
@@ -1357,13 +1357,13 @@ Ays\'en & \texttt{Ays\'en} $\cdot$ \texttt{Ays\'en- Cochrane} & 3 \\
 \end{tabular}
 \end{table}
 
-El caso de O'Higgins es particularmente ilustrativo, porque la diferencia entre ambas graf\'ias es un \'unico car\'acter invisible a simple vista: un ap\'ostrofo tipogr\'afico frente a un acento agudo. Sin un tratamiento expl\'icito, los veintinueve simulacros extra\'idos producen veinti\'un territorios distintos, en un pa\'is que tiene diecis\'eis regiones.
+El caso de O'Higgins es particularmente ilustrativo, porque la diferencia entre ambas graf\'ias es un \'unico car\'acter invisible a simple vista: un ap\'ostrofo tipogr\'afico frente a un acento agudo. Sin un tratamiento expl\'icito, los 29 simulacros extra\'idos producen 21 territorios distintos, en un pa\'is que tiene 16 regiones.
 
 Es importante precisar el alcance real del problema. Dentro de un mismo a\~no ninguna regi\'on se repite, por lo que los totales por indicador no se ven afectados: los conteos de 9, 11 y 9 simulacros para 2021, 2022 y 2023 son correctos con o sin normalizaci\'on. La colisi\'on solo se manifiesta al agregar los datos entre a\~nos, que es precisamente lo que requiere el indicador \textit{Tsunami Drills} del modelo CORE --- definido como la suma de simulacros en un per\'iodo --- y lo que muestran los \textit{dashboards} de Metabase. Se trata, por lo tanto, de un defecto latente antes que de un error en los resultados obtenidos.
 
 La soluci\'on adoptada consiste en asignar a cada texto territorial su regi\'on can\'onica mediante coincidencia sobre el nombre sin diacr\'iticos ni may\'usculas, de modo que los prefijos y sufijos que agrega la fuente (\texttt{Regi\'on de}, \texttt{- Provincia de San Antonio}) no impidan la identificaci\'on. El registro almacenado conserva ambos valores: el nombre can\'onico en el campo \texttt{region} y el texto original en \texttt{regionSource}, lo que permite auditar la extracci\'on contra la fuente sin perder la capacidad de agregar los datos.
 
-Un territorio que no coincida con ninguna de las diecis\'eis regiones se conserva sin modificar y se registra en el \textit{log}. Esta decisi\'on es deliberada: descartar el dato ocultar\'ia que la fuente introdujo un territorio nuevo o cambi\'o su forma de nombrarlos, mientras que conservarlo hace visible el cambio sin interrumpir la extracci\'on.
+Un territorio que no coincida con ninguna de las 16 regiones se conserva sin modificar y se registra en el \textit{log}. Esta decisi\'on es deliberada: descartar el dato ocultar\'ia que la fuente introdujo un territorio nuevo o cambi\'o su forma de nombrarlos, mientras que conservarlo hace visible el cambio sin interrumpir la extracci\'on.
 
 \section{Manejo de errores}
 \label{sec:errores}
@@ -1612,7 +1612,7 @@ Los porcentajes fueron convertidos correctamente del formato decimal chileno (co
 \subsection{Organizaciones Comunitarias}
 \label{sec:resultado-orgs}
 
-El sub-indicador \textit{organizaciones-comunitarias} extrajo 17 registros correspondientes a los a\~nos 2008 a 2024 para la comuna de Valdivia. Cada registro contiene la cantidad de once tipos de organizaciones comunitarias: juntas de vecinos, clubes deportivos, centros de madres, centros culturales, centros del adulto mayor, uniones comunales, centros de padres y apoderados, compa\~n\'ias de bomberos, entre otros. La serie completa se presenta en la Figura~\ref{fig:metabase-organizaciones}.
+El sub-indicador \textit{organizaciones-comunitarias} extrajo 17 registros correspondientes a los a\~nos 2008 a 2024 para la comuna de Valdivia. Cada registro contiene la cantidad de 11 tipos de organizaciones comunitarias: juntas de vecinos, clubes deportivos, centros de madres, centros culturales, centros del adulto mayor, uniones comunales, centros de padres y apoderados, compa\~n\'ias de bomberos, entre otros. La serie completa se presenta en la Figura~\ref{fig:metabase-organizaciones}.
 
 \begin{figure}[H]
   \centering
@@ -1924,7 +1924,7 @@ La colecci\'on contiene una fila por unidad territorial. Los porcentajes se alma
 \section{Colecci\'on organizaciones-comunitarias}
 \label{app:datos-orgs}
 
-Cada documento agrupa los once tipos de organizaci\'on comunitaria de un a\~no. El ejemplo corresponde al a\~no 2024 e ilustra el problema descrito en la secci\'on~\ref{sec:resultado-orgs}: los campos que la fuente no informa quedan almacenados como cero.
+Cada documento agrupa los 11 tipos de organizaci\'on comunitaria de un a\~no. El ejemplo corresponde al a\~no 2024 e ilustra el problema descrito en la secci\'on~\ref{sec:resultado-orgs}: los campos que la fuente no informa quedan almacenados como cero.
 
 \begin{lstlisting}[style=codigo, language=JSON]
 {
