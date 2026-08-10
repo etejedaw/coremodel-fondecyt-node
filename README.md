@@ -301,7 +301,7 @@ Las credenciales se pueden sobrescribir con las variables de entorno `MB_ADMIN_E
 - Crea las questions declaradas en `provisioning.json`.
 - Crea el dashboard `Indicadores CORE` con esas questions.
 
-El script es idempotente: si la instancia ya está configurada inicia sesión, y si una question o el dashboard ya existen los actualiza en lugar de duplicarlos. Metabase persiste su configuración en el volumen `metabase-data`, por lo que el aprovisionamiento solo hace trabajo real la primera vez o después de un `docker compose down -v`.
+El script es idempotente: si la instancia ya está configurada inicia sesión, y si una question o el dashboard ya existen los actualiza en lugar de duplicarlos. La configuración de Metabase vive dentro del contenedor: `docker compose stop`/`start` la conserva, mientras que un `docker compose down` la descarta y el aprovisionamiento la recrea desde cero en el siguiente arranque, siempre con las credenciales declaradas.
 
 Para volver a ejecutarlo en cualquier momento:
 
