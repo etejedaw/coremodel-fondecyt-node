@@ -1,9 +1,5 @@
 import { Schema, model } from "mongoose";
 
-// `ScrapeBase.init` agrega `indicator` y `module` a cada registro antes de
-// guardarlo. Al no estar declarados aqui, `strict: true` los descartaba en
-// silencio y la coleccion quedaba sin forma de saber que indicador origino
-// cada documento.
 const EmergenciasDesastresSchema = new Schema(
 	{
 		key: { type: String, required: true, unique: true },

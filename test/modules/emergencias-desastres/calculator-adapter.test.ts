@@ -40,8 +40,6 @@ describe("TsunamiDrillsCalculatorAdapter", () => {
 	});
 
 	it("should aggregate drills that the source spelled differently", () => {
-		// Antes de normalizar, "Magallanes" y "Magallanes y de la Antartica
-		// Chilena" producian dos entradas separadas para una misma region.
 		const normalized = [
 			{ date: new Date(2021, 0, 1), place: "Simulacro", region: "Magallanes" },
 			{ date: new Date(2022, 0, 1), place: "Simulacro", region: "Magallanes" }

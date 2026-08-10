@@ -91,9 +91,6 @@ describe("Emergencias Desastres - ETL integration", () => {
 	it("should preserve the source spelling alongside the canonical region", () => {
 		const parsed = parseAdapter.extract(sampleHtml);
 		const mapped = parsed.map(item => mapper.map(item));
-
-		// La normalizacion no debe destruir el dato publicado: se conserva para
-		// poder auditar la extraccion contra la fuente original.
 		expect(mapped[0].regionSource).toBe("Arica");
 		expect(mapped[0].region).toBe("Arica y Parinacota");
 	});

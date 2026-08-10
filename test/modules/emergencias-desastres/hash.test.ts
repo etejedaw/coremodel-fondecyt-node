@@ -59,10 +59,6 @@ describe("EmergenciaDesastresHashAdapter", () => {
 			indicator: "simulacros-2022",
 			module: "emergencia-desastres"
 		};
-
-		// La fuente escribe la misma region con apostrofo tipografico y con
-		// acento agudo; ambas deben producir la misma clave para que el
-		// registro no se duplique.
 		const hash1 = adapter.generate({
 			...base,
 			region: "O'Higgins",

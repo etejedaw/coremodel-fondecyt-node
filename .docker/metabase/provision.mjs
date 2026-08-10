@@ -45,9 +45,7 @@ async function waitForMetabase() {
 		try {
 			const health = await api("GET", "/api/health");
 			if (health?.status === "ok") return;
-		} catch {
-			// Metabase todavia esta iniciando.
-		}
+		} catch {}
 		await sleep(5000);
 	}
 	throw new Error(`Metabase no respondio en ${MB_URL}`);
@@ -81,11 +79,6 @@ async function authenticate() {
 	console.log(`Instancia configurada. Administrador: ${ADMIN.email}`);
 }
 
-/**
- * Metabase incluye una base de datos de ejemplo y un dashboard de muestra al
- * instalarse. Se eliminan para que la instancia contenga unicamente los
- * indicadores del proyecto.
- */
 async function removeSampleContent() {
 	const { data: databases } = await api("GET", "/api/database");
 	const sample = databases.find(database => database.is_sample);

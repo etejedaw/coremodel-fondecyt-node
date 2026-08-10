@@ -1,8 +1,6 @@
 import { normalizeRegion } from "../../../src/modules/emergencias-desastres/regions";
 
 describe("normalizeRegion", () => {
-	// Cada caso es un texto territorial observado en las paginas del MINEDUC
-	// para los simulacros 2021, 2022 y 2023.
 	const cases: Array<[string, string]> = [
 		["Arica", "Arica y Parinacota"],
 		["Arica y Parinacota", "Arica y Parinacota"],
