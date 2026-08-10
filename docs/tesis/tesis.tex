@@ -287,7 +287,7 @@ Se desarroll\'o un sistema de extracci\'on, transformaci\'on y carga (ETL) basad
 
 Se implementaron cinco indicadores distribuidos en dos m\'odulos: simulacros de emergencia (dimensi\'on institucional) y tasa de pobreza junto con organizaciones comunitarias (dimensi\'on sociocomunitaria). El sistema extrajo un total de 29 registros de simulacros, datos de pobreza a nivel comunal, regional y nacional, y 17 registros hist\'oricos de organizaciones comunitarias. Los datos fueron validados contra extracciones manuales y se verific\'o el correcto funcionamiento de los mecanismos de evitaci\'on de duplicados.
 
-Los resultados se disponibilizan mediante una API REST y \textit{dashboards} en Metabase, permitiendo al equipo de investigaci\'on consultar los indicadores de forma directa sin procesamiento manual.
+Los resultados se ponen a disposici\'on mediante una API REST y \textit{dashboards} en Metabase, permitiendo al equipo de investigaci\'on consultar los indicadores de forma directa sin procesamiento manual.
 
 \textbf{Palabras clave:} resiliencia comunitaria, ETL, \textit{web scraping}, modelo CORE, indicadores sociocomunitarios, TypeScript.
 
@@ -380,7 +380,7 @@ Se desarroll\'o un sistema que permite la extracci\'on, transformaci\'on y carga
 
 Para esto, se debe comenzar con la premisa de que la informaci\'on requerida se encuentra dispersa en internet de diferentes formas. Algunas p\'aginas web permiten la extracci\'on de esa informaci\'on por medio de APIs, otras por medio descarga de archivos en formato CSV, XLSX, entre otros; adem\'as algunas p\'aginas no brindan facilidades para la obtenci\'on de su informaci\'on, por lo que es necesario utilizar t\'ecnicas de \textit{web scraping} para obtenerla.
 
-Una vez que la informaci\'on es extra\'ida, esta debe ser transformada. Para este proceso se debe recordar que cada c\'alculo var\'ia seg\'un el indicador. Por ejemplo en la dimensi\'on social del modelo CORE presentada por \textcite{villagra2017}, se puede encontrar un indicador llamado ``Tsunami Drills'' (Simulacros ante tsunamis) y se calcula con la suma de todos los simulacros realizados entre los a\~nos 2010 y 2015. Por lo tanto, los datos extra\'idos ser\'ian los simulacros entre estos a\~nos, pero la transformaci\'on ser\'ia la suma total de todos estos simulacros.
+Una vez que la informaci\'on es extra\'ida, esta debe ser transformada. Para este proceso se debe recordar que cada c\'alculo var\'ia seg\'un el indicador. Por ejemplo, en la dimensi\'on social del modelo CORE presentada por \textcite{villagra2017}, se puede encontrar un indicador llamado ``Tsunami Drills'' (Simulacros ante tsunamis) y se calcula con la suma de todos los simulacros realizados entre los a\~nos 2010 y 2015. Por lo tanto, los datos extra\'idos ser\'ian los simulacros entre estos a\~nos, pero la transformaci\'on ser\'ia la suma total de todos estos simulacros.
 
 Finalmente, una vez que la informaci\'on es transformada, esta debe ser almacenada en una base de datos para luego ser cargada en alguna plataforma. De tal manera que el equipo de investigaci\'on pueda acceder a esta f\'acilmente. La plataforma permite visualizar la informaci\'on por medio de distintos gr\'aficos y en funci\'on del tiempo, junto con informaci\'on extra como la web de donde fue obtenida y la fecha en la que fue extra\'ida.
 
@@ -388,7 +388,7 @@ Finalmente, una vez que la informaci\'on es transformada, esta debe ser almacena
 \subsection{Impacto del proyecto}
 \label{sec:impacto}
 
-La herramienta desarrollada genera un gran aporte a la investigaci\'on de resiliencia comunitaria, especialmente a la investigaci\'on del modelo CORE, debido al gran ahorro de tiempo que gana el equipo de investigaci\'on, permiti\'endoles un conocimiento completo y oportuno de la resiliencia comunitaria en las regiones de Chile involucradas en el proyecto FONDECYT. Esto significa un apoyo directo a la toma de decisiones en cuanto a planificaci\'on de las ciudades, integrando la resiliencia como un criterio de an\'alisis de las pol\'iticas p\'ublicas.
+La herramienta desarrollada aporta a la investigaci\'on de resiliencia comunitaria, especialmente a la del modelo CORE, debido al ahorro de tiempo que obtiene el equipo de investigaci\'on, permiti\'endole un conocimiento completo y oportuno de la resiliencia comunitaria en las regiones de Chile involucradas en el proyecto FONDECYT. Esto significa un apoyo directo a la toma de decisiones en cuanto a planificaci\'on de las ciudades, integrando la resiliencia como un criterio de an\'alisis de las pol\'iticas p\'ublicas.
 
 % ---
 \section{Objetivos}
@@ -452,13 +452,9 @@ Para el desarrollo de esta revisi\'on sistem\'atica, lo primero que se hizo fue 
 \section{Fuentes y estrategias de b\'usquedas}
 \label{sec:fuentes-busqueda}
 
-La fuente para realizar la b\'usqueda es la conocida \textit{Web of Science}.
+La fuente seleccionada para realizar la b\'usqueda es \textit{Web of Science}. Dado que la mayor\'ia de los art\'iculos publicados se encuentra en ingl\'es, se decidi\'o construir la cadena de b\'usqueda en ese idioma.
 
-Dado que la mayor\'ia de art\'iculos publicados son en ingl\'es, se decidi\'o hacer el \textit{string} de b\'usqueda en ese idioma.
-
-Un punto importante en la b\'usqueda es el c\'omo las dem\'as investigaciones capturan o procesan los datos. Por esto se opt\'o por \textit{keywords} como \textit{data processing} y \textit{data sources}.
-
-En ingl\'es, el t\'ermino de ``Resiliencia comunitaria'' se encuentra en dos t\'erminos distintos. Estos son \textit{Community Resilience} que puede verse como una traducci\'on m\'as literal, y tambi\'en se encuentra \textit{Disaster Resilience}, que en el contexto de resiliencia comunitaria, puede ser interpretado como la resiliencia en caso de desastres.
+Un punto importante en la b\'usqueda es c\'omo las dem\'as investigaciones capturan o procesan los datos, por lo que se opt\'o por \textit{keywords} como \textit{data processing} y \textit{data sources}. Adicionalmente, el t\'ermino ``resiliencia comunitaria'' aparece en ingl\'es bajo dos formas distintas: \textit{Community Resilience}, que puede verse como una traducci\'on m\'as literal, y \textit{Disaster Resilience}, que en este contexto puede interpretarse como la resiliencia en caso de desastres.
 
 \section{Cadena de b\'usquedas}
 \label{sec:cadena-busqueda}
@@ -731,7 +727,7 @@ En cuarto lugar, los formatos no est\'andar requieren m\'odulos espec\'ificos de
 Para la elecci\'on de las herramientas de desarrollo a utilizar se consideraron diversos par\'ametros, entre ellos:
 
 \begin{itemize}
-  \item Herramientas que cuadren con las necesidades que busca resolver el equipo de investigadores.
+  \item Herramientas que se ajusten a las necesidades que busca resolver el equipo de investigadores.
   \item La popularidad y uso de las tecnolog\'ias. De esta manera se facilita la b\'usqueda de desarrolladores para mantener y escalar el software a largo plazo.
   \item Tecnolog\'ias con las cuales ya se posee cierta experiencia.
 \end{itemize}
@@ -851,7 +847,7 @@ Para la visualizaci\'on de los datos almacenados se utiliza Metabase \parencite{
 
 Metabase se conecta directamente a MongoDB y permite a los investigadores visualizar los indicadores extra\'idos por medio de gr\'aficos, tablas y filtros. Los \textit{dashboards} se actualizan autom\'aticamente cada vez que se consultan, reflejando los datos m\'as recientes almacenados en la base de datos.
 
-La elecci\'on de Metabase por sobre un \textit{frontend} personalizado (como Angular o React) se debe a que el objetivo principal del proyecto es la extracci\'on y el procesamiento de datos, no la construcci\'on de una interfaz gr\'afica. Metabase permite cumplir con el objetivo de disponibilizar los datos mediante anal\'iticas sin requerir desarrollo adicional.
+La elecci\'on de Metabase por sobre un \textit{frontend} personalizado (como Angular o React) se debe a que el objetivo principal del proyecto es la extracci\'on y el procesamiento de datos, no la construcci\'on de una interfaz gr\'afica. Metabase permite cumplir con el objetivo de poner a disposici\'on los datos mediante anal\'iticas sin requerir desarrollo adicional.
 
 \section{Sistema de control de versiones}
 \label{sec:control-versiones}
@@ -1777,12 +1773,12 @@ La Tabla~\ref{tab:cumplimiento} resume el grado de cumplimiento de cada objetivo
 \hline
 2 & Capturar variables de la dimensi\'on sociocomunitaria & \textit{Population Poverty} y \textit{Civic Organizations} (20 registros) & Secciones~\ref{sec:resultado-pobreza} y~\ref{sec:resultado-orgs} \\
 \hline
-3 & Disponibilizar los indicadores mediante una API y anal\'iticas & API REST y \textit{dashboards} de Metabase & Secciones~\ref{sec:api-funcionamiento} y~\ref{sec:visualizacion-resultados} \\
+3 & Poner a disposici\'on los indicadores mediante una API y anal\'iticas & API REST y \textit{dashboards} de Metabase & Secciones~\ref{sec:api-funcionamiento} y~\ref{sec:visualizacion-resultados} \\
 \hline
 \end{tabular}
 \end{table}
 
-Los tres objetivos se cumplieron. En los objetivos 1 y 2 el cumplimiento es parcial en cuanto a cobertura, ya que tres de los seis indicadores analizados quedaron fuera del alcance por las razones que se detallan a continuaci\'on; en ning\'un caso la causa fue una limitaci\'on de la arquitectura desarrollada.
+Los tres objetivos se cumplieron, con una cobertura parcial de indicadores en los objetivos 1 y 2: tres de los seis indicadores analizados quedaron fuera del alcance por las razones que se detallan a continuaci\'on. En ning\'un caso la causa fue una limitaci\'on de la arquitectura desarrollada.
 
 \subsection{Objetivo Espec\'ifico 1: dimensi\'on institucional}
 \label{sec:conclusion-oe1}
@@ -1801,9 +1797,9 @@ Los indicadores \textit{Civic Participation} (SCCP) y \textit{Special Needs Popu
 \subsection{Objetivo Espec\'ifico 3: API y anal\'iticas}
 \label{sec:conclusion-oe3}
 
-Se logr\'o disponibilizar los indicadores por medio de una API REST y anal\'iticas. La API permite listar los m\'odulos e indicadores disponibles, ejecutar la extracci\'on de datos y consultar los resultados calculados. Los datos almacenados en MongoDB son visualizados mediante \textit{dashboards} en Metabase, los cuales se actualizan autom\'aticamente a medida que se pueblan las colecciones.
+Se logr\'o poner a disposici\'on los indicadores por medio de una API REST y anal\'iticas. La API permite listar los m\'odulos e indicadores disponibles, ejecutar la extracci\'on de datos y consultar los resultados calculados. Los datos almacenados en MongoDB son visualizados mediante \textit{dashboards} en Metabase, los cuales se actualizan autom\'aticamente a medida que se pueblan las colecciones.
 
-Dos decisiones refuerzan el cumplimiento de este objetivo m\'as all\'a de la mera existencia de los \textit{dashboards}. La primera es que el cat\'alogo de indicadores que expone la API se construye a partir de los m\'odulos registrados y no de una lista escrita a mano, de modo que todo indicador que se incorpore al sistema queda publicado sin tocar las rutas. La segunda es que la configuraci\'on completa de la capa de anal\'itica --- la conexi\'on a la base de datos, las consultas y el \textit{dashboard} --- se encuentra declarada en un archivo versionado junto al c\'odigo y se aplica sola al levantar el entorno. El resultado es que cualquier integrante del equipo de investigaci\'on obtiene el sistema completo, con sus visualizaciones, ejecutando un \'unico comando; la disponibilizaci\'on de los indicadores no queda atada al computador ni a la memoria de quien los configur\'o.
+Dos decisiones refuerzan el cumplimiento de este objetivo m\'as all\'a de la mera existencia de los \textit{dashboards}. La primera es que el cat\'alogo de indicadores que expone la API se construye a partir de los m\'odulos registrados y no de una lista escrita a mano, de modo que todo indicador que se incorpore al sistema queda publicado sin tocar las rutas. La segunda es que la configuraci\'on completa de la capa de anal\'itica --- la conexi\'on a la base de datos, las consultas y el \textit{dashboard} --- se encuentra declarada en un archivo versionado junto al c\'odigo y se aplica sola al levantar el entorno. El resultado es que cualquier integrante del equipo de investigaci\'on obtiene el sistema completo, con sus visualizaciones, ejecutando un \'unico comando; la puesta a disposici\'on de los indicadores no queda atada al computador ni a la memoria de quien los configur\'o.
 
 \section{Aportes de la arquitectura}
 \label{sec:aportes-arquitectura}
