@@ -35,6 +35,8 @@ describe("normalizeRegion", () => {
 	});
 
 	it("should keep an unrecognised territory instead of dropping it", () => {
-		expect(normalizeRegion("Territorio Antártico")).toBe("Territorio Antártico");
+		expect(normalizeRegion("Territorio Antártico")).toBe(
+			"Territorio Antártico"
+		);
 	});
 });

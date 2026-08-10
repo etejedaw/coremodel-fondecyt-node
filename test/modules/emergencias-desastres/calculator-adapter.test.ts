@@ -4,10 +4,26 @@ const calculator = new TsunamiDrillsCalculatorAdapter();
 
 describe("TsunamiDrillsCalculatorAdapter", () => {
 	const drills = [
-		{ date: new Date(2021, 2, 15), place: "Simulacro Tsunami", region: "Los Ríos" },
-		{ date: new Date(2021, 5, 10), place: "Simulacro Tsunami", region: "Arica y Parinacota" },
-		{ date: new Date(2021, 8, 20), place: "Simulacro Terremoto", region: "Los Ríos" },
-		{ date: new Date(2021, 10, 5), place: "Simulacro Tsunami", region: "Metropolitana" }
+		{
+			date: new Date(2021, 2, 15),
+			place: "Simulacro Tsunami",
+			region: "Los Ríos"
+		},
+		{
+			date: new Date(2021, 5, 10),
+			place: "Simulacro Tsunami",
+			region: "Arica y Parinacota"
+		},
+		{
+			date: new Date(2021, 8, 20),
+			place: "Simulacro Terremoto",
+			region: "Los Ríos"
+		},
+		{
+			date: new Date(2021, 10, 5),
+			place: "Simulacro Tsunami",
+			region: "Metropolitana"
+		}
 	];
 
 	it("should count total drills", () => {
@@ -32,7 +48,11 @@ describe("TsunamiDrillsCalculatorAdapter", () => {
 
 	it("should count single region correctly", () => {
 		const single = [
-			{ date: new Date(2021, 0, 1), place: "Simulacro", region: "Arica y Parinacota" }
+			{
+				date: new Date(2021, 0, 1),
+				place: "Simulacro",
+				region: "Arica y Parinacota"
+			}
 		];
 		const result = calculator.calculate(single);
 		expect(result.totalDrills).toBe(1);
