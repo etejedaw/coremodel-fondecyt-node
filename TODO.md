@@ -82,7 +82,7 @@ Los módulos implementados demuestran los distintos tipos de conexión que sopor
 ## Fase 9: Visualización y analíticas con Metabase
 
 - [x] Agregar Metabase al `docker-compose.yml` con volumen persistente para su base de datos interna
-- [x] Conectar Metabase a MongoDB como fuente de datos (ver `docs/metabase/README.md`)
+- [x] Conectar Metabase a MongoDB como fuente de datos (ver la sección de Metabase en el `README.md`)
 - [x] Crear y guardar queries por cada colección (simulacros, pobreza, organizaciones comunitarias)
 - [x] Configurar dashboards con gráficos por indicador (se actualizan automáticamente al poblar MongoDB via CronRegistry)
 
@@ -93,20 +93,20 @@ Los módulos implementados demuestran los distintos tipos de conexión que sopor
 - [x] **Cap. 4 - Herramientas de desarrollo**: Actualizar stack tecnológico (agregar Puppeteer, Zod, Docker; actualizar versiones; mencionar cambio de `request` por `request-promise`)
 - [x] **Cap. 5 - Diseño de prototipo**: Actualizar para reflejar la arquitectura modular final (ya no es un prototipo simple; describir patrones factory, adapter, builder)
 - [x] **Cap. 6 - Desarrollo e implementación** (nuevo): Describir la arquitectura modular, el flujo ETL con adapters, el IndicatorBuilder, ScraperFactory, ScrapeBase. Incluir diagramas de clases y secuencia
-- [ ] **Cap. 7 - Resultados** (nuevo): Mostrar datos extraídos por cada módulo, screenshots de la API, comparación con extracción manual, métricas de rendimiento
-- [ ] **Cap. 8 - Conclusiones** (nuevo): Evaluación de cumplimiento de objetivos (OE1, OE2, OE3), limitaciones (SCEO sin fuente, links de MINEDUC caídos, Statista de pago, dependencia de municipalidades), trabajo futuro (más indicadores con PuppeteerAdapter/DownloadAdapter, frontend Angular, deploy productivo)
-- [ ] **Bibliografía**: Actualizar con nuevas referencias técnicas y académicas utilizadas
+- [x] **Cap. 7 - Resultados** (nuevo): Mostrar datos extraídos por cada módulo, screenshots de la API, comparación con extracción manual, métricas de rendimiento
+- [x] **Cap. 8 - Conclusiones** (nuevo): Evaluación de cumplimiento de objetivos (OE1, OE2, OE3), limitaciones (SCEO sin fuente, links de MINEDUC caídos, Statista de pago, dependencia de municipalidades), trabajo futuro (más indicadores con PuppeteerAdapter/DownloadAdapter, frontend Angular, deploy productivo)
+- [x] **Bibliografía**: Actualizar con nuevas referencias técnicas y académicas utilizadas
 
 ### Diagramas y material visual
 
-- [ ] Diagrama de arquitectura general del sistema (módulos, core, adapters)
-- [ ] Diagrama de clases (ScrapeBase, ScraperFactory, IndicatorBuilder, Adapters)
-- [ ] Diagrama de secuencia del flujo ETL
-- [ ] Capturas de pantalla de la API funcionando
-- [ ] Tablas comparativas: datos extraídos vs datos de referencia
+- [x] Diagrama de arquitectura general del sistema (módulos, core, adapters)
+- [x] Diagrama de clases (ScrapeBase, ScraperFactory, IndicatorBuilder, Adapters)
+- [x] Diagrama de secuencia del flujo ETL
+- [x] Capturas de pantalla de la API funcionando
+- [x] Tablas comparativas: datos extraídos vs datos de referencia
 
 ### Revisión general del documento
 
-- [ ] Revisar consistencia de terminología (ETL, web scraping, scraping vs scrapping)
-- [ ] Verificar que los 3 objetivos específicos estén cubiertos en resultados y conclusiones
-- [ ] Agregar anexos con ejemplos de datos extraídos y código relevante
+- [x] Revisar consistencia de terminología (ETL, web scraping, scraping vs scrapping)
+- [x] Verificar que los 3 objetivos específicos estén cubiertos en resultados y conclusiones
+- [x] Agregar anexos con ejemplos de datos extraídos y código relevante
