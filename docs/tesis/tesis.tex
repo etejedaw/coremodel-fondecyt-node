@@ -793,14 +793,14 @@ A continuaci\'on se muestra una lista de las librer\'ias principales y secundari
 \label{sec:librerias-principales}
 
 \begin{itemize}
-  \item \textbf{cheerio}: Permite analizar la estructura de las p\'aginas web permitiendo la extracci\'on y manipulaci\'on de los datos. Se utiliza para el \textit{parsing} de HTML en los m\'odulos que requieren \textit{web scraping}.
-  \item \textbf{express}: Es actualmente el \textit{framework} m\'as popular de Node.js. Permite el manejo de peticiones HTTP y desarrollo de APIs.
-  \item \textbf{mongoose}: Es un ODM que permite escribir consultas y crear esquemas para la base de datos MongoDB. Se utiliza para definir los modelos de datos de cada indicador y gestionar el almacenamiento.
+  \item \textbf{cheerio} \parencite{cheerio}: Permite analizar la estructura de las p\'aginas web permitiendo la extracci\'on y manipulaci\'on de los datos. Se utiliza para el \textit{parsing} de HTML en los m\'odulos que requieren \textit{web scraping}.
+  \item \textbf{express} \parencite{express}: Es actualmente el \textit{framework} m\'as popular de Node.js. Permite el manejo de peticiones HTTP y desarrollo de APIs.
+  \item \textbf{mongoose} \parencite{mongoose}: Es un ODM que permite escribir consultas y crear esquemas para la base de datos MongoDB. Se utiliza para definir los modelos de datos de cada indicador y gestionar el almacenamiento.
   \item \textbf{request-promise}: Permite hacer llamadas HTTP. Se utiliza para obtener el HTML de una p\'agina web o realizar peticiones a APIs externas.\footnote{El desarrollo inicial del prototipo utilizaba la librer\'ia \textit{request}, de interfaz basada en \textit{callbacks}. Se migr\'o a \textit{request-promise}, que envuelve la misma implementaci\'on exponiendo promesas, con el fin de integrarla con la sintaxis \texttt{async/await} que emplea el flujo ETL. Ambas librer\'ias fueron declaradas \textit{deprecated} por sus autores en febrero de 2020 \parencite{requestpromise}; su reemplazo se aborda en la secci\'on~\ref{sec:trabajo-futuro} como deuda t\'ecnica.}
-  \item \textbf{puppeteer}: Permite la automatizaci\'on de un navegador web. Se utiliza para extraer informaci\'on de p\'aginas que renderizan su contenido mediante Javascript, donde \textit{cheerio} no es suficiente.
-  \item \textbf{zod}: Librer\'ia de validaci\'on y declaraci\'on de esquemas. Se utiliza para validar la configuraci\'on de los indicadores en tiempo de construcci\'on, asegurando que cada indicador posea los campos requeridos antes de ser registrado en el sistema.
-  \item \textbf{pino}: Librer\'ia de \textit{logging} de alto rendimiento. Se utiliza como \textit{logger} centralizado del sistema, generando registros tanto en consola (durante el desarrollo) como en archivos de log para auditor\'ia.
-  \item \textbf{node-cron}: Permite la programaci\'on de tareas peri\'odicas mediante expresiones cron. Se utiliza para automatizar la ejecuci\'on de los procesos de extracci\'on seg\'un la frecuencia definida para cada indicador.
+  \item \textbf{puppeteer} \parencite{puppeteer}: Permite la automatizaci\'on de un navegador web. Se utiliza para extraer informaci\'on de p\'aginas que renderizan su contenido mediante Javascript, donde \textit{cheerio} no es suficiente.
+  \item \textbf{zod} \parencite{zod}: Librer\'ia de validaci\'on y declaraci\'on de esquemas. Se utiliza para validar la configuraci\'on de los indicadores en tiempo de construcci\'on, asegurando que cada indicador posea los campos requeridos antes de ser registrado en el sistema.
+  \item \textbf{pino} \parencite{pino}: Librer\'ia de \textit{logging} de alto rendimiento. Se utiliza como \textit{logger} centralizado del sistema, generando registros tanto en consola (durante el desarrollo) como en archivos de log para auditor\'ia.
+  \item \textbf{node-cron} \parencite{nodecron}: Permite la programaci\'on de tareas peri\'odicas mediante expresiones cron. Se utiliza para automatizar la ejecuci\'on de los procesos de extracci\'on seg\'un la frecuencia definida para cada indicador.
 \end{itemize}
 
 \subsection{Librer\'ias secundarias}
@@ -811,7 +811,7 @@ A continuaci\'on se muestra una lista de las librer\'ias principales y secundari
   \item \textbf{prettier}: Es una herramienta de formateo de c\'odigo que asegura un estilo consistente en todo el proyecto.
   \item \textbf{nodemon}: Es una herramienta que permite actualizar autom\'aticamente la ejecuci\'on de la aplicaci\'on en cuanto detecta cambios en el desarrollo.
   \item \textbf{typescript}: Permite escribir c\'odigo de TypeScript y transpilarlo a c\'odigo de Javascript.
-  \item \textbf{jest}: \textit{Framework} que permite realizar pruebas unitarias y de integraci\'on.
+  \item \textbf{jest} \parencite{jest}: \textit{Framework} que permite realizar pruebas unitarias y de integraci\'on.
 \end{itemize}
 
 \section{Contenedores}
@@ -837,7 +837,7 @@ La elecci\'on de Metabase por sobre un \textit{frontend} personalizado (como Ang
 
 Un sistema de control de versiones permite rastrear y gestionar los cambios que son realizados dentro de un c\'odigo de software. Estas herramientas ayudan a los equipos de desarrollo a gestionar los cambios en el c\'odigo fuente \parencite{atlassian}.
 
-En este caso, se opt\'o por utilizar Git. Un sistema de control de versiones creado por Linus Torvalds, el cual est\'a centrado en ser eficiente, confiable y mantenible. Actualmente es utilizado por m\'as de un 93\% de los desarrolladores \parencite{stackoverflow2021}, convirti\'endose en una de las tecnolog\'ias indispensables para el desarrollo de software.
+En este caso, se opt\'o por utilizar Git \parencite{git}. Un sistema de control de versiones creado por Linus Torvalds, el cual est\'a centrado en ser eficiente, confiable y mantenible. Actualmente es utilizado por m\'as de un 93\% de los desarrolladores \parencite{stackoverflow2021}, convirti\'endose en una de las tecnolog\'ias indispensables para el desarrollo de software.
 
 
 % =============================================================================
@@ -1249,7 +1249,7 @@ Estos \textit{adapters} no fueron utilizados en los m\'odulos implementados debi
 \subsection{M\'odulo emergencias-desastres}
 \label{sec:modulo-ed}
 
-Este m\'odulo extrae informaci\'on sobre simulacros de emergencia desde el sitio web de la Unidad de Riesgos y Desastres del MINEDUC. Dado que los \textit{links} originales de esta p\'agina ya no se encuentran disponibles, se accede a las versiones archivadas mediante Wayback Machine (\url{https://web.archive.org}).
+Este m\'odulo extrae informaci\'on sobre simulacros de emergencia desde el sitio web de la Unidad de Riesgos y Desastres del MINEDUC. Dado que los \textit{links} originales de esta p\'agina ya no se encuentran disponibles, se accede a las versiones archivadas mediante Wayback Machine \parencite{waybackmachine}.
 
 El m\'odulo contiene tres indicadores: simulacros del a\~no 2021, 2022 y 2023. Cada uno utiliza un \textit{ParseAdapter} basado en Cheerio que extrae la fecha, el tipo de evento y la ciudad de cada simulacro a partir de la estructura HTML de la p\'agina.
 
@@ -1321,7 +1321,7 @@ Durante la validaci\'on de los datos extra\'idos se detect\'o que la fuente del 
 
 \begin{table}[H]
 \centering
-\caption{Grafias distintas de una misma regi\'on en la fuente del MINEDUC}
+\caption{Graf\'ias distintas de una misma regi\'on en la fuente del MINEDUC}
 \label{tab:grafias}
 \begin{tabular}{|p{4cm}|p{6.5cm}|c|}
 \hline
@@ -1340,7 +1340,7 @@ Ays\'en & \texttt{Ays\'en} $\cdot$ \texttt{Ays\'en- Cochrane} & 3 \\
 \end{tabular}
 \end{table}
 
-El caso de O'Higgins es particularmente ilustrativo, porque la diferencia entre ambas grafias es un \'unico car\'acter invisible a simple vista: un ap\'ostrofo tipogr\'afico frente a un acento agudo. Sin un tratamiento expl\'icito, los veintinueve simulacros extra\'idos producen veinti\'un territorios distintos, en un pa\'is que tiene diecis\'eis regiones.
+El caso de O'Higgins es particularmente ilustrativo, porque la diferencia entre ambas graf\'ias es un \'unico car\'acter invisible a simple vista: un ap\'ostrofo tipogr\'afico frente a un acento agudo. Sin un tratamiento expl\'icito, los veintinueve simulacros extra\'idos producen veinti\'un territorios distintos, en un pa\'is que tiene diecis\'eis regiones.
 
 Es importante precisar el alcance real del problema. Dentro de un mismo a\~no ninguna regi\'on se repite, por lo que los totales por indicador no se ven afectados: los conteos de 9, 11 y 9 simulacros para 2021, 2022 y 2023 son correctos con o sin normalizaci\'on. La colisi\'on solo se manifiesta al agregar los datos entre a\~nos, que es precisamente lo que requiere el indicador \textit{Tsunami Drills} del modelo CORE --- definido como la suma de simulacros en un per\'iodo --- y lo que muestran los \textit{dashboards} de Metabase. Se trata, por lo tanto, de un defecto latente antes que de un error en los resultados obtenidos.
 
@@ -1376,28 +1376,29 @@ El sistema expone una API REST que permite consultar los m\'odulos, ejecutar la 
 \centering
 \caption{\textit{Endpoints} de la API REST}
 \label{tab:endpoints}
-\begin{tabular}{|l|p{6cm}|p{5cm}|}
+\small
+\begin{tabular}{|l|>{\ttfamily\raggedright\arraybackslash}p{6.2cm}|p{4.6cm}|}
 \hline
-\textbf{M\'etodo} & \textbf{Endpoint} & \textbf{Descripci\'on} \\
+\textbf{M\'etodo} & \textnormal{\textbf{Endpoint}} & \textbf{Descripci\'on} \\
 \hline
-GET & \texttt{/} & Lista todos los m\'odulos con sus indicadores \\
+GET & / & Lista todos los m\'odulos con sus indicadores \\
 \hline
-GET & \texttt{/emergencia-desastres} & Lista los indicadores del m\'odulo \\
+GET & /emergencia-desastres & Lista los indicadores del m\'odulo \\
 \hline
-GET & \texttt{/emergencia-desastres/:indicator} & Ejecuta la extracci\'on del indicador \\
+GET & /emergencia-desastres/\allowbreak :indicator & Ejecuta la extracci\'on del indicador \\
 \hline
-GET & \texttt{/emergencia-desastres/:indicator/result} & Consulta el \'ultimo resultado calculado \\
+GET & /emergencia-desastres/\allowbreak :indicator/\allowbreak result & Consulta el \'ultimo resultado calculado \\
 \hline
-GET & \texttt{/biblioteca-congreso-nacional} & Lista los indicadores del m\'odulo \\
+GET & /biblioteca-congreso-nacional & Lista los indicadores del m\'odulo \\
 \hline
-GET & \texttt{/biblioteca-congreso-nacional/:indicator} & Ejecuta la extracci\'on del indicador \\
+GET & /biblioteca-congreso-nacional/\allowbreak :indicator & Ejecuta la extracci\'on del indicador \\
 \hline
 \end{tabular}
 \end{table}
 
 Cada \textit{endpoint} valida que el indicador solicitado exista antes de ejecutar la extracci\'on. En caso de que no exista, se retorna un error 404 con un mensaje descriptivo.
 
-La API se documenta mediante una colecci\'on Bruno en formato OpenCollection, versionada junto al c\'odigo en el directorio \texttt{docs/api/}. A diferencia de una documentaci\'on redactada aparte, esta colecci\'on es ejecutable: cada \textit{endpoint} queda descrito en un archivo YAML que puede ser invocado directamente para verificar la respuesta del sistema. La Figura~\ref{fig:bruno-collection} muestra la definici\'on de uno de ellos.
+La API se documenta mediante una colecci\'on Bruno \parencite{bruno} en formato OpenCollection, versionada junto al c\'odigo en el directorio \texttt{docs/api/}. A diferencia de una documentaci\'on redactada aparte, esta colecci\'on es ejecutable: cada \textit{endpoint} queda descrito en un archivo YAML que puede ser invocado directamente para verificar la respuesta del sistema. La Figura~\ref{fig:bruno-collection} muestra la definici\'on de uno de ellos.
 
 \begin{figure}[H]
 \begin{lstlisting}[style=codigo, language=JSON]
@@ -1435,7 +1436,7 @@ En segundo lugar, se crearon pruebas de integraci\'on que verifican el flujo ETL
 
 En tercer lugar, se crearon pruebas de validaci\'on que comparan los datos extra\'idos contra datos de referencia verificados manualmente. Por ejemplo, se verifica que el formato decimal chileno (con coma) sea convertido correctamente al formato num\'erico est\'andar (con punto), que las fechas sean parseadas correctamente a partir de los meses en espa\~nol, y que los nombres de las unidades territoriales se preserven tal como aparecen en la fuente.
 
-El total de pruebas implementadas es de 76, distribuidas en 17 \textit{suites}. Entre ellas se incluye una bater\'ia dedicada a la normalizaci\'on de unidades territoriales descrita en la secci\'on~\ref{sec:normalizacion}, que verifica cada una de las grafias observadas en la fuente contra su regi\'on can\'onica.
+El total de pruebas implementadas es de 76, distribuidas en 17 \textit{suites}. Entre ellas se incluye una bater\'ia dedicada a la normalizaci\'on de unidades territoriales descrita en la secci\'on~\ref{sec:normalizacion}, que verifica cada una de las graf\'ias observadas en la fuente contra su regi\'on can\'onica.
 
 \section{Volatilidad de las fuentes web}
 \label{sec:volatilidad}
@@ -1444,7 +1445,7 @@ Uno de los desaf\'ios m\'as significativos que enfrenta un sistema de extracci\'
 
 Durante el desarrollo de este proyecto se experiment\'o directamente esta problem\'atica. Los \textit{links} originales del sitio web de la Unidad de Riesgos y Desastres del MINEDUC dejaron de estar disponibles antes de completar la implementaci\'on del m\'odulo \textit{emergencias-desastres}. Las p\'aginas que conten\'ian los simulacros de los a\~nos 2021, 2022 y 2023 fueron removidas del servidor sin que existiera una redirecci\'on o aviso previo. Esto implic\'o que los datos necesarios para el indicador \textit{Tsunami Drills} ya no eran accesibles desde su fuente original.
 
-Para resolver esta situaci\'on, se recurri\'o a Wayback Machine (\url{https://web.archive.org}), un servicio de archivo digital de Internet Archive que almacena instant\'aneas hist\'oricas de p\'aginas web. Mediante este servicio se accedi\'o a las versiones archivadas de las p\'aginas del MINEDUC, lo cual permiti\'o completar la extracci\'on de los datos. Sin embargo, esta soluci\'on no es generalizable: Wayback Machine no archiva todas las p\'aginas ni con la misma frecuencia, y su disponibilidad depende de un servicio externo.
+Para resolver esta situaci\'on, se recurri\'o a Wayback Machine \parencite{waybackmachine}, un servicio de archivo digital de Internet Archive que almacena instant\'aneas hist\'oricas de p\'aginas web. Mediante este servicio se accedi\'o a las versiones archivadas de las p\'aginas del MINEDUC, lo cual permiti\'o completar la extracci\'on de los datos. Sin embargo, esta soluci\'on no es generalizable: Wayback Machine no archiva todas las p\'aginas ni con la misma frecuencia, y su disponibilidad depende de un servicio externo.
 
 Este caso evidencia un conjunto de riesgos inherentes a la extracci\'on de datos desde la web que deben ser considerados en el dise\~no de sistemas ETL de este tipo:
 
@@ -1493,13 +1494,14 @@ simulacros-2023 & 9 \\
 \end{tabular}
 \end{table}
 
-Cada registro contiene la fecha del simulacro, el tipo de evento (sismo, tsunami, incendio forestal, entre otros) y la ciudad o regi\'on donde se realiz\'o. Los datos fueron almacenados en la colecci\'on \texttt{emergencia-desastres} de MongoDB.
+Cada registro contiene la fecha del simulacro, el tipo de evento (sismo, tsunami, erupci\'on volc\'anica, remoci\'on en masa, entre otros) y la regi\'on donde se realiz\'o. Los datos fueron almacenados en la colecci\'on \texttt{emergencia-desastres} de MongoDB.
+
+La Figura~\ref{fig:registros-simulacros} muestra la respuesta del \textit{endpoint} \texttt{GET /emergencia-desastres/simulacros-2021}, que ejecuta la extracci\'on y devuelve los registros ya transformados. En ella se observa el resultado de la normalizaci\'on territorial descrita en la secci\'on~\ref{sec:normalizacion}: el campo \texttt{regionSource} conserva el texto original de la fuente (\texttt{Arica} en lugar de \texttt{Arica y Parinacota}) mientras que \texttt{region} contiene el nombre can\'onico.
 
 \begin{figure}[H]
   \centering
-  % TODO: Insertar tabla con registros extraidos de simulacros-2021
-  % \includegraphics[width=0.9\textwidth]{img/registros-simulacros-2021.png}
-  \caption{Registros extra\'idos de simulacros-2021 mostrando fecha, tipo y ciudad}
+  \includegraphics[width=0.92\textwidth]{img_15.png}
+  \caption{Extracto de los registros de simulacros-2021 mostrando fecha, tipo y regi\'on}
   \label{fig:registros-simulacros}
 \end{figure}
 
@@ -1514,7 +1516,7 @@ El \textit{CalculatorAdapter} proces\'o los datos extra\'idos y almacen\'o los r
 \label{tab:resultados-calculados}
 \begin{tabular}{|l|c|c|}
 \hline
-\textbf{Indicador} & \textbf{Total de simulacros} & \textbf{Ciudades \'unicas} \\
+\textbf{Indicador} & \textbf{Total de simulacros} & \textbf{Regiones distintas} \\
 \hline
 simulacros-2021 & 9 & 9 \\
 \hline
@@ -1525,15 +1527,32 @@ simulacros-2023 & 9 & 9 \\
 \end{tabular}
 \end{table}
 
-Estos resultados permiten a los investigadores consultar de forma directa la cantidad de simulacros realizados por a\~no y su distribuci\'on geogr\'afica, sin necesidad de procesar los datos crudos manualmente.
+En los tres a\~nos cada regi\'on aparece una sola vez, por lo que el total de simulacros coincide con la cantidad de regiones distintas. La Figura~\ref{fig:api-resultado-calculado} muestra el resultado tal como lo entrega el \textit{endpoint} \texttt{GET /emergencia-desastres/simulacros-2021/result}.
 
 \begin{figure}[H]
   \centering
-  % TODO: Insertar dashboard de Metabase con grafico de barras de simulacros por anio
-  % \includegraphics[width=0.9\textwidth]{img/metabase-simulacros.png}
-  \caption{\textit{Dashboard} de Metabase con el gr\'afico de barras de simulacros por a\~no}
+  \includegraphics[width=0.92\textwidth]{img_16.png}
+  \caption{Resultado calculado de simulacros-2021 consultado desde la API}
+  \label{fig:api-resultado-calculado}
+\end{figure}
+
+Estos resultados permiten a los investigadores consultar de forma directa la cantidad de simulacros realizados por a\~no y su distribuci\'on geogr\'afica, sin necesidad de procesar los datos crudos manualmente. Las Figuras~\ref{fig:metabase-simulacros} y~\ref{fig:metabase-simulacros-region} presentan ambas lecturas en Metabase.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{img_19.png}
+  \caption{Gr\'afico de barras de simulacros por a\~no en Metabase}
   \label{fig:metabase-simulacros}
 \end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{img_20.png}
+  \caption{Distribuci\'on acumulada de simulacros por regi\'on (2021-2023) en Metabase}
+  \label{fig:metabase-simulacros-region}
+\end{figure}
+
+La agrupaci\'on se realiza sobre el campo \texttt{region} y no sobre \texttt{regionSource}: de lo contrario una misma regi\'on aparecer\'ia dividida en varias barras producto de las graf\'ias inconsistentes de la fuente.
 
 \subsection{Tasa de Pobreza por Ingresos}
 \label{sec:resultado-pobreza}
@@ -1548,55 +1567,155 @@ El sub-indicador \textit{tasa-pobreza-ingresos} extrajo tres registros correspon
 \hline
 \textbf{Unidad Territorial} & \textbf{CASEN 2017} & \textbf{CASEN 2022} \\
 \hline
-Comuna de Valdivia & 7,6\% & 9,8\% \\
+Comuna de Valdivia & 7,6\% & 3,4\% \\
 \hline
-Regi\'on de Los R\'ios & 12,1\% & 12,2\% \\
+Regi\'on de Los R\'ios & 11,8\% & 5,9\% \\
 \hline
-Pa\'is & 8,6\% & 10,8\% \\
+Pa\'is & 8,5\% & 6,5\% \\
 \hline
 \end{tabular}
 \end{table}
 
-Los porcentajes fueron convertidos correctamente del formato decimal chileno (con coma) al formato num\'erico est\'andar (con punto), permitiendo su uso directo en c\'alculos posteriores.
+Los porcentajes fueron convertidos correctamente del formato decimal chileno (con coma) al formato num\'erico est\'andar (con punto), permitiendo su uso directo en c\'alculos posteriores. La Figura~\ref{fig:api-pobreza} muestra la respuesta de la API y la Figura~\ref{fig:metabase-pobreza} la comparaci\'on entre ambas mediciones en Metabase.
 
 \begin{figure}[H]
   \centering
-  % TODO: Insertar dashboard de Metabase con grafico comparativo de pobreza
-  % \includegraphics[width=0.9\textwidth]{img/metabase-pobreza.png}
-  \caption{\textit{Dashboard} de Metabase con el gr\'afico comparativo de pobreza CASEN 2017 vs CASEN 2022}
+  \includegraphics[width=0.92\textwidth]{img_17.png}
+  \caption{Respuesta de la API para el indicador de tasa de pobreza por ingresos}
+  \label{fig:api-pobreza}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{img_21.png}
+  \caption{Gr\'afico comparativo de pobreza CASEN 2017 frente a CASEN 2022 en Metabase}
   \label{fig:metabase-pobreza}
 \end{figure}
 
 \subsection{Organizaciones Comunitarias}
 \label{sec:resultado-orgs}
 
-El sub-indicador \textit{organizaciones-comunitarias} extrajo 17 registros correspondientes a los a\~nos 2008 a 2024 para la comuna de Valdivia. Cada registro contiene la cantidad de once tipos de organizaciones comunitarias: juntas de vecinos, clubes deportivos, centros de madres, centros culturales, centros del adulto mayor, uniones comunales, centros de padres y apoderados, compa\~n\'ias de bomberos, entre otros.
+El sub-indicador \textit{organizaciones-comunitarias} extrajo 17 registros correspondientes a los a\~nos 2008 a 2024 para la comuna de Valdivia. Cada registro contiene la cantidad de once tipos de organizaciones comunitarias: juntas de vecinos, clubes deportivos, centros de madres, centros culturales, centros del adulto mayor, uniones comunales, centros de padres y apoderados, compa\~n\'ias de bomberos, entre otros. La serie completa se presenta en la Figura~\ref{fig:metabase-organizaciones}.
 
 \begin{figure}[H]
   \centering
-  % TODO: Insertar dashboard de Metabase con grafico de linea temporal
-  % \includegraphics[width=0.9\textwidth]{img/metabase-organizaciones.png}
-  \caption{\textit{Dashboard} de Metabase con el gr\'afico de l\'inea temporal de organizaciones comunitarias}
+  \includegraphics[width=0.85\textwidth]{img_22.png}
+  \caption{Evoluci\'on temporal de las organizaciones comunitarias de Valdivia en Metabase}
   \label{fig:metabase-organizaciones}
 \end{figure}
+
+La construcci\'on de esta serie revel\'o una particularidad de la fuente que conviene explicitar. La BCN publica, adem\'as de la cantidad de cada tipo de organizaci\'on, un campo con la suma total; sin embargo, para algunos a\~nos ese campo viene informado con el car\'acter \texttt{-} en lugar de un n\'umero. El \textit{MapperAdapter} convierte esos valores a cero, lo que hace indistinguible un dato ausente de un cero real: en el a\~no 2017 la suma total qued\'o almacenada como cero pese a que los tipos individuales suman 3.485 organizaciones. Por esta raz\'on el gr\'afico recalcula el total a partir de los tipos individuales en lugar de utilizar el campo publicado por la fuente. La ca\'ida observada en el a\~no 2024 no responde a este problema, sino a que la fuente a\'un no publica todos los tipos para ese a\~no.
+
+\section{La API REST en funcionamiento}
+\label{sec:api-funcionamiento}
+
+La API expone los indicadores mediante los \textit{endpoints} descritos en la Tabla~\ref{tab:endpoints}. El \textit{endpoint} ra\'iz act\'ua como punto de entrada y devuelve el cat\'alogo completo de m\'odulos e indicadores registrados en el \textit{ScraperFactory}, junto con la URL de la fuente y la frecuencia de actualizaci\'on de cada uno, tal como se aprecia en la Figura~\ref{fig:api-resumen}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.92\textwidth]{img_14.png}
+  \caption{Cat\'alogo de m\'odulos e indicadores devuelto por el \textit{endpoint} ra\'iz de la API}
+  \label{fig:api-resumen}
+\end{figure}
+
+Este cat\'alogo se construye din\'amicamente a partir de los m\'odulos registrados, por lo que incorporar un nuevo indicador lo hace visible en la API sin modificar las rutas.
+
+\section{Visualizaci\'on en Metabase}
+\label{sec:visualizacion-resultados}
+
+Los datos almacenados en MongoDB se visualizan mediante un \textit{dashboard} de Metabase que agrupa los cinco indicadores implementados (Figura~\ref{fig:metabase-dashboard}). Los gr\'aficos consultan directamente las colecciones, de modo que se actualizan de forma autom\'atica cada vez que el \textit{CronRegistry} ejecuta una extracci\'on.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{img_18.png}
+  \caption{\textit{Dashboard} de Metabase con los indicadores del modelo CORE}
+  \label{fig:metabase-dashboard}
+\end{figure}
+
+Tanto la conexi\'on a MongoDB como las consultas y el \textit{dashboard} se encuentran declarados en un archivo de configuraci\'on versionado junto al c\'odigo, y se aplican autom\'aticamente al levantar el entorno con Docker. De este modo la capa de anal\'itica es reproducible y no depende de una configuraci\'on manual de la herramienta.
 
 \section{Validaci\'on de la extracci\'on}
 \label{sec:validacion}
 
-Para validar que los datos extra\'idos por el sistema son correctos, se realiz\'o una comparaci\'on con datos obtenidos de forma manual desde las mismas fuentes.
+Para validar que los datos extra\'idos por el sistema son correctos, se realiz\'o una comparaci\'on con los valores le\'idos de forma manual en las mismas fuentes. La Tabla~\ref{tab:validacion} resume esta comparaci\'on.
 
-En el caso de la tasa de pobreza, se verific\'o manualmente que los valores presentados en la tabla de la BCN coincidieran con los valores almacenados en la base de datos. La conversi\'on del formato decimal chileno fue validada en las pruebas automatizadas.
+\begin{table}[H]
+\centering
+\caption{Comparaci\'on entre los datos de referencia y los datos extra\'idos}
+\label{tab:validacion}
+\begin{tabular}{|l|l|c|c|}
+\hline
+\textbf{Indicador} & \textbf{Dato verificado} & \textbf{Fuente} & \textbf{Extra\'ido} \\
+\hline
+simulacros-2021 & Simulacros publicados & 9 & 9 \\
+\hline
+simulacros-2022 & Simulacros publicados & 11 & 11 \\
+\hline
+simulacros-2023 & Simulacros publicados & 9 & 9 \\
+\hline
+tasa-pobreza & Valdivia, CASEN 2017 & 7,6 & 7.6 \\
+\hline
+tasa-pobreza & Valdivia, CASEN 2022 & 3,4 & 3.4 \\
+\hline
+tasa-pobreza & Los R\'ios, CASEN 2017 & 11,8 & 11.8 \\
+\hline
+tasa-pobreza & Los R\'ios, CASEN 2022 & 5,9 & 5.9 \\
+\hline
+tasa-pobreza & Pa\'is, CASEN 2017 & 8,5 & 8.5 \\
+\hline
+tasa-pobreza & Pa\'is, CASEN 2022 & 6,5 & 6.5 \\
+\hline
+organizaciones & Suma total 2023 & 2.972 & 2972 \\
+\hline
+organizaciones & Suma total 2024 & 531 & 531 \\
+\hline
+\end{tabular}
+\end{table}
 
-En el caso de los simulacros, se verific\'o que las fechas extra\'idas correspondieran a los meses correctos, considerando que la fuente utiliza abreviaciones en espa\~nol (Ene, Feb, Mar, etc.). Las pruebas automatizadas validan que cada abreviaci\'on sea convertida al \'indice de mes correcto.
+En el caso de los simulacros, la verificaci\'on consisti\'o en contar las tarjetas publicadas en cada p\'agina archivada y contrastarlas con los registros almacenados. Adicionalmente se verific\'o que las fechas extra\'idas correspondieran a los meses correctos, considerando que la fuente utiliza abreviaciones en espa\~nol (Ene, Feb, Mar, entre otras); las pruebas automatizadas validan que cada abreviaci\'on sea convertida al \'indice de mes correcto.
 
-En el caso de las organizaciones comunitarias, se verific\'o que la suma total de organizaciones reportada por la BCN coincidiera con la suma de los tipos individuales extra\'idos por el sistema.
+En el caso de la tasa de pobreza se compararon los seis valores publicados en la tabla ``2.1 Tasa de Pobreza por ingresos'' del reporte comunal de la BCN con los almacenados en la base de datos. La \'unica diferencia es de formato: la fuente utiliza coma decimal y el sistema almacena punto decimal, conversi\'on que tambi\'en se encuentra cubierta por las pruebas automatizadas.
+
+En el caso de las organizaciones comunitarias se verific\'o que la suma total publicada por la BCN coincidiera con la suma de los tipos individuales extra\'idos por el sistema. La coincidencia se cumple en todos los a\~nos en que la fuente informa dicho campo; los a\~nos en que la fuente lo entrega vac\'io se discuten en la secci\'on~\ref{sec:resultado-orgs}.
 
 \section{Evitaci\'on de duplicados}
 \label{sec:duplicados}
 
-El sistema fue ejecutado m\'ultiples veces sobre las mismas fuentes de datos para verificar que los mecanismos de evitaci\'on de duplicados funcionaran correctamente. El \textit{HashAdapter} genera una clave \'unica para cada registro (basada en la fecha y ciudad para simulacros, en la unidad territorial para pobreza, y en el a\~no para organizaciones), y los esquemas de MongoDB declaran este campo como \'unico. En cada ejecuci\'on posterior a la primera, el sistema detect\'o los duplicados y los ignor\'o sin generar errores.
+El sistema fue ejecutado m\'ultiples veces sobre las mismas fuentes de datos para verificar que los mecanismos de evitaci\'on de duplicados funcionaran correctamente. El \textit{HashAdapter} genera una clave \'unica para cada registro (basada en la fecha y la regi\'on para simulacros, en la unidad territorial para pobreza, y en el a\~no para organizaciones), y los esquemas de MongoDB declaran este campo como \'unico. En cada ejecuci\'on posterior a la primera, el sistema detect\'o los duplicados y los ignor\'o sin generar errores.
 
-De manera similar, el \textit{CalculatorAdapter} compar\'o los resultados calculados con el \'ultimo resultado almacenado y no cre\'o registros nuevos cuando los datos de origen no hab\'ia cambiado.
+De manera similar, el \textit{CalculatorAdapter} compar\'o los resultados calculados con el \'ultimo resultado almacenado y no cre\'o registros nuevos cuando los datos de origen no hab\'ian cambiado.
+
+\section{Rendimiento de la extracci\'on}
+\label{sec:rendimiento}
+
+Se instrument\'o el flujo ETL para medir el tiempo de cada etapa por separado. La Tabla~\ref{tab:rendimiento} presenta los tiempos obtenidos al ejecutar los cinco indicadores sobre colecciones vac\'ias, es decir, en el escenario en que todos los registros deben insertarse.
+
+\begin{table}[H]
+\centering
+\caption{Tiempos de ejecuci\'on por etapa del flujo ETL, en milisegundos}
+\label{tab:rendimiento}
+\begin{tabular}{|l|c|c|c|c|c|c|}
+\hline
+\textbf{Indicador} & \textbf{Reg.} & \textbf{Fetch} & \textbf{Parse} & \textbf{Transf.} & \textbf{Save} & \textbf{Total} \\
+\hline
+simulacros-2021 & 9 & 881,1 & 42,2 & 1,3 & 13,4 & 947,6 \\
+\hline
+simulacros-2022 & 11 & 172,9 & 14,4 & 0,4 & 4,0 & 194,3 \\
+\hline
+simulacros-2023 & 9 & 172,0 & 11,4 & 0,3 & 3,5 & 192,7 \\
+\hline
+tasa-pobreza-ingresos & 3 & 333,8 & 38,5 & 0,3 & 3,0 & 375,5 \\
+\hline
+organizaciones-comunitarias & 17 & 121,6 & 0,1 & 0,5 & 8,3 & 130,3 \\
+\hline
+\end{tabular}
+\end{table}
+
+La columna \textit{Total} incluye adem\'as la etapa de c\'alculo, presente solo en los indicadores de simulacros. El tiempo mayor del primer indicador se explica por el costo inicial de establecer la conexi\'on HTTP y no por la cantidad de registros: en una segunda ejecuci\'on ese mismo indicador baj\'o a 182,4 ms.
+
+La lectura relevante de estas mediciones no es la magnitud absoluta, sino su distribuci\'on: entre el 88\% y el 93\% del tiempo total corresponde a la obtenci\'on del documento desde la fuente externa, mientras que las etapas de transformaci\'on y persistencia representan en conjunto menos del 10\%. Esto implica que el rendimiento del sistema est\'a determinado por la latencia de las fuentes web y no por su procesamiento interno, por lo que optimizar las etapas propias del ETL tendr\'ia un efecto marginal.
+
+En t\'erminos agregados, la extracci\'on completa de los cinco indicadores (49 registros) tom\'o menos de dos segundos. Frente al procedimiento manual que este trabajo busca sistematizar --- consistente en navegar cada fuente, copiar los valores y transcribirlos a una planilla --- la diferencia no radica \'unicamente en el tiempo, sino en que el proceso queda documentado, es repetible y no introduce errores de transcripci\'on.
 
 \section{Ejecuci\'on automatizada}
 \label{sec:ejecucion-automatizada}
@@ -1615,29 +1734,77 @@ Se verific\'o que el \textit{CronRegistry} programe correctamente las tareas de 
 
 El presente proyecto logr\'o desarrollar un sistema de extracci\'on, transformaci\'on y carga de datos que sistematiza el proceso de captura de indicadores para el modelo CORE de resiliencia comunitaria. La arquitectura modular basada en \textit{adapters} permite agregar nuevos indicadores y fuentes de datos sin modificar la l\'ogica central del sistema, lo cual constituye el principal aporte t\'ecnico del trabajo.
 
-El sistema demostr\'o ser funcional para tres tipos de fuentes de datos distintas (\textit{web scraping} de HTML, extracci\'on de tablas y consumo de APIs JSON), extrayendo y almacenando datos de cinco indicadores distribuidos en dos m\'odulos. Adem\'as, la validaci\'on realizada confirm\'o que los datos extra\'idos coinciden con los obtenidos de forma manual, y que los mecanismos de evitaci\'on de duplicados operan correctamente ante ejecuciones repetidas.
+El sistema demostr\'o ser funcional para tres tipos de fuentes de datos distintas (\textit{web scraping} de HTML, extracci\'on de tablas y consumo de APIs JSON), extrayendo y almacenando 49 registros correspondientes a cinco indicadores distribuidos en dos m\'odulos. La validaci\'on realizada confirm\'o que los datos extra\'idos coinciden con los obtenidos de forma manual, y que los mecanismos de evitaci\'on de duplicados operan correctamente ante ejecuciones repetidas.
+
+El ciclo completo que persegu\'ia el proyecto se cierra en los \textit{dashboards} presentados en la secci\'on~\ref{sec:visualizacion-resultados}: un dato que antes se obten\'ia navegando manualmente cada fuente y transcribi\'endolo a una planilla hoy se extrae, se normaliza, se almacena, se agrega y se grafica sin intervenci\'on humana. La distribuci\'on de simulacros por regi\'on, la comparaci\'on de la tasa de pobreza entre dos mediciones CASEN y la serie hist\'orica de organizaciones comunitarias son lecturas que el equipo de investigaci\'on puede consultar de forma directa, y que se actualizan solas cada vez que el \textit{CronRegistry} ejecuta una extracci\'on. En ese sentido, el sistema no entrega \'unicamente datos crudos, sino indicadores en el sentido en que los define el modelo CORE.
 
 \section{Conclusiones por objetivo}
 \label{sec:conclusiones-objetivos}
 
-\subsection{Objetivo Espec\'ifico 1}
+La Tabla~\ref{tab:cumplimiento} resume el grado de cumplimiento de cada objetivo espec\'ifico y se\~nala d\'onde se encuentra la evidencia que lo respalda. Las subsecciones siguientes desarrollan cada caso.
+
+\begin{table}[H]
+\centering
+\caption{Cumplimiento de los objetivos espec\'ificos}
+\label{tab:cumplimiento}
+\small
+\begin{tabular}{|c|p{5.2cm}|p{3.2cm}|p{2.8cm}|}
+\hline
+\textbf{OE} & \textbf{Objetivo} & \textbf{Implementado} & \textbf{Evidencia} \\
+\hline
+1 & Capturar variables de la dimensi\'on institucional & \textit{Tsunami Drills} (29 registros) & Secciones~\ref{sec:resultado-td} y~\ref{sec:resultado-calculator} \\
+\hline
+2 & Capturar variables de la dimensi\'on sociocomunitaria & \textit{Population Poverty} y \textit{Civic Organizations} (20 registros) & Secciones~\ref{sec:resultado-pobreza} y~\ref{sec:resultado-orgs} \\
+\hline
+3 & Disponibilizar los indicadores mediante una API y anal\'iticas & API REST y \textit{dashboards} de Metabase & Secciones~\ref{sec:api-funcionamiento} y~\ref{sec:visualizacion-resultados} \\
+\hline
+\end{tabular}
+\end{table}
+
+Los tres objetivos se cumplieron. En los objetivos 1 y 2 el cumplimiento es parcial en cuanto a cobertura, ya que tres de los seis indicadores analizados quedaron fuera del alcance por las razones que se detallan a continuaci\'on; en ning\'un caso la causa fue una limitaci\'on de la arquitectura desarrollada.
+
+\subsection{Objetivo Espec\'ifico 1: dimensi\'on institucional}
 \label{sec:conclusion-oe1}
 
 El indicador \textit{Tsunami Drills} fue implementado exitosamente, extrayendo un total de 29 registros de simulacros de emergencia entre los a\~nos 2021 y 2023 desde el sitio web del MINEDUC. El \textit{CalculatorAdapter} permiti\'o calcular autom\'aticamente el total de simulacros y su distribuci\'on geogr\'afica.
 
 El indicador \textit{Emergency Organizations} (SCEO) no pudo ser implementado debido a la inexistencia de una fuente de datos p\'ublica que centralice esta informaci\'on. Como se document\'o en el cap\'itulo de viabilidad de indicadores, estos datos dependen de cada municipalidad y no se encuentran disponibles en una plataforma accesible desde la web. Esta limitaci\'on es inherente al dominio de la extracci\'on de datos web: el sistema solo puede capturar informaci\'on de fuentes que existen y son accesibles. La arquitectura desarrollada permite incorporar este indicador en el futuro si se identifica una fuente viable.
 
-\subsection{Objetivo Espec\'ifico 2}
+\subsection{Objetivo Espec\'ifico 2: dimensi\'on sociocomunitaria}
 \label{sec:conclusion-oe2}
 
 Se implementaron dos indicadores: \textit{Population Poverty} mediante la extracci\'on de la tasa de pobreza por ingresos desde la BCN, y \textit{Civic Organizations} mediante la extracci\'on de organizaciones comunitarias desde la API JSON de la BCN.
 
 Los indicadores \textit{Civic Participation} (SCCP) y \textit{Special Needs Population} (SNP) no fueron implementados dentro del alcance de este proyecto, aunque se identificaron sus fuentes de datos en el cap\'itulo de viabilidad (SERVEL para SCCP, CASEN e INE \parencite{ine-a} para SNP). Dado que estas fuentes ofrecen descargas directas en formato CSV y XLSX, la arquitectura desarrollada ya los soporta mediante el \textit{DownloadAdapter} existente, lo cual facilita su incorporaci\'on sin modificaciones al \textit{core} del sistema.
 
-\subsection{Objetivo Espec\'ifico 3}
+\subsection{Objetivo Espec\'ifico 3: API y anal\'iticas}
 \label{sec:conclusion-oe3}
 
 Se logr\'o disponibilizar los indicadores por medio de una API REST y anal\'iticas. La API permite listar los m\'odulos e indicadores disponibles, ejecutar la extracci\'on de datos y consultar los resultados calculados. Los datos almacenados en MongoDB son visualizados mediante \textit{dashboards} en Metabase, los cuales se actualizan autom\'aticamente a medida que se pueblan las colecciones.
+
+Dos decisiones refuerzan el cumplimiento de este objetivo m\'as all\'a de la mera existencia de los \textit{dashboards}. La primera es que el cat\'alogo de indicadores que expone la API se construye a partir de los m\'odulos registrados y no de una lista escrita a mano, de modo que todo indicador que se incorpore al sistema queda publicado sin tocar las rutas. La segunda es que la configuraci\'on completa de la capa de anal\'itica --- la conexi\'on a la base de datos, las consultas y el \textit{dashboard} --- se encuentra declarada en un archivo versionado junto al c\'odigo y se aplica sola al levantar el entorno. El resultado es que cualquier integrante del equipo de investigaci\'on obtiene el sistema completo, con sus visualizaciones, ejecutando un \'unico comando; la disponibilizaci\'on de los indicadores no queda atada al computador ni a la memoria de quien los configur\'o.
+
+\section{Aportes de la arquitectura}
+\label{sec:aportes-arquitectura}
+
+M\'as all\'a del cumplimiento de los objetivos, el trabajo deja tres aportes que exceden el caso concreto de los indicadores implementados.
+
+El primero es que el \textit{core} del sistema no contiene ninguna referencia al dominio de la resiliencia comunitaria. Las clases \textit{ScrapeBase}, \textit{ScraperFactory}, \textit{IndicatorBuilder} y \textit{CronRegistry}, junto con la jerarqu\'ia de \textit{adapters}, operan sobre la noci\'on abstracta de ``indicador obtenido de una fuente externa''. Todo el conocimiento espec\'ifico --- qu\'e URL consultar, c\'omo interpretar el HTML, qu\'e campos conforman un registro, c\'omo se calcula el valor final --- reside en los m\'odulos. Esta separaci\'on implica que el sistema es reutilizable para cualquier observatorio de indicadores que deba alimentarse de fuentes web heterog\'eneas, sea en salud, educaci\'on, medio ambiente o gesti\'on municipal, sin modificar una l\'inea del \textit{core}. La incorporaci\'on de un nuevo indicador se reduce a escribir los \textit{adapters} correspondientes y declararlos mediante el \textit{IndicatorBuilder}.
+
+El segundo aporte es la distinci\'on expl\'icita entre el dato observado y el dato derivado. El sistema conserva el texto original de la fuente junto al valor normalizado (campos \texttt{regionSource} y \texttt{region}), y almacena los resultados calculados en una colecci\'on separada de los registros crudos. Esta decisi\'on tiene una consecuencia metodol\'ogica relevante para un contexto de investigaci\'on: permite auditar cualquier valor contra su fuente original y recalcular un indicador con una f\'ormula distinta sin volver a extraer los datos. En un trabajo cient\'ifico, donde la trazabilidad del dato es tan importante como el dato mismo, esta propiedad es tanto o m\'as valiosa que la automatizaci\'on.
+
+El tercer aporte proviene de las mediciones de rendimiento de la secci\'on~\ref{sec:rendimiento}. Al concentrarse entre el 88\% y el 93\% del tiempo en la obtenci\'on del documento remoto, el procesamiento propio del sistema resulta pr\'acticamente gratuito. Esto significa que el costo marginal de incorporar un indicador adicional es despreciable y que la v\'ia de escalamiento no pasa por optimizar el c\'odigo, sino por paralelizar y planificar las consultas a las fuentes. La arquitectura, por lo tanto, no solo admite conceptualmente los m\'as de treinta indicadores que contempla el modelo CORE completo: los admite tambi\'en en t\'erminos de recursos.
+
+\section{Sobre la calidad de las fuentes de datos p\'ublicas}
+\label{sec:calidad-fuentes}
+
+Un resultado transversal del proyecto, no previsto al inicio, es que el principal obst\'aculo para operacionalizar el modelo CORE en Chile no es t\'ecnico sino de disponibilidad y calidad de los datos p\'ublicos.
+
+De los seis indicadores de la dimensi\'on social analizados en el cap\'itulo de viabilidad, solo tres cuentan con una fuente p\'ublica que permita construirlos de forma automatizada. El indicador SCEO carece por completo de fuente centralizada, y otros dependen de encuestas cuya periodicidad no coincide con la frecuencia con que se querr\'ia medir la resiliencia de un territorio.
+
+A esto se suma que las fuentes disponibles presentan problemas de consistencia que solo se hacen visibles al automatizar su lectura. Los veintinueve simulacros publicados por el MINEDUC dan lugar a veinti\'un nombres de territorio distintos en un pa\'is que tiene diecis\'eis regiones, al punto de que dos de esas graf\'ias difieren \'unicamente en un ap\'ostrofo tipogr\'afico frente a un acento agudo. La BCN, por su parte, informa el car\'acter \texttt{-} donde no dispone de un valor, y publica a\~nos con datos parciales sin se\~nalarlo. Ninguno de estos problemas es perceptible para una persona que consulta la p\'agina puntualmente; todos ellos comprometen la agregaci\'on autom\'atica de los datos.
+
+La conclusi\'on que se desprende es que un sistema de extracci\'on de indicadores no puede limitarse a leer y almacenar: debe incorporar una capa de normalizaci\'on y una pol\'itica expl\'icita frente a los datos ausentes. El presente trabajo resolvi\'o lo primero mediante el modelo territorial can\'onico descrito en la secci\'on~\ref{sec:normalizacion}, y dej\'o lo segundo pendiente, como se detalla a continuaci\'on.
 
 \section{Limitaciones}
 \label{sec:limitaciones}
@@ -1652,17 +1819,25 @@ En tercer lugar, la plataforma Statista fue descartada como fuente para el indic
 
 En cuarto lugar, la librer\'ia \textit{request-promise} utilizada para las peticiones HTTP se encuentra deprecada. Si bien esto no afecta el funcionamiento actual del sistema, representa una deuda t\'ecnica que debe ser abordada en futuras iteraciones.
 
+En quinto lugar, el sistema no distingue un dato ausente de un cero leg\'itimo. Los \textit{MapperAdapters} convierten a cero cualquier valor que la fuente no entregue como n\'umero, criterio que result\'o insuficiente al encontrarse que la BCN informa el car\'acter \texttt{-} en los campos que no dispone. La consecuencia concreta se document\'o en la secci\'on~\ref{sec:resultado-orgs}: el total de organizaciones comunitarias del a\~no 2017 qued\'o almacenado como cero pese a existir 3.485 organizaciones en ese a\~no. El defecto no compromete los valores extra\'idos correctamente, pero s\'i puede distorsionar cualquier agregaci\'on que los incluya, por lo que constituye la limitaci\'on m\'as relevante desde el punto de vista de la calidad de los datos.
+
+En sexto lugar, la detecci\'on de fallos silenciosos sigue siendo manual. El sistema arroja un error cuando una extracci\'on no devuelve registros, pero no es capaz de advertir que una fuente cambi\'o su estructura y ahora entrega datos parciales o err\'oneos manteniendo la cantidad de registros esperada.
+
 \section{Trabajo futuro}
 \label{sec:trabajo-futuro}
 
 Con base en las limitaciones identificadas y la extensibilidad de la arquitectura, se proponen las siguientes l\'ineas de trabajo futuro:
 
 \begin{itemize}
+  \item Representar el dato ausente de forma expl\'icita, distingui\'endolo del valor cero, e incorporar en cada registro una marca de completitud que permita a las agregaciones y a los \textit{dashboards} excluir los per\'iodos parcialmente informados por la fuente.
   \item Implementar los indicadores pendientes (SCCP, SNP) utilizando el \textit{DownloadAdapter} ya disponible en el \textit{core} para la descarga de archivos CSV y XLSX.
   \item Migrar la librer\'ia \textit{request-promise} a \textit{fetch} nativo o \textit{axios} para resolver la deuda t\'ecnica asociada a la dependencia deprecada.
   \item Agregar un mecanismo de \textit{retry} con \textit{backoff} exponencial en los \textit{FetchAdapters} para manejar de forma robusta los fallos temporales en las fuentes externas.
+  \item Incorporar un monitoreo que compare cada extracci\'on con la anterior y alerte ante variaciones an\'omalas en la cantidad de registros o en la distribuci\'on de los valores, de modo de detectar los fallos silenciosos descritos en las limitaciones.
   \item Explorar un enfoque h\'ibrido que combine la arquitectura modular con modelos de lenguaje (LLM) como mecanismo de \textit{fallback} para el \textit{parsing} adaptativo cuando una fuente cambia su estructura HTML.
-  \item Generalizar los m\'odulos de la BCN para soportar m\'ultiples comunas mediante par\'ametros din\'amicos en la URL.
+  \item Generalizar los m\'odulos de la BCN para soportar m\'ultiples comunas mediante par\'ametros din\'amicos en la URL, de modo de habilitar la comparaci\'on territorial que el modelo CORE requiere.
+  \item Extender el modelo territorial can\'onico al nivel comunal y publicarlo como componente independiente, dado que el problema de las graf\'ias inconsistentes afecta a cualquier sistema que agregue datos p\'ublicos chilenos provenientes de fuentes distintas.
+  \item Aplicar la arquitectura a un dominio ajeno a la resiliencia comunitaria para verificar emp\'iricamente la independencia del \textit{core} respecto del dominio.
   \item Desarrollar un \textit{frontend} personalizado como alternativa a Metabase para casos donde se requiera mayor control sobre la visualizaci\'on de los datos.
 \end{itemize}
 
@@ -1688,5 +1863,146 @@ Con base en las limitaciones identificadas y la extensibilidad de la arquitectur
   \caption{Indicadores de la dimensi\'on social del modelo CORE}
   \label{fig:indicadores-social}
 \end{figure}
+
+
+\chapter{Ejemplos de datos extra\'idos}
+\label{app:datos}
+
+Este anexo presenta un documento representativo de cada colecci\'on de MongoDB, tal como queda almacenado tras la ejecuci\'on del flujo ETL. Se omiten los campos que agrega Mongoose de forma autom\'atica (\texttt{\_id}, \texttt{\_\_v}, \texttt{createdAt} y \texttt{updatedAt}).
+
+\section{Colecci\'on emergencia-desastres}
+\label{app:datos-ed}
+
+Cada documento corresponde a un simulacro. El campo \texttt{key} es la clave \'unica generada por el \textit{HashAdapter} a partir de la fecha y la regi\'on can\'onica, y es el mecanismo que impide almacenar un mismo simulacro dos veces.
+
+\begin{lstlisting}[style=codigo, language=JSON]
+{
+  "key": "2021-05-27-arica-y-parinacota",
+  "date": "2021-05-27T04:00:00.000Z",
+  "place": "Sismo Tsunami - Sector Educación",
+  "region": "Arica y Parinacota",
+  "regionSource": "Arica",
+  "indicator": "simulacros-2021",
+  "module": "emergencia-desastres"
+}
+\end{lstlisting}
+
+\section{Colecci\'on tasa-pobreza-ingresos}
+\label{app:datos-pobreza}
+
+La colecci\'on contiene una fila por unidad territorial. Los porcentajes se almacenan como n\'umeros, convertidos desde el formato decimal chileno que utiliza la fuente.
+
+\begin{lstlisting}[style=codigo, language=JSON]
+{
+  "key": "comuna-de-valdivia-biblioteca-congreso-nacional-
+           valdivia-tasa-pobreza-ingresos",
+  "unidadTerritorial": "Comuna de Valdivia",
+  "casen2017": 7.6,
+  "casen2022": 3.4,
+  "indicator": "valdivia-tasa-pobreza-ingresos",
+  "module": "biblioteca-congreso-nacional"
+}
+\end{lstlisting}
+
+\section{Colecci\'on organizaciones-comunitarias}
+\label{app:datos-orgs}
+
+Cada documento agrupa los once tipos de organizaci\'on comunitaria de un a\~no. El ejemplo corresponde al a\~no 2024 e ilustra el problema descrito en la secci\'on~\ref{sec:resultado-orgs}: los campos que la fuente no informa quedan almacenados como cero.
+
+\begin{lstlisting}[style=codigo, language=JSON]
+{
+  "key": "0yhktp6",
+  "anio": 2024,
+  "nDeJuntasDeVecinos": 175,
+  "nDeClubesDeportivos": 180,
+  "nCentrosCulturales": 37,
+  "nDeCentrosUOrganizacionesDelAdultoMayor": 92,
+  "nDeCentrosDePadresYApoderados": 35,
+  "nDeCompaniasDeBomberos": 10,
+  "nDeUnionesComunales": 2,
+  "nDeCentrosDeMadres": 0,
+  "nDeOtrasOrganizacionesComunitariasFuncionalesOtros": 0,
+  "nDeOrganizacionesComunitariasSumaTotal": 531,
+  "indicator": "valdivia-organizaciones-comunitarias",
+  "module": "biblioteca-congreso-nacional"
+}
+\end{lstlisting}
+
+\section{Colecci\'on indicator-results}
+\label{app:datos-results}
+
+Esta colecci\'on almacena el valor del indicador calculado por el \textit{CalculatorAdapter}, separado de los registros crudos que le dieron origen.
+
+\begin{lstlisting}[style=codigo, language=JSON]
+{
+  "indicator": "simulacros-2022",
+  "module": "emergencia-desastres",
+  "totalDrills": 11,
+  "drillsByRegion": {
+    "Arica y Parinacota": 1, "Tarapacá": 1, "Atacama": 1,
+    "Valparaíso": 1, "O'Higgins": 1, "Maule": 1, "Ñuble": 1,
+    "Biobío": 1, "Los Ríos": 1, "Aysén": 1, "Magallanes": 1
+  }
+}
+\end{lstlisting}
+
+
+\chapter{Declaraci\'on de un indicador}
+\label{app:codigo}
+
+Este anexo muestra el c\'odigo necesario para incorporar un indicador al sistema, con el objeto de dimensionar el esfuerzo real que implica esa tarea. Se utiliza como ejemplo el indicador \texttt{simulacros-2021} del m\'odulo \textit{emergencias-desastres}. El c\'odigo fuente completo del sistema se encuentra disponible en el repositorio del proyecto.
+
+\section{Declaraci\'on mediante el IndicatorBuilder}
+\label{app:codigo-config}
+
+La declaraci\'on de un indicador consiste en encadenar los m\'etodos del \textit{IndicatorBuilder} indicando su nombre, la URL de la fuente, la frecuencia de actualizaci\'on y los \textit{adapters} que resuelven cada etapa del flujo ETL. El \textit{CalculatorAdapter} es opcional y solo se declara en los indicadores que requieren un valor agregado.
+
+\begin{lstlisting}[style=codigo, language=TypeScript]
+export const EMERGENCIA_DESASTRES_CONFIG: ModuleConfig = {
+  "simulacros-2021": new IndicatorBuilder()
+    .setName("Simulacros 2021")
+    .setUrl("https://web.archive.org/web/20211026024955/...")
+    .setFrequency(FREQUENCIES.once)
+    .setFetchAdapter(new RequestPromiseAdapter())
+    .setParseAdapter(new DateParserAdapter())
+    .setMapperAdapter(new EmergenciaDesastresMapper())
+    .setHashAdapter(new EmergenciaDesastresHashAdapter())
+    .setStorageAdapter(new EmergenciasDesastresStorageAdapter())
+    .setCalculatorAdapter(new TsunamiDrillsCalculatorAdapter())
+    .build()
+};
+\end{lstlisting}
+
+Los \textit{adapters} de obtenci\'on (\textit{RequestPromiseAdapter}) son gen\'ericos y se reutilizan entre indicadores; los restantes son espec\'ificos de la fuente.
+
+\section{Extracci\'on de los datos desde el HTML}
+\label{app:codigo-parse}
+
+El \textit{ParseAdapter} concentra el conocimiento sobre la estructura de la fuente. Es la \'unica pieza que debe modificarse cuando una p\'agina cambia su HTML, y su aislamiento permite probarla sin ejecutar el resto del flujo.
+
+\begin{lstlisting}[style=codigo, language=TypeScript]
+export class DateParserAdapter implements ParseAdapter {
+  extract(data: string) {
+    const $ = cheerio.load(data);
+    return $(".back-fechas .item .card")
+      .map((_idx, elem) => {
+        const dateElem = $(elem).find(".caja-date");
+        const date = {
+          day: Number($(dateElem).find(".dat_day")
+                 .text().trim().split("\t")[0]),
+          month: $(dateElem).find(".dat_mes").text().trim(),
+          year: Number($(dateElem).find(".dat_year").text().trim())
+        };
+        const placeElem = $(elem).find(".card-body");
+        const place = {
+          type: $(placeElem).find(".card-title a").text().trim(),
+          region: $(placeElem).find(".card-title.pb-3").text().trim()
+        };
+        return { date, place };
+      })
+      .get();
+  }
+}
+\end{lstlisting}
 
 \end{document}
