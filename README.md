@@ -6,10 +6,10 @@ Automatización de extracción, normalización y consulta de indicadores sociale
 
 ## Documentación
 
-| Documento                                      | Contenido                                   |
-| ---------------------------------------------- | ------------------------------------------- |
-| [`docs/tesis/README.md`](docs/tesis/README.md) | Compilación del documento de tesis en LaTeX |
-| [`docs/api/`](docs/api/)                       | Colección Bruno con los endpoints de la API |
+| Documento                              | Contenido                                        |
+| -------------------------------------- | ------------------------------------------------ |
+| [`docs/tesis/`](docs/tesis/)           | Documento de tesis en LaTeX y su PDF compilado    |
+| [`docs/api/`](docs/api/)               | Colección Bruno con los endpoints de la API       |
 
 ## Requisitos
 
@@ -354,10 +354,22 @@ Basta con añadir una entrada al arreglo `cards` de `.docker/metabase/provisioni
 
 ## Documento de tesis
 
-El documento de tesis está en `docs/tesis/` y se compila dentro de un contenedor Docker, por lo que no es necesario instalar TeX Live en la máquina:
+El documento de tesis está en `docs/tesis/`: `tesis.tex` es el único archivo fuente, `referencias.bib` la bibliografía e `img/` las imágenes que referencia. Se compila dentro de un contenedor Docker, por lo que no es necesario instalar TeX Live en la máquina:
 
 ```bash
 docker compose run --rm tesis
 ```
 
-El PDF queda en `docs/tesis/tesis.pdf`. La guía completa (edición, limpieza, detalles del servicio Docker y tipografía) está en [`docs/tesis/README.md`](docs/tesis/README.md).
+El PDF queda en `docs/tesis/tesis.pdf` y los archivos intermedios en `docs/tesis/tmp/`, ignorada por git. `latexmk` decide qué pasadas de `xelatex` y `biber` repetir, así que basta con volver a ejecutar el comando tras cada edición. La primera ejecución descarga la imagen `texlive/texlive` (~5,6 GB) y tarda unos minutos.
+
+Si el índice o la numeración quedan inconsistentes tras un cambio grande, conviene borrar el PDF y los intermedios antes de recompilar:
+
+```bash
+docker compose run --rm tesis latexmk -C -auxdir=tmp -outdir=. tesis.tex
+```
+
+El servicio corre con el usuario `1000:1000`. Si tu UID o GID son distintos, el PDF y los intermedios quedarían como `root`, así que conviene pasarlos de forma explícita:
+
+```bash
+DOCKER_UID=$(id -u) DOCKER_GID=$(id -g) docker compose run --rm tesis
+```
