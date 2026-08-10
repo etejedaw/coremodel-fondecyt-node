@@ -4,6 +4,8 @@ services:
     restart: always
     ports:
       - "27017:27017"
+    volumes:
+      - ./.docker/mongo:/docker-entrypoint-initdb.d:ro
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: toor
