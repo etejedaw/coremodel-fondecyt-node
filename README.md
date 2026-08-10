@@ -46,7 +46,9 @@ Esto levanta 3 servicios permanentes:
 | Mongo Express | 8081   | Interfaz web para MongoDB   |
 | Metabase      | 3001   | Dashboards de visualización |
 
-Más un cuarto servicio de un solo uso, `metabase-provision`, que espera a que Metabase responda, le aplica la configuración declarada en `.docker/metabase/provisioning.json` y termina. Es idempotente, así que en los siguientes arranques no hace ningún cambio.
+Más un cuarto servicio de un solo uso, `metabase-provision`, que espera a que Metabase responda, le aplica la configuración declarada en `.docker/metabase/provisioning.json` y termina. Se ejecuta en cada `docker compose up`, pero es idempotente: sobre una instancia ya configurada solo actualiza lo que haya cambiado en el archivo, y sobre una instancia nueva la configura por completo.
+
+MongoDB, por su parte, crea en su primer arranque las colecciones vacías declaradas en `.docker/mongo/init.js`. Sin ellas la base de datos no existiría todavía y Metabase rechazaría la conexión, porque valida que la base esté creada antes de registrarla como fuente de datos.
 
 El `docker-compose.yml` define además un servicio `tesis` para compilar el documento de tesis. Está bajo el perfil `docs`, por lo que `docker compose up` lo ignora por completo (ver [Documento de tesis](#documento-de-tesis)).
 
@@ -70,7 +72,7 @@ curl localhost:3000/biblioteca-congreso-nacional/valdivia-organizaciones-comunit
 
 Cada llamada extrae desde la fuente, almacena en MongoDB e ignora los registros que ya existan, así que se pueden repetir sin generar duplicados. Al recargar Metabase los gráficos ya muestran la data.
 
-No es necesario volver a hacerlo en cada arranque: los datos persisten en el volumen de MongoDB. A partir de ahí, el `CronRegistry` mantiene al día los indicadores que declaran una frecuencia — los de la BCN se reextraen cada 1 de enero — mientras que los de simulacros usan `FREQUENCIES.once` y no se programan, porque su fuente es una instantánea de Wayback Machine que no cambia. Llamar a un endpoint en cualquier momento incorpora la data nueva que haya publicado la fuente.
+No es necesario volver a hacerlo en cada arranque: `docker compose stop` y `start` conservan los datos, y solo hay que repoblar después de un `docker compose down`, que descarta el volumen de MongoDB junto con los contenedores. A partir de ahí, el `CronRegistry` mantiene al día los indicadores que declaran una frecuencia — los de la BCN se reextraen cada 1 de enero — mientras que los de simulacros usan `FREQUENCIES.once` y no se programan, porque su fuente es una instantánea de Wayback Machine que no cambia. Llamar a un endpoint en cualquier momento incorpora la data nueva que haya publicado la fuente.
 
 ## Estructura del proyecto
 
