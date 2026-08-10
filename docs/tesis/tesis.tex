@@ -364,7 +364,7 @@ Hasta ahora, cuando se desea calcular la resiliencia comunitaria, los investigad
 \subsection{Estado del arte}
 \label{sec:estado-arte}
 
-Actualmente no existe una soluci\'on real a esta problem\'atica. Todas las investigaciones de las que se tiene registro realizan el c\'alculo de la resiliencia comunitaria con una extracci\'on manual de la informaci\'on para luego ser ingresadas y analizadas con diversos programas estad\'isticos como SPSS y R.
+En la literatura revisada no se identific\'o una soluci\'on que automatice la captura de estos indicadores. Las investigaciones de las que se tiene registro realizan el c\'alculo de la resiliencia comunitaria con una extracci\'on manual de la informaci\'on, que luego es ingresada y analizada con diversos programas estad\'isticos como SPSS y R.
 
 En la investigaci\'on realizada por \textcite{cutter2014}, el cual utiliza el modelo BRIC que est\'a centrado en la geograf\'ia de las construcciones, se extrajeron los datos manualmente de diversas fuentes de bases de datos, la mayor\'ia abiertas y gratuitas.
 
@@ -493,9 +493,9 @@ Se defini\'o una pauta de extracci\'on de informaci\'on con la finalidad de pode
 \section{Estudios incluidos y excluidos}
 \label{sec:estudios}
 
-Primeramente, al realizar la b\'usqueda con el \textit{string} ya definido, se obtuvo un total de 47 art\'iculos, para luego comenzar a discriminar seg\'un el contenido del \textit{abstract}, lo cual da un total de diez art\'iculos para poder resumir y extraer la informaci\'on pertinente.
+En primer lugar, al realizar la b\'usqueda con el \textit{string} ya definido, se obtuvo un total de 47 art\'iculos, para luego comenzar a discriminar seg\'un el contenido del \textit{abstract}, lo cual da un total de diez art\'iculos para poder resumir y extraer la informaci\'on pertinente.
 
-Finalmente, de los diez art\'iculos seleccionados, solo siete resultaron ser \'utiles para la investigaci\'on.
+Finalmente, de los diez art\'iculos seleccionados, solo nueve resultaron ser \'utiles para la investigaci\'on.
 
 Si bien la cantidad de art\'iculos a analizar no es alta, se puede apreciar en la Figura~\ref{fig:articulos-por-anio} el c\'omo las investigaciones de resiliencia comunitaria son contempor\'aneas y han ido en aumento con los a\~nos.
 
@@ -587,7 +587,7 @@ En este caso se aprecia que las dimensiones social y f\'isica son las que agrupa
 
 En este cap\'itulo se analiza la viabilidad de extracci\'on autom\'atica de cada indicador del modelo CORE en las dimensiones sociocomunitaria e institucional. Para cada indicador se identifican las fuentes de datos disponibles, el formato en que se encuentran, la segmentaci\'on geogr\'afica y las tareas necesarias para su incorporaci\'on al sistema.
 
-Dentro del modelo CORE se especifican los indicadores de la dimensi\'on social que ser\'an objeto de an\'alisis (ver Anexo~\ref{app:indicadores-core}). La finalidad de esta b\'usqueda es analizar cu\'ales indicadores son viables para realizar la extracci\'on autom\'atica de sus datos.
+Dentro del modelo CORE se especifican los indicadores correspondientes a las dimensiones sociocomunitaria e institucional que ser\'an objeto de an\'alisis (ver Anexo~\ref{app:indicadores-core}). La finalidad de esta b\'usqueda es analizar cu\'ales indicadores son viables para realizar la extracci\'on autom\'atica de sus datos.
 
 \section{Population Poverty (PP)}
 \label{sec:pp}
@@ -779,7 +779,7 @@ Control de versiones & Git & --- \\
 \end{tabular}
 \end{table}
 
-La versi\'on de Node.js se fija mediante el archivo \texttt{.nvmrc} con el alias \texttt{lts/jod}, que corresponde a la l\'inea 22 de soporte extendido. Esta decisi\'on responde a que las versiones recientes de Cheerio y de sus dependencias transitivas requieren caracter\'isticas de m\'odulos ECMAScript no disponibles en las l\'ineas anteriores.
+La versi\'on de Node.js se fija mediante el archivo \texttt{.nvmrc} con el alias \texttt{lts/jod}, que corresponde a la l\'inea 22 de soporte extendido. Esta decisi\'on responde a que las versiones recientes de Cheerio y de sus dependencias transitivas requieren caracter\'isticas de m\'odulos ECMAScript no disponibles en las l\'ineas anteriores. La \'unica versi\'on no fijada es la de Metabase, cuya imagen Docker se referencia mediante la etiqueta \texttt{latest}: al tratarse de una herramienta de visualizaci\'on externa al flujo ETL, su versi\'on exacta no compromete la reproducibilidad de los resultados del sistema.
 
 \section{Lenguaje de programaci\'on}
 \label{sec:lenguaje}
@@ -804,7 +804,7 @@ Adicionalmente, MongoDB permite almacenar documentos con estructuras heterog\'en
 
 El entorno de ejecuci\'on predilecto actualmente para el desarrollo de programas con Javascript/TypeScript es Node.js \parencite{nodejs}.
 
-Node.js posee una madurez de m\'as de trece a\~nos. Est\'a dise\~nado para crear aplicaciones escalables y orientado al uso de eventos as\'incronos.
+Node.js posee una madurez de m\'as de 15 a\~nos. Est\'a dise\~nado para crear aplicaciones escalables y orientado al uso de eventos as\'incronos.
 
 Su simplicidad permite desarrollar aplicaciones en poco tiempo, posee un sistema de paquetes (npm) en constante crecimiento que permite a los desarrolladores implementar m\'ultiples herramientas y m\'odulos. Adem\'as, al poseer un n\'ucleo liviano, da una ventaja en el tama\~no final del software, ya que se utilizan solo las funcionalidades que se deseen implementar.
 
@@ -874,7 +874,7 @@ Este cap\'itulo describe el prototipo construido, los artefactos que produjo y l
 \section{Alcance del prototipo}
 \label{sec:alcance-prototipo}
 
-El prototipo se acot\'o deliberadamente a dos indicadores de la dimensi\'on sociocomunitaria --- tasa de pobreza y poblaci\'on carente de servicios b\'asicos --- extra\'idos desde una \'unica fuente. Esta restricci\'on fue intencional: con dos indicadores distintos sobre una misma fuente es posible observar qu\'e c\'odigo se repite entre ambos y cu\'al es espec\'ifico de cada uno, que es precisamente la informaci\'on que se buscaba.
+El prototipo se acot\'o deliberadamente a dos indicadores de la dimensi\'on sociocomunitaria --- tasa de pobreza y poblaci\'on carente de servicios b\'asicos --- extra\'idos desde una \'unica fuente. Esta restricci\'on fue intencional: con dos indicadores distintos sobre una misma fuente es posible observar qu\'e c\'odigo se repite entre ambos y cu\'al es espec\'ifico de cada uno, que es precisamente la informaci\'on que se buscaba. El indicador de poblaci\'on carente de servicios b\'asicos no forma parte de los analizados en el Cap\'itulo~\ref{ch:viabilidad}; se incluy\'o porque comparte fuente y formato de presentaci\'on con la tasa de pobreza, lo que permit\'ia comparar dos extracciones sobre un mismo portal.
 
 El prototipo cubri\'o las tres etapas del proceso ETL de extremo a extremo: obtenci\'on del HTML, extracci\'on de los valores y persistencia en MongoDB. No se implementaron en esta etapa la programaci\'on de tareas peri\'odicas, el manejo de errores tipados ni la exposici\'on mediante una API, por no ser necesarios para responder la pregunta de dise\~no planteada.
 
@@ -1814,16 +1814,16 @@ El primero es que el \textit{core} del sistema no contiene ninguna referencia al
 
 El segundo aporte es la distinci\'on expl\'icita entre el dato observado y el dato derivado. El sistema conserva el texto original de la fuente junto al valor normalizado (campos \texttt{regionSource} y \texttt{region}), y almacena los resultados calculados en una colecci\'on separada de los registros crudos. Esta decisi\'on tiene una consecuencia metodol\'ogica relevante para un contexto de investigaci\'on: permite auditar cualquier valor contra su fuente original y recalcular un indicador con una f\'ormula distinta sin volver a extraer los datos. En un trabajo cient\'ifico, donde la trazabilidad del dato es tan importante como el dato mismo, esta propiedad es tanto o m\'as valiosa que la automatizaci\'on.
 
-El tercer aporte proviene de las mediciones de rendimiento de la secci\'on~\ref{sec:rendimiento}. Al concentrarse entre el 88\% y el 93\% del tiempo en la obtenci\'on del documento remoto, el procesamiento propio del sistema resulta pr\'acticamente gratuito. Esto significa que el costo marginal de incorporar un indicador adicional es despreciable y que la v\'ia de escalamiento no pasa por optimizar el c\'odigo, sino por paralelizar y planificar las consultas a las fuentes. La arquitectura, por lo tanto, no solo admite conceptualmente los m\'as de treinta indicadores que contempla el modelo CORE completo: los admite tambi\'en en t\'erminos de recursos.
+El tercer aporte proviene de las mediciones de rendimiento de la secci\'on~\ref{sec:rendimiento}. Al concentrarse entre el 88\% y el 93\% del tiempo en la obtenci\'on del documento remoto, el procesamiento propio del sistema resulta pr\'acticamente gratuito. Esto significa que el costo marginal de incorporar un indicador adicional es despreciable y que la v\'ia de escalamiento no pasa por optimizar el c\'odigo, sino por paralelizar y planificar las consultas a las fuentes. La arquitectura, por lo tanto, no solo admite conceptualmente los 21 indicadores que contempla el modelo CORE completo: los admite tambi\'en en t\'erminos de recursos.
 
 \section{Sobre la calidad de las fuentes de datos p\'ublicas}
 \label{sec:calidad-fuentes}
 
 Un resultado transversal del proyecto, no previsto al inicio, es que el principal obst\'aculo para operacionalizar el modelo CORE en Chile no es t\'ecnico sino de disponibilidad y calidad de los datos p\'ublicos.
 
-De los seis indicadores de la dimensi\'on social analizados en el cap\'itulo de viabilidad, solo tres cuentan con una fuente p\'ublica que permita construirlos de forma automatizada. El indicador SCEO carece por completo de fuente centralizada, y otros dependen de encuestas cuya periodicidad no coincide con la frecuencia con que se querr\'ia medir la resiliencia de un territorio.
+De los seis indicadores de las dimensiones sociocomunitaria e institucional analizados en el cap\'itulo de viabilidad, solo tres cuentan con una fuente p\'ublica que permita construirlos de forma automatizada. El indicador SCEO carece por completo de fuente centralizada, y otros dependen de encuestas cuya periodicidad no coincide con la frecuencia con que se querr\'ia medir la resiliencia de un territorio.
 
-A esto se suma que las fuentes disponibles presentan problemas de consistencia que solo se hacen visibles al automatizar su lectura. Los veintinueve simulacros publicados por el MINEDUC dan lugar a veinti\'un nombres de territorio distintos en un pa\'is que tiene diecis\'eis regiones, al punto de que dos de esas graf\'ias difieren \'unicamente en un ap\'ostrofo tipogr\'afico frente a un acento agudo. La BCN, por su parte, informa el car\'acter \texttt{-} donde no dispone de un valor, y publica a\~nos con datos parciales sin se\~nalarlo. Ninguno de estos problemas es perceptible para una persona que consulta la p\'agina puntualmente; todos ellos comprometen la agregaci\'on autom\'atica de los datos.
+A esto se suma que las fuentes disponibles presentan problemas de consistencia que solo se hacen visibles al automatizar su lectura. Los 29 simulacros publicados por el MINEDUC dan lugar a 21 nombres de territorio distintos en un pa\'is que tiene 16 regiones, al punto de que dos de esas graf\'ias difieren \'unicamente en un ap\'ostrofo tipogr\'afico frente a un acento agudo. La BCN, por su parte, informa el car\'acter \texttt{-} donde no dispone de un valor, y publica a\~nos con datos parciales sin se\~nalarlo. Ninguno de estos problemas es perceptible para una persona que consulta la p\'agina puntualmente; todos ellos comprometen la agregaci\'on autom\'atica de los datos.
 
 La conclusi\'on que se desprende es que un sistema de extracci\'on de indicadores no puede limitarse a leer y almacenar: debe incorporar una capa de normalizaci\'on y una pol\'itica expl\'icita frente a los datos ausentes. El presente trabajo resolvi\'o lo primero mediante el modelo territorial can\'onico descrito en la secci\'on~\ref{sec:normalizacion}, y dej\'o lo segundo pendiente, como se detalla a continuaci\'on.
 
