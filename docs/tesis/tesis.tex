@@ -870,7 +870,7 @@ Este cap\'itulo describe el prototipo construido, los artefactos que produjo y l
 \section{Alcance del prototipo}
 \label{sec:alcance-prototipo}
 
-El prototipo se acot\'o deliberadamente a dos indicadores de la dimensi\'on sociocomunitaria --- tasa de pobreza y poblaci\'on carente de servicios b\'asicos --- extra\'idos desde una \'unica fuente. Esta restricci\'on fue intencional: con dos indicadores distintos sobre una misma fuente es posible observar qu\'e c\'odigo se repite entre ambos y cu\'al es espec\'ifico de cada uno, que es precisamente la informaci\'on que se buscaba. El indicador de poblaci\'on carente de servicios b\'asicos no forma parte de los analizados en el Cap\'itulo~\ref{ch:viabilidad}; se incluy\'o porque comparte fuente y formato de presentaci\'on con la tasa de pobreza, lo que permit\'ia comparar dos extracciones sobre un mismo portal.
+El prototipo se acot\'o deliberadamente a dos indicadores de la dimensi\'on sociocomunitaria (tasa de pobreza y poblaci\'on carente de servicios b\'asicos) extra\'idos desde una \'unica fuente. Esta restricci\'on fue intencional: con dos indicadores distintos sobre una misma fuente es posible observar qu\'e c\'odigo se repite entre ambos y cu\'al es espec\'ifico de cada uno, que es precisamente la informaci\'on que se buscaba. El indicador de poblaci\'on carente de servicios b\'asicos no forma parte de los analizados en el Cap\'itulo~\ref{ch:viabilidad}; se incluy\'o porque comparte fuente y formato de presentaci\'on con la tasa de pobreza, lo que permit\'ia comparar dos extracciones sobre un mismo portal.
 
 El prototipo cubri\'o las tres etapas del proceso ETL de extremo a extremo: obtenci\'on del HTML, extracci\'on de los valores y persistencia en MongoDB. No se implementaron en esta etapa la programaci\'on de tareas peri\'odicas, el manejo de errores tipados ni la exposici\'on mediante una API, por no ser necesarios para responder la pregunta de dise\~no planteada.
 
@@ -898,7 +898,7 @@ La observaci\'on relevante de esta exploraci\'on es que ambos indicadores, pese 
 \section{Modelo de datos inicial}
 \label{sec:modelo-datos-inicial}
 
-Para el modelo de la base de datos, se comenz\'o con la idea de almacenar la informaci\'on de la p\'agina web como tal --- URL de origen y fecha de extracci\'on --- para luego ir desglosando la informaci\'on en modelos m\'as espec\'ificos. En la Figura~\ref{fig:proto-interface-web} se presenta la \textit{interface} inicial.
+Para el modelo de la base de datos, se comenz\'o con la idea de almacenar la informaci\'on de la p\'agina web como tal (URL de origen y fecha de extracci\'on), para luego ir desglosando la informaci\'on en modelos m\'as espec\'ificos. En la Figura~\ref{fig:proto-interface-web} se presenta la \textit{interface} inicial.
 
 \begin{figure}[H]
   \centering
@@ -907,7 +907,7 @@ Para el modelo de la base de datos, se comenz\'o con la idea de almacenar la inf
   \label{fig:proto-interface-web}
 \end{figure}
 
-Una vez obtenida la informaci\'on base, se continu\'o con los modelos para cada indicador (ver Figuras~\ref{fig:proto-interface-pobreza} y~\ref{fig:proto-interface-servicios}). Cada indicador requiri\'o su propia \textit{interface}, ya que los campos de la tasa de pobreza no coinciden con los de la poblaci\'on carente de servicios b\'asicos. Esta constataci\'on --- que el esquema de datos es propio de cada indicador y no puede unificarse --- fue el argumento decisivo para optar por una base de datos documental por sobre una relacional, seg\'un se justific\'o en la secci\'on~\ref{sec:base-datos}.
+Una vez obtenida la informaci\'on base, se continu\'o con los modelos para cada indicador (ver Figuras~\ref{fig:proto-interface-pobreza} y~\ref{fig:proto-interface-servicios}). Cada indicador requiri\'o su propia \textit{interface}, ya que los campos de la tasa de pobreza no coinciden con los de la poblaci\'on carente de servicios b\'asicos. Esta constataci\'on, que el esquema de datos es propio de cada indicador y no puede unificarse, fue el argumento decisivo para optar por una base de datos documental por sobre una relacional, seg\'un se justific\'o en la secci\'on~\ref{sec:base-datos}.
 
 \begin{figure}[H]
   \centering
@@ -1126,10 +1126,10 @@ La Figura~\ref{fig:diagrama-adapters} presenta estos \textit{adapters} con sus m
         text width=76mm] (concretos) {
     \textbf{Implementaciones concretas de FetchAdapter}
     \nodepart{two}
-    \texttt{RequestPromiseAdapter} --- HTML est\'atico\\
-    \texttt{JsonFetchAdapter} --- API JSON\\
-    \texttt{PuppeteerAdapter} --- p\'aginas renderizadas con Javascript\\
-    \texttt{DownloadAdapter} --- descarga de archivos CSV y XLSX};
+    \texttt{RequestPromiseAdapter}: HTML est\'atico\\
+    \texttt{JsonFetchAdapter}: API JSON\\
+    \texttt{PuppeteerAdapter}: p\'aginas renderizadas con Javascript\\
+    \texttt{DownloadAdapter}: descarga de archivos CSV y XLSX};
 
   % Se rutea por la izquierda para no atravesar la caja de HashAdapter.
   \draw[herencia] (concretos.west) -- ++(-4mm,0) |- (fetch.west);
@@ -1359,7 +1359,7 @@ Ays\'en & \texttt{Ays\'en} $\cdot$ \texttt{Ays\'en- Cochrane} & 3 \\
 
 El caso de O'Higgins es particularmente ilustrativo, porque la diferencia entre ambas graf\'ias es un \'unico car\'acter invisible a simple vista: un ap\'ostrofo tipogr\'afico frente a un acento agudo. Sin un tratamiento expl\'icito, los 29 simulacros extra\'idos producen 21 territorios distintos, en un pa\'is que tiene 16 regiones.
 
-Es importante precisar el alcance real del problema. Dentro de un mismo a\~no ninguna regi\'on se repite, por lo que los totales por indicador no se ven afectados: los conteos de 9, 11 y 9 simulacros para 2021, 2022 y 2023 son correctos con o sin normalizaci\'on. La colisi\'on solo se manifiesta al agregar los datos entre a\~nos, que es precisamente lo que requiere el indicador \textit{Tsunami Drills} del modelo CORE --- definido como la suma de simulacros en un per\'iodo --- y lo que muestran los \textit{dashboards} de Metabase. Se trata, por lo tanto, de un defecto latente antes que de un error en los resultados obtenidos.
+Es importante precisar el alcance real del problema. Dentro de un mismo a\~no ninguna regi\'on se repite, por lo que los totales por indicador no se ven afectados: los conteos de 9, 11 y 9 simulacros para 2021, 2022 y 2023 son correctos con o sin normalizaci\'on. La colisi\'on solo se manifiesta al agregar los datos entre a\~nos, que es precisamente lo que requiere el indicador \textit{Tsunami Drills} del modelo CORE (definido como la suma de simulacros en un per\'iodo) y lo que muestran los \textit{dashboards} de Metabase. Se trata, por lo tanto, de un defecto latente antes que de un error en los resultados obtenidos.
 
 La soluci\'on adoptada consiste en asignar a cada texto territorial su regi\'on can\'onica mediante coincidencia sobre el nombre sin diacr\'iticos ni may\'usculas, de modo que los prefijos y sufijos que agrega la fuente (\texttt{Regi\'on de}, \texttt{- Provincia de San Antonio}) no impidan la identificaci\'on. El registro almacenado conserva ambos valores: el nombre can\'onico en el campo \texttt{region} y el texto original en \texttt{regionSource}, lo que permite auditar la extracci\'on contra la fuente sin perder la capacidad de agregar los datos.
 
@@ -1732,7 +1732,7 @@ La columna \textit{Total} incluye adem\'as la etapa de c\'alculo, presente solo 
 
 La lectura relevante de estas mediciones no es la magnitud absoluta, sino su distribuci\'on: entre el 88\% y el 93\% del tiempo total corresponde a la obtenci\'on del documento desde la fuente externa, mientras que las etapas de transformaci\'on y persistencia representan en conjunto menos del 10\%. Esto implica que el rendimiento del sistema est\'a determinado por la latencia de las fuentes web y no por su procesamiento interno, por lo que optimizar las etapas propias del ETL tendr\'ia un efecto marginal.
 
-En t\'erminos agregados, la extracci\'on completa de los cinco indicadores (49 registros) tom\'o menos de dos segundos. Frente al procedimiento manual que este trabajo busca sistematizar --- consistente en navegar cada fuente, copiar los valores y transcribirlos a una planilla --- la diferencia no radica \'unicamente en el tiempo, sino en que el proceso queda documentado, es repetible y no introduce errores de transcripci\'on.
+En t\'erminos agregados, la extracci\'on completa de los cinco indicadores (49 registros) tom\'o menos de dos segundos. Frente al procedimiento manual que este trabajo busca sistematizar (consistente en navegar cada fuente, copiar los valores y transcribirlos a una planilla), la diferencia no radica \'unicamente en el tiempo, sino en que el proceso queda documentado, es repetible y no introduce errores de transcripci\'on.
 
 \section{Ejecuci\'on automatizada}
 \label{sec:ejecucion-automatizada}
@@ -1799,14 +1799,14 @@ Los indicadores \textit{Civic Participation} (SCCP) y \textit{Special Needs Popu
 
 Se logr\'o poner a disposici\'on los indicadores por medio de una API REST y anal\'iticas. La API permite listar los m\'odulos e indicadores disponibles, ejecutar la extracci\'on de datos y consultar los resultados calculados. Los datos almacenados en MongoDB son visualizados mediante \textit{dashboards} en Metabase, los cuales se actualizan autom\'aticamente a medida que se pueblan las colecciones.
 
-Dos decisiones refuerzan el cumplimiento de este objetivo m\'as all\'a de la mera existencia de los \textit{dashboards}. La primera es que el cat\'alogo de indicadores que expone la API se construye a partir de los m\'odulos registrados y no de una lista escrita a mano, de modo que todo indicador que se incorpore al sistema queda publicado sin tocar las rutas. La segunda es que la configuraci\'on completa de la capa de anal\'itica --- la conexi\'on a la base de datos, las consultas y el \textit{dashboard} --- se encuentra declarada en un archivo versionado junto al c\'odigo y se aplica sola al levantar el entorno. El resultado es que cualquier integrante del equipo de investigaci\'on obtiene el sistema completo, con sus visualizaciones, ejecutando un \'unico comando; la puesta a disposici\'on de los indicadores no queda atada al computador ni a la memoria de quien los configur\'o.
+Dos decisiones refuerzan el cumplimiento de este objetivo m\'as all\'a de la mera existencia de los \textit{dashboards}. La primera es que el cat\'alogo de indicadores que expone la API se construye a partir de los m\'odulos registrados y no de una lista escrita a mano, de modo que todo indicador que se incorpore al sistema queda publicado sin tocar las rutas. La segunda es que la configuraci\'on completa de la capa de anal\'itica (la conexi\'on a la base de datos, las consultas y el \textit{dashboard}) se encuentra declarada en un archivo versionado junto al c\'odigo y se aplica sola al levantar el entorno. El resultado es que cualquier integrante del equipo de investigaci\'on obtiene el sistema completo, con sus visualizaciones, ejecutando un \'unico comando; la puesta a disposici\'on de los indicadores no queda atada al computador ni a la memoria de quien los configur\'o.
 
 \section{Aportes de la arquitectura}
 \label{sec:aportes-arquitectura}
 
 M\'as all\'a del cumplimiento de los objetivos, el trabajo deja tres aportes que exceden el caso concreto de los indicadores implementados.
 
-El primero es que el \textit{core} del sistema no contiene ninguna referencia al dominio de la resiliencia comunitaria. Las clases \textit{ScrapeBase}, \textit{ScraperFactory}, \textit{IndicatorBuilder} y \textit{CronRegistry}, junto con la jerarqu\'ia de \textit{adapters}, operan sobre la noci\'on abstracta de ``indicador obtenido de una fuente externa''. Todo el conocimiento espec\'ifico --- qu\'e URL consultar, c\'omo interpretar el HTML, qu\'e campos conforman un registro, c\'omo se calcula el valor final --- reside en los m\'odulos. Esta separaci\'on implica que el sistema es reutilizable para cualquier observatorio de indicadores que deba alimentarse de fuentes web heterog\'eneas, sea en salud, educaci\'on, medio ambiente o gesti\'on municipal, sin modificar una l\'inea del \textit{core}. La incorporaci\'on de un nuevo indicador se reduce a escribir los \textit{adapters} correspondientes y declararlos mediante el \textit{IndicatorBuilder}.
+El primero es que el \textit{core} del sistema no contiene ninguna referencia al dominio de la resiliencia comunitaria. Las clases \textit{ScrapeBase}, \textit{ScraperFactory}, \textit{IndicatorBuilder} y \textit{CronRegistry}, junto con la jerarqu\'ia de \textit{adapters}, operan sobre la noci\'on abstracta de ``indicador obtenido de una fuente externa''. Todo el conocimiento espec\'ifico (qu\'e URL consultar, c\'omo interpretar el HTML, qu\'e campos conforman un registro, c\'omo se calcula el valor final) reside en los m\'odulos. Esta separaci\'on implica que el sistema es reutilizable para cualquier observatorio de indicadores que deba alimentarse de fuentes web heterog\'eneas, sea en salud, educaci\'on, medio ambiente o gesti\'on municipal, sin modificar una l\'inea del \textit{core}. La incorporaci\'on de un nuevo indicador se reduce a escribir los \textit{adapters} correspondientes y declararlos mediante el \textit{IndicatorBuilder}.
 
 El segundo aporte es la distinci\'on expl\'icita entre el dato observado y el dato derivado. El sistema conserva el texto original de la fuente junto al valor normalizado (campos \texttt{regionSource} y \texttt{region}), y almacena los resultados calculados en una colecci\'on separada de los registros crudos. Esta decisi\'on tiene una consecuencia metodol\'ogica relevante para un contexto de investigaci\'on: permite auditar cualquier valor contra su fuente original y recalcular un indicador con una f\'ormula distinta sin volver a extraer los datos. En un trabajo cient\'ifico, donde la trazabilidad del dato es tan importante como el dato mismo, esta propiedad es tanto o m\'as valiosa que la automatizaci\'on.
 
