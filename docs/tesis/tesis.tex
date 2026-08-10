@@ -283,7 +283,7 @@ VALDIVIA -- CHILE\\
 
 La presente tesis aborda la sistematizaci\'on del proceso de captura de indicadores cuantitativos sociocomunitarios e institucionales mediante la extracci\'on automatizada de datos de la web, con el objetivo de alimentar el modelo CORE de resiliencia comunitaria ante tsunamis en zonas costeras de Chile.
 
-Se desarroll\'o un sistema de extracci\'on, transformaci\'on y carga (ETL) basado en una arquitectura modular de \textit{adapters} intercambiables, implementado en TypeScript con Node.js y MongoDB. El sistema permite agregar nuevos indicadores y fuentes de datos sin modificar la l\'ogica central, soportando m\'ultiples tipos de conexi\'on: \textit{web scraping} de HTML, extracci\'on de tablas y consumo de APIs JSON.
+Se desarroll\'o un sistema de extracci\'on, transformaci\'on y carga (ETL) basado en una arquitectura modular de \textit{adapters} intercambiables, implementado en TypeScript con Node.js y MongoDB. El sistema permite agregar nuevos indicadores y fuentes de datos sin modificar la l\'ogica central, soportando distintos tipos de conexi\'on y estrategias de extracci\'on: \textit{web scraping} de HTML, extracci\'on de tablas y consumo de APIs JSON.
 
 Se implementaron cinco indicadores distribuidos en dos m\'odulos: simulacros de emergencia (dimensi\'on institucional) y tasa de pobreza junto con organizaciones comunitarias (dimensi\'on sociocomunitaria). El sistema extrajo un total de 29 registros de simulacros, datos de pobreza a nivel comunal, regional y nacional, y 17 registros hist\'oricos de organizaciones comunitarias. Los datos fueron validados contra extracciones manuales y se verific\'o el correcto funcionamiento de los mecanismos de evitaci\'on de duplicados.
 
@@ -301,7 +301,7 @@ Los resultados se ponen a disposici\'on mediante una API REST y \textit{dashboar
 
 This thesis addresses the systematization of the process of capturing quantitative socio-community and institutional indicators through automated web data extraction, aiming to feed the CORE community resilience model for tsunami-prone coastal areas in Chile.
 
-An extraction, transformation, and loading (ETL) system was developed based on a modular architecture of interchangeable adapters, implemented in TypeScript with Node.js and MongoDB. The system allows adding new indicators and data sources without modifying the core logic, supporting multiple connection types: HTML web scraping, table extraction, and JSON API consumption.
+An extraction, transformation, and loading (ETL) system was developed based on a modular architecture of interchangeable adapters, implemented in TypeScript with Node.js and MongoDB. The system allows adding new indicators and data sources without modifying the core logic, supporting different connection types and extraction strategies: HTML web scraping, table extraction, and JSON API consumption.
 
 Five indicators were implemented across two modules: emergency drills (institutional dimension) and poverty rate together with community organizations (socio-community dimension). The system extracted a total of 29 drill records, poverty data at municipal, regional, and national levels, and 17 historical records of community organizations. The data was validated against manual extractions and the correct functioning of duplicate avoidance mechanisms was verified.
 
@@ -1222,7 +1222,7 @@ La Figura~\ref{fig:diagrama-secuencia} representa esta secuencia y las decisione
 \section{Tipos de conexi\'on implementados}
 \label{sec:tipos-conexion}
 
-La arquitectura soporta distintos tipos de conexi\'on a fuentes de datos, cada uno implementado como un \textit{FetchAdapter} concreto. Los m\'odulos desarrollados demuestran tres de estos tipos:
+La arquitectura soporta distintos tipos de conexi\'on a fuentes de datos, cada uno implementado como un \textit{FetchAdapter} concreto. Los m\'odulos desarrollados demuestran dos de estos tipos, tal como se resume en la Tabla~\ref{tab:tipos-conexion}. Sobre la conexi\'on de HTML est\'atico se implementaron adem\'as dos estrategias de extracci\'on distintas (tarjetas de simulacros y tablas de reportes comunales), lo que confirma que la variaci\'on entre fuentes reside en el \textit{ParseAdapter} y no en la forma de conexi\'on.
 
 \begin{table}[H]
 \centering
@@ -1232,9 +1232,7 @@ La arquitectura soporta distintos tipos de conexi\'on a fuentes de datos, cada u
 \hline
 \textbf{FetchAdapter} & \textbf{Tipo de conexi\'on} & \textbf{M\'odulo} \\
 \hline
-RequestPromiseAdapter & \textit{Web scraping} de HTML & emergencias-desastres \\
-\hline
-RequestPromiseAdapter & Extracci\'on de tablas HTML & BCN tasa-pobreza-ingresos \\
+RequestPromiseAdapter & \textit{Web scraping} de HTML est\'atico & emergencias-desastres, BCN tasa-pobreza-ingresos \\
 \hline
 JsonFetchAdapter & Consumo de API JSON & BCN organizaciones-comunitarias \\
 \hline
@@ -1258,7 +1256,7 @@ DownloadAdapter & Descarga de archivos (CSV, XLSX) \\
 \end{tabular}
 \end{table}
 
-Estos \textit{adapters} no fueron utilizados en los m\'odulos implementados debido a que las fuentes de datos seleccionadas no lo requer\'ian, pero su existencia demuestra la extensibilidad de la arquitectura.
+Estos \textit{adapters} se encuentran implementados, probados y en funcionamiento; no fueron utilizados en los m\'odulos actuales debido a que las fuentes de datos seleccionadas no lo requer\'ian. Se conservan en el \textit{core} porque el proyecto est\'a pensado para continuar y extenderse: los futuros m\'odulos que requieran descargar archivos CSV o XLSX, o extraer datos de p\'aginas renderizadas con Javascript, podr\'an declararlos directamente sin desarrollo adicional.
 
 \section{M\'odulos implementados}
 \label{sec:modulos}
@@ -1751,7 +1749,7 @@ Se verific\'o que el \textit{CronRegistry} programe correctamente las tareas de 
 
 El presente proyecto logr\'o desarrollar un sistema de extracci\'on, transformaci\'on y carga de datos que sistematiza el proceso de captura de indicadores para el modelo CORE de resiliencia comunitaria. La arquitectura modular basada en \textit{adapters} permite agregar nuevos indicadores y fuentes de datos sin modificar la l\'ogica central del sistema, lo cual constituye el principal aporte t\'ecnico del trabajo.
 
-El sistema demostr\'o ser funcional para tres tipos de fuentes de datos distintas (\textit{web scraping} de HTML, extracci\'on de tablas y consumo de APIs JSON), extrayendo y almacenando 49 registros correspondientes a cinco indicadores distribuidos en dos m\'odulos. La validaci\'on realizada confirm\'o que los datos extra\'idos coinciden con los obtenidos de forma manual, y que los mecanismos de evitaci\'on de duplicados operan correctamente ante ejecuciones repetidas.
+El sistema demostr\'o ser funcional para fuentes de datos de naturaleza distinta (\textit{web scraping} de HTML, extracci\'on de tablas y consumo de APIs JSON), extrayendo y almacenando 49 registros correspondientes a cinco indicadores distribuidos en dos m\'odulos. La validaci\'on realizada confirm\'o que los datos extra\'idos coinciden con los obtenidos de forma manual, y que los mecanismos de evitaci\'on de duplicados operan correctamente ante ejecuciones repetidas.
 
 El ciclo completo que persegu\'ia el proyecto se cierra en los \textit{dashboards} presentados en la secci\'on~\ref{sec:visualizacion-resultados}: un dato que antes se obten\'ia navegando manualmente cada fuente y transcribi\'endolo a una planilla hoy se extrae, se normaliza, se almacena, se agrega y se grafica sin intervenci\'on humana. La distribuci\'on de simulacros por regi\'on, la comparaci\'on de la tasa de pobreza entre dos mediciones CASEN y la serie hist\'orica de organizaciones comunitarias son lecturas que el equipo de investigaci\'on puede consultar de forma directa, y que se actualizan solas cada vez que el \textit{CronRegistry} ejecuta una extracci\'on. En ese sentido, el sistema no entrega \'unicamente datos crudos, sino indicadores en el sentido en que los define el modelo CORE.
 
