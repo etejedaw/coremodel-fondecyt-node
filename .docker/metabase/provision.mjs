@@ -1,16 +1,3 @@
-/**
- * Aplica la configuracion declarada en provisioning.json sobre la instancia de
- * Metabase: cuenta administradora, conexion a MongoDB, questions y dashboard.
- *
- * Metabase OSS no soporta provisioning declarativo nativo (su serializacion es
- * Enterprise), por lo que este script emula ese comportamiento contra su API.
- * Es idempotente: si la instancia ya esta configurada inicia sesion, y si una
- * question o el dashboard ya existen los actualiza en lugar de duplicarlos.
- *
- * Se ejecuta solo con `docker compose up` mediante el servicio
- * `metabase-provision`, o manualmente con `node .docker/metabase/provision.mjs`.
- */
-
 import { readFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -24,7 +11,10 @@ const ADMIN = {
 };
 const SITE_NAME = "FONDECYT CORE";
 
-const configPath = join(dirname(fileURLToPath(import.meta.url)), "provisioning.json");
+const configPath = join(
+	dirname(fileURLToPath(import.meta.url)),
+	"provisioning.json"
+);
 const config = JSON.parse(await readFile(configPath, "utf8"));
 
 let sessionToken = "";
@@ -41,7 +31,9 @@ async function api(method, path, body) {
 
 	const text = await response.text();
 	if (!response.ok) {
-		throw new Error(`${method} ${path} -> ${response.status}: ${text.slice(0, 500)}`);
+		throw new Error(
+			`${method} ${path} -> ${response.status}: ${text.slice(0, 500)}`
+		);
 	}
 	return text ? JSON.parse(text) : null;
 }
@@ -112,15 +104,33 @@ async function removeSampleContent() {
 
 async function ensureDatabase() {
 	const { data: databases } = await api("GET", "/api/database");
-	const existing = databases.find(database => database.name === config.database.name);
+	const existing = databases.find(
+		database => database.name === config.database.name
+	);
 	if (existing) {
-		console.log(`Base de datos "${existing.name}" ya conectada (id ${existing.id}).`);
+		console.log(
+			`Base de datos "${existing.name}" ya conectada (id ${existing.id}).`
+		);
 		return existing.id;
 	}
 
-	const created = await api("POST", "/api/database", config.database);
-	console.log(`Base de datos "${created.name}" conectada (id ${created.id}).`);
-	return created.id;
+	let lastError;
+	for (let attempt = 1; attempt <= 5; attempt++) {
+		try {
+			const created = await api("POST", "/api/database", config.database);
+			console.log(
+				`Base de datos "${created.name}" conectada (id ${created.id}).`
+			);
+			return created.id;
+		} catch (error) {
+			lastError = error;
+			console.log(
+				`No se pudo conectar "${config.database.name}" (intento ${attempt}/5), reintentando...`
+			);
+			await sleep(5000);
+		}
+	}
+	throw lastError;
 }
 
 async function waitForTables(databaseId) {
@@ -130,7 +140,10 @@ async function waitForTables(databaseId) {
 		if (metadata.tables?.length) return;
 		await sleep(2000);
 	}
-	throw new Error("Metabase no detecto las colecciones de MongoDB.");
+	console.warn(
+		"Advertencia: Metabase no detecto colecciones en MongoDB, probablemente porque aun no se ejecuta ninguna extraccion. " +
+			"Las questions y el dashboard se crean igual y mostraran datos cuando los extractores pueblen la base."
+	);
 }
 
 async function ensureCards(databaseId) {
@@ -158,7 +171,9 @@ async function ensureCards(databaseId) {
 			? await api("PUT", `/api/card/${existing.id}`, payload)
 			: await api("POST", "/api/card", payload);
 
-		console.log(`Question ${existing ? "actualizada" : "creada"}: ${card.name}`);
+		console.log(
+			`Question ${existing ? "actualizada" : "creada"}: ${card.name}`
+		);
 		cards.push({ ...card, id: saved.id });
 	}
 
@@ -167,9 +182,12 @@ async function ensureCards(databaseId) {
 
 async function ensureDashboard(cards) {
 	const dashboards = await api("GET", "/api/dashboard");
-	const existing = dashboards.find(dashboard => dashboard.name === config.dashboard.name);
+	const existing = dashboards.find(
+		dashboard => dashboard.name === config.dashboard.name
+	);
 
-	const dashboard = existing ?? (await api("POST", "/api/dashboard", config.dashboard));
+	const dashboard =
+		existing ?? (await api("POST", "/api/dashboard", config.dashboard));
 
 	const dashcards = cards.map((card, index) => ({
 		id: -(index + 1),
@@ -178,13 +196,14 @@ async function ensureDashboard(cards) {
 		row: card.layout.row,
 		size_x: card.layout.size_x,
 		size_y: card.layout.size_y,
-		// La tarjeta del dashboard no hereda los ajustes de la question, hay que repetirlos.
 		visualization_settings: card.visualization_settings,
 		parameter_mappings: []
 	}));
 
 	await api("PUT", `/api/dashboard/${dashboard.id}`, { dashcards });
-	console.log(`Dashboard ${existing ? "actualizado" : "creado"}: ${dashboard.name}`);
+	console.log(
+		`Dashboard ${existing ? "actualizado" : "creado"}: ${dashboard.name}`
+	);
 	return dashboard.id;
 }
 
