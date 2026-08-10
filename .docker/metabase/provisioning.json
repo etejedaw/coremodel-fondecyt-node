@@ -1,0 +1,276 @@
+{
+	"database": {
+		"name": "FONDECYT CORE",
+		"engine": "mongo",
+		"details": {
+			"host": "mongo",
+			"port": 27017,
+			"dbname": "test",
+			"user": "root",
+			"pass": "toor",
+			"auth-db": "admin",
+			"ssl": false
+		}
+	},
+	"dashboard": {
+		"name": "Indicadores CORE",
+		"description": "Indicadores del modelo CORE extraidos por el sistema de scraping."
+	},
+	"cards": [
+		{
+			"name": "Simulacros por año",
+			"description": "Total de simulacros calculado por el CalculatorAdapter para cada año.",
+			"collection": "indicator-results",
+			"display": "bar",
+			"query": [
+				{
+					"$match": {
+						"module": "emergencia-desastres"
+					}
+				},
+				{
+					"$project": {
+						"_id": 0,
+						"indicador": "$indicator",
+						"simulacros": "$totalDrills"
+					}
+				},
+				{
+					"$sort": {
+						"indicador": 1
+					}
+				}
+			],
+			"visualization_settings": {
+				"graph.dimensions": [
+					"indicador"
+				],
+				"graph.metrics": [
+					"simulacros"
+				],
+				"graph.x_axis.title_text": "Indicador",
+				"graph.y_axis.title_text": "Simulacros"
+			},
+			"layout": {
+				"col": 0,
+				"row": 0,
+				"size_x": 12,
+				"size_y": 6
+			}
+		},
+		{
+			"name": "Simulacros por región (2021-2023)",
+			"description": "Simulacros acumulados por región. Agrupa por `region` normalizada, no por `regionSource`.",
+			"collection": "emergencia-desastres",
+			"display": "row",
+			"query": [
+				{
+					"$group": {
+						"_id": "$region",
+						"simulacros": {
+							"$sum": 1
+						}
+					}
+				},
+				{
+					"$project": {
+						"_id": 0,
+						"region": "$_id",
+						"simulacros": 1
+					}
+				},
+				{
+					"$sort": {
+						"simulacros": -1,
+						"region": 1
+					}
+				}
+			],
+			"visualization_settings": {
+				"graph.dimensions": [
+					"region"
+				],
+				"graph.metrics": [
+					"simulacros"
+				],
+				"graph.max_categories_enabled": true,
+				"graph.max_categories": 20
+			},
+			"layout": {
+				"col": 0,
+				"row": 6,
+				"size_x": 12,
+				"size_y": 12
+			}
+		},
+		{
+			"name": "Tasa de pobreza por ingresos",
+			"description": "Comparacion CASEN 2017 vs CASEN 2022 por unidad territorial.",
+			"collection": "tasa-pobreza-ingresos",
+			"display": "bar",
+			"query": [
+				{
+					"$project": {
+						"_id": 0,
+						"unidadTerritorial": 1,
+						"CASEN 2017": "$casen2017",
+						"CASEN 2022": "$casen2022"
+					}
+				}
+			],
+			"visualization_settings": {
+				"graph.dimensions": [
+					"unidadTerritorial"
+				],
+				"graph.metrics": [
+					"CASEN 2017",
+					"CASEN 2022"
+				],
+				"graph.x_axis.title_text": "Unidad territorial",
+				"graph.y_axis.title_text": "Tasa de pobreza (%)"
+			},
+			"layout": {
+				"col": 12,
+				"row": 0,
+				"size_x": 12,
+				"size_y": 6
+			}
+		},
+		{
+			"name": "Organizaciones comunitarias en el tiempo",
+			"description": "Evolucion de las organizaciones comunitarias de Valdivia (2008-2024). El total se recalcula sumando los tipos individuales porque la fuente no informa el campo `suma total` en todos los años.",
+			"collection": "organizaciones-comunitarias",
+			"display": "line",
+			"query": [
+				{
+					"$sort": {
+						"anio": 1
+					}
+				},
+				{
+					"$project": {
+						"_id": 0,
+						"anio": {
+							"$toString": "$anio"
+						},
+						"organizaciones": {
+							"$add": [
+								"$nDeJuntasDeVecinos",
+								"$nDeClubesDeportivos",
+								"$nCentrosCulturales",
+								"$nDeCentrosDeMadres",
+								"$nDeCentrosUOrganizacionesDelAdultoMayor",
+								"$nDeCentrosDePadresYApoderados",
+								"$nDeUnionesComunales",
+								"$nDeCompaniasDeBomberos",
+								"$nDeOtrasOrganizacionesComunitariasFuncionalesOtros"
+							]
+						}
+					}
+				}
+			],
+			"visualization_settings": {
+				"graph.dimensions": [
+					"anio"
+				],
+				"graph.metrics": [
+					"organizaciones"
+				],
+				"graph.x_axis.title_text": "Año",
+				"graph.y_axis.title_text": "Organizaciones"
+			},
+			"layout": {
+				"col": 0,
+				"row": 18,
+				"size_x": 24,
+				"size_y": 6
+			}
+		},
+		{
+			"name": "Organizaciones comunitarias por tipo (2024)",
+			"description": "Composicion de las organizaciones comunitarias de Valdivia en 2024.",
+			"collection": "organizaciones-comunitarias",
+			"display": "row",
+			"query": [
+				{
+					"$match": {
+						"anio": 2024
+					}
+				},
+				{
+					"$project": {
+						"_id": 0,
+						"tipos": [
+							{
+								"k": "Juntas de vecinos",
+								"v": "$nDeJuntasDeVecinos"
+							},
+							{
+								"k": "Clubes deportivos",
+								"v": "$nDeClubesDeportivos"
+							},
+							{
+								"k": "Centros culturales",
+								"v": "$nCentrosCulturales"
+							},
+							{
+								"k": "Centros del adulto mayor",
+								"v": "$nDeCentrosUOrganizacionesDelAdultoMayor"
+							},
+							{
+								"k": "Centros de padres y apoderados",
+								"v": "$nDeCentrosDePadresYApoderados"
+							},
+							{
+								"k": "Centros de madres",
+								"v": "$nDeCentrosDeMadres"
+							},
+							{
+								"k": "Uniones comunales",
+								"v": "$nDeUnionesComunales"
+							},
+							{
+								"k": "Compañías de bomberos",
+								"v": "$nDeCompaniasDeBomberos"
+							},
+							{
+								"k": "Otras",
+								"v": "$nDeOtrasOrganizacionesComunitariasFuncionalesOtros"
+							}
+						]
+					}
+				},
+				{
+					"$unwind": "$tipos"
+				},
+				{
+					"$project": {
+						"tipo": "$tipos.k",
+						"organizaciones": "$tipos.v"
+					}
+				},
+				{
+					"$sort": {
+						"organizaciones": -1
+					}
+				}
+			],
+			"visualization_settings": {
+				"graph.dimensions": [
+					"tipo"
+				],
+				"graph.metrics": [
+					"organizaciones"
+				],
+				"graph.max_categories_enabled": true,
+				"graph.max_categories": 20
+			},
+			"layout": {
+				"col": 12,
+				"row": 6,
+				"size_x": 12,
+				"size_y": 12
+			}
+		}
+	]
+}

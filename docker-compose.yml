@@ -31,6 +31,18 @@ services:
       - MB_DB_FILE=/metabase-data/metabase.db
     depends_on:
       - mongo
+  metabase-provision:
+    image: node:22-alpine
+    working_dir: /provisioning
+    volumes:
+      - ./.docker/metabase:/provisioning:ro
+    environment:
+      - MB_URL=http://metabase:3000
+    command: node provision.mjs
+    restart: "no"
+    depends_on:
+      - metabase
+      - mongo
   tesis:
     profiles: ["docs"]
     image: texlive/texlive:latest
