@@ -415,6 +415,26 @@ Sistematizar el proceso de captura de indicadores cuantitativos sociocomunitario
 \chapter{MARCO TE\'ORICO}
 \label{ch:marco-teorico}
 
+Este cap\'itulo se organiza en dos partes. La primera presenta las bases te\'oricas de los conceptos t\'ecnicos sobre los que se construye el sistema desarrollado: el proceso ETL, el \textit{web scraping} y los patrones de dise\~no de software. La segunda corresponde a una revisi\'on sistem\'atica de literatura orientada a conocer c\'omo los distintos modelos de resiliencia comunitaria obtienen y procesan los datos que alimentan sus indicadores.
+
+\section{Bases te\'oricas}
+\label{sec:bases-teoricas}
+
+\subsection{Proceso ETL}
+\label{sec:bases-etl}
+
+El proceso de extracci\'on, transformaci\'on y carga (ETL, por \textit{Extract, Transform and Load}) es el conjunto de operaciones mediante el cual los datos se obtienen desde una o m\'as fuentes de origen, se limpian y adecuan a un formato \'util, y se almacenan en un repositorio de destino para su posterior an\'alisis. \textcite{kimball2004} lo describen como el fundamento de todo almac\'en de datos (\textit{data warehouse}), al punto de estimar que su construcci\'on puede consumir cerca del 70\% de los recursos de un proyecto de esta naturaleza. Aunque el t\'ermino proviene del \'ambito del \textit{Business Intelligence}, el proceso es aplicable a cualquier sistema que deba consolidar informaci\'on dispersa y heterog\'enea, como ocurre con los indicadores del modelo CORE.
+
+\subsection{Web scraping}
+\label{sec:bases-scraping}
+
+El \textit{web scraping} es el conjunto de t\'ecnicas que permiten extraer de forma autom\'atica informaci\'on publicada en p\'aginas web dise\~nadas para ser le\'idas por personas y no por programas. \textcite{glezpena2014} lo caracterizan como la alternativa disponible cuando una fuente no ofrece una API formal de acceso a sus datos: el programa obtiene el documento HTML tal como lo recibir\'ia un navegador y localiza en su estructura los valores de inter\'es. Los mismos autores advierten su principal debilidad, que este proyecto experiment\'o de forma directa: el c\'odigo de extracci\'on depende de la estructura interna de la p\'agina, por lo que cualquier cambio en ella puede invalidar la extracci\'on sin previo aviso.
+
+\subsection{Patrones de dise\~no}
+\label{sec:bases-patrones}
+
+Un patr\'on de dise\~no es una soluci\'on reutilizable y documentada a un problema recurrente del dise\~no de software orientado a objetos, descrita con independencia del lenguaje de programaci\'on. El cat\'alogo cl\'asico de \textcite{gamma1994} documenta 23 patrones organizados en categor\'ias de creaci\'on, estructura y comportamiento; entre ellos se encuentran \textit{Builder}, \textit{Adapter}, \textit{Factory Method} y \textit{Singleton}, que este proyecto emplea para estructurar su arquitectura seg\'un se detalla en el Cap\'itulo~\ref{ch:desarrollo}.
+
 \section{Objetivo y pregunta de revisi\'on}
 \label{sec:objetivo-revision}
 
