@@ -16,6 +16,6 @@ docs: |-
   Respuesta esperada:
   ```json
   {
-    "indicators": ["valdivia-tasa-pobreza-ingresos", "valdivia-organizaciones-comunitaras"]
+    "indicators": ["valdivia-tasa-pobreza-ingresos", "valdivia-organizaciones-comunitarias"]
   }
   ```

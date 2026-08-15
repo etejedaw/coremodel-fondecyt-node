@@ -1,17 +1,17 @@
-FROM node:hydrogen-alpine AS base
+FROM node:jod-alpine AS base
 WORKDIR "/usr/app"
 COPY package*.json ./
 RUN npm i
 
-FROM node:hydrogen-alpine AS builder
+FROM node:jod-alpine AS builder
 WORKDIR "/usr/app"
 COPY --from=base "/usr/app/node_modules" "./node_modules"
 COPY src ./src
-COPY tsconfig.json ./
+COPY tsconfig.json tsconfig.build.json ./
 COPY package*.json ./
 RUN npm run build
 
-FROM node:hydrogen-alpine AS runner
+FROM node:jod-alpine AS runner
 WORKDIR "/usr/app"
 COPY package*.json ./
 RUN npm install --omit=dev

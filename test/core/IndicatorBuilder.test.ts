@@ -1,7 +1,7 @@
-import { IndicatorBuilder } from "../../../src/core/IndicatorBuilder";
-import { FetchAdapter } from "../../../src/core/adapters/fetch-adapter/FetchAdapter";
-import { ParseAdapter } from "../../../src/core/adapters/parse-adapter/ParseAdapter";
-import { FREQUENCIES } from "../../../src/core/enums/Frequencies";
+import { IndicatorBuilder } from "../../src/core/IndicatorBuilder";
+import { FetchAdapter } from "../../src/core/adapters/fetch-adapter/FetchAdapter";
+import { ParseAdapter } from "../../src/core/adapters/parse-adapter/ParseAdapter";
+import { FREQUENCIES } from "../../src/core/enums/Frequencies";
 import { z } from "zod";
 
 class MockFetchAdapter implements FetchAdapter {

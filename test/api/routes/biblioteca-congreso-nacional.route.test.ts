@@ -1,5 +1,5 @@
-import { ScraperFactory } from "../../src/core/ScraperFactory";
-import { BibliotecaCongresoNacionalScraper } from "../../src/modules/biblioteca-congreso-nacional";
+import { ScraperFactory } from "../../../src/core/ScraperFactory";
+import { BibliotecaCongresoNacionalScraper } from "../../../src/modules/biblioteca-congreso-nacional";
 
 const factory = ScraperFactory.getInstance();
 
@@ -15,7 +15,7 @@ describe("Biblioteca Congreso Nacional Route - input validation", () => {
 		const indicators = factory.getIndicators("biblioteca-congreso-nacional");
 		expect(indicators).toEqual([
 			"valdivia-tasa-pobreza-ingresos",
-			"valdivia-organizaciones-comunitaras"
+			"valdivia-organizaciones-comunitarias"
 		]);
 	});
 

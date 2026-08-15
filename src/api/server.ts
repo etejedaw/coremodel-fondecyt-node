@@ -10,6 +10,8 @@ export function server(port: number): void {
 
 	const app = express();
 
+	app.set("json spaces", 2);
+
 	app.use(morgan(nodeEnv));
 	app.use(express.json());
 	app.use(router);

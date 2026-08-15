@@ -5,7 +5,7 @@ info:
 
 http:
   method: GET
-  url: "{{baseUrl}}/biblioteca-congreso-nacional/valdivia-organizaciones-comunitaras"
+  url: "{{baseUrl}}/biblioteca-congreso-nacional/valdivia-organizaciones-comunitarias"
 
 settings:
   encodeUrl: true

@@ -5,7 +5,7 @@
 	},
 	"extends": ["standard-with-typescript", "prettier"],
 	"overrides": [],
-	"ignorePatterns": ["test/"],
+	"ignorePatterns": ["test/", "tmp/"],
 	"parserOptions": {
 		"ecmaVersion": "latest",
 		"sourceType": "module",

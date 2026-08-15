@@ -1,5 +1,6 @@
 import { MapperAdapter } from "../../core/adapters/mapper-adapter/MapperAdapter";
 import { Input, Output } from "./interfaces";
+import { normalizeRegion } from "./regions";
 
 export class EmergenciaDesastresMapper implements MapperAdapter {
 	map(data: Input): Output {
@@ -13,7 +14,8 @@ export class EmergenciaDesastresMapper implements MapperAdapter {
 		return {
 			date: newDate,
 			place: place.type,
-			city: place.city
+			region: normalizeRegion(place.region),
+			regionSource: place.region
 		};
 	}
 }

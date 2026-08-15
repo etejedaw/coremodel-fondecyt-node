@@ -4,6 +4,8 @@ services:
     restart: always
     ports:
       - "27017:27017"
+    volumes:
+      - ./.docker/mongo:/docker-entrypoint-initdb.d:ro
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: toor
@@ -25,11 +27,25 @@ services:
     restart: unless-stopped
     ports:
       - 3001:3000
-    volumes:
-      - metabase-data:/metabase-data
-    environment:
-      - MB_DB_FILE=/metabase-data/metabase.db
     depends_on:
       - mongo
-volumes:
-  metabase-data:
+  metabase-provision:
+    image: node:22-alpine
+    working_dir: /provisioning
+    volumes:
+      - ./.docker/metabase:/provisioning:ro
+    environment:
+      - MB_URL=http://metabase:3000
+    command: node provision.mjs
+    restart: "no"
+    depends_on:
+      - metabase
+      - mongo
+  tesis:
+    profiles: ["docs"]
+    image: texlive/texlive:latest
+    working_dir: /doc
+    user: "${DOCKER_UID:-1000}:${DOCKER_GID:-1000}"
+    volumes:
+      - ./docs/tesis:/doc
+    command: latexmk -xelatex -interaction=nonstopmode -halt-on-error -auxdir=tmp -outdir=. tesis.tex

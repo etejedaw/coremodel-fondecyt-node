@@ -13,4 +13,4 @@ settings:
 docs: |-
   Ejecuta el scraping de simulacros del año 2022 desde MINEDUC (Wayback Machine).
 
-  Extrae fecha, lugar y ciudad de cada simulacro y los almacena en MongoDB.
+  Extrae fecha, lugar y región de cada simulacro y los almacena en MongoDB.

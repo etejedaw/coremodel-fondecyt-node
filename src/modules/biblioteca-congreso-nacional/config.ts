@@ -28,7 +28,7 @@ export const BIBLIOTECA_CONGRESO_NACIONAL_CONFIG: ModuleConfig = {
 		.setStorageAdapter(new TasaPobrezaIngresosStorageAdapter())
 		.setHashAdapter(new TasaPobrezaIngresosHashAdapter())
 		.build(),
-	"valdivia-organizaciones-comunitaras": new IndicatorBuilder()
+	"valdivia-organizaciones-comunitarias": new IndicatorBuilder()
 		.setName("Organizaciones Comunitarias en Valdivia")
 		.setUrl(
 			"https://www.bcn.cl/siit/estadisticasterritoriales/descargar-resultados/469123/datos.json"

@@ -5,12 +5,12 @@ import { logger } from "../../core/logger";
 interface DrillRecord {
 	date: Date;
 	place: string;
-	city: string;
+	region: string;
 }
 
 interface DrillResult {
 	totalDrills: number;
-	drillsByCity: Record<string, number>;
+	drillsByRegion: Record<string, number>;
 }
 
 const DrillResultSchema = new Schema(
@@ -18,7 +18,7 @@ const DrillResultSchema = new Schema(
 		indicator: { type: String, required: true },
 		module: { type: String, required: true },
 		totalDrills: { type: Number, required: true },
-		drillsByCity: { type: Schema.Types.Mixed, required: true }
+		drillsByRegion: { type: Schema.Types.Mixed, required: true }
 	},
 	{ timestamps: true, strict: true }
 );
@@ -30,14 +30,14 @@ export class TsunamiDrillsCalculatorAdapter extends CalculatorAdapter<
 	DrillResult
 > {
 	calculate(data: DrillRecord[]): DrillResult {
-		const drillsByCity = data.reduce<Record<string, number>>((acc, record) => {
-			acc[record.city] = (acc[record.city] ?? 0) + 1;
+		const drillsByRegion = data.reduce<Record<string, number>>((acc, record) => {
+			acc[record.region] = (acc[record.region] ?? 0) + 1;
 			return acc;
 		}, {});
 
 		return {
 			totalDrills: data.length,
-			drillsByCity
+			drillsByRegion
 		};
 	}
 
@@ -51,7 +51,7 @@ export class TsunamiDrillsCalculatorAdapter extends CalculatorAdapter<
 			.lean();
 
 		if (latest && JSON.stringify(latest.totalDrills) === JSON.stringify(result.totalDrills) &&
-			JSON.stringify(latest.drillsByCity) === JSON.stringify(result.drillsByCity)) {
+			JSON.stringify(latest.drillsByRegion) === JSON.stringify(result.drillsByRegion)) {
 			logger.info(`Calculator result unchanged for ${module}:${indicator}`);
 			return;
 		}

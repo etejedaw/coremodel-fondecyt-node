@@ -7,14 +7,26 @@ describe("EmergenciaDesastresMapper", () => {
 	it("should transform input to output with correct date", () => {
 		const input: Input = {
 			date: { day: 15, month: "Mar", year: 2021 },
-			place: { type: "Simulacro de Tsunami", city: "Valdivia" }
+			place: { type: "Simulacro de Tsunami", region: "Los Ríos" }
 		};
 
 		const result = mapper.map(input);
 
 		expect(result.date).toEqual(new Date(2021, 2, 15));
 		expect(result.place).toBe("Simulacro de Tsunami");
-		expect(result.city).toBe("Valdivia");
+		expect(result.region).toBe("Los Ríos");
+	});
+
+	it("should normalize the region and keep the source text", () => {
+		const input: Input = {
+			date: { day: 1, month: "Jun", year: 2022 },
+			place: { type: "Simulacro", region: "Aysén- Cochrane" }
+		};
+
+		const result = mapper.map(input);
+
+		expect(result.region).toBe("Aysén");
+		expect(result.regionSource).toBe("Aysén- Cochrane");
 	});
 
 	it("should map all months correctly", () => {
@@ -28,7 +40,7 @@ describe("EmergenciaDesastresMapper", () => {
 		months.forEach(({ name, expected }) => {
 			const input: Input = {
 				date: { day: 1, month: name, year: 2021 },
-				place: { type: "Test", city: "Test" }
+				place: { type: "Test", region: "Maule" }
 			};
 			const result = mapper.map(input);
 			expect(result.date.getMonth()).toBe(expected);

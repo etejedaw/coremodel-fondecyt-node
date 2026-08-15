@@ -16,7 +16,7 @@ describe("OrganizacionesComunitariasHashAdapter", () => {
 			nDeCentrosUOrganizacionesDelAdultoMayor: 7,
 			nDeCompaniasDeBomberos: 2,
 			anio: 2020,
-			indicator: "valdivia-organizaciones-comunitaras",
+			indicator: "valdivia-organizaciones-comunitarias",
 			module: "biblioteca-congreso-nacional"
 		};
 
@@ -37,7 +37,7 @@ describe("OrganizacionesComunitariasHashAdapter", () => {
 			nDeClubesDeportivos: 15,
 			nDeCentrosUOrganizacionesDelAdultoMayor: 7,
 			nDeCompaniasDeBomberos: 2,
-			indicator: "valdivia-organizaciones-comunitaras",
+			indicator: "valdivia-organizaciones-comunitarias",
 			module: "biblioteca-congreso-nacional"
 		};
 

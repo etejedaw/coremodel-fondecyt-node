@@ -13,7 +13,7 @@ const html = `
       </div>
       <div class="card-body">
         <h5 class="card-title"><a>Simulacro de Tsunami</a></h5>
-        <h5 class="card-title pb-3">Valdivia</h5>
+        <h5 class="card-title pb-3">Los Ríos</h5>
       </div>
     </div>
   </div>
@@ -26,7 +26,7 @@ const html = `
       </div>
       <div class="card-body">
         <h5 class="card-title"><a>Simulacro de Terremoto</a></h5>
-        <h5 class="card-title pb-3">Santiago</h5>
+        <h5 class="card-title pb-3">Región Metropolitana</h5>
       </div>
     </div>
   </div>
@@ -40,11 +40,11 @@ describe("DateParserAdapter", () => {
 		expect(result).toHaveLength(2);
 		expect(result[0]).toEqual({
 			date: { day: 15, month: "Mar", year: 2021 },
-			place: { type: "Simulacro de Tsunami", city: "Valdivia" }
+			place: { type: "Simulacro de Tsunami", region: "Los Ríos" }
 		});
 		expect(result[1]).toEqual({
 			date: { day: 20, month: "Nov", year: 2021 },
-			place: { type: "Simulacro de Terremoto", city: "Santiago" }
+			place: { type: "Simulacro de Terremoto", region: "Región Metropolitana" }
 		});
 	});
 
