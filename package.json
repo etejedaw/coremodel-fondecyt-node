@@ -1,6 +1,6 @@
 {
   "name": "tesis",
-  "version": "0.0.0",
+  "version": "1.1.0",
   "description": "Resiliencia comunitaria ante tsunami en la costa chilena: Modelando escenarios multidimensionales con una aproximación participativa",
   "main": "app.js",
   "scripts": {
