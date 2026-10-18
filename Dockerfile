@@ -14,6 +14,6 @@ RUN npm run build
 FROM node:jod-alpine AS runner
 WORKDIR "/usr/app"
 COPY package*.json ./
-RUN npm install --omit=dev
+RUN npm install --omit=dev --ignore-scripts
 COPY --from=builder "/usr/app/dist" "./dist"
 CMD [ "npm","run", "start" ]
