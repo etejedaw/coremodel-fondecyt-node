@@ -22,8 +22,8 @@ Módulo `biblioteca-congreso-nacional`, dos indicadores de la comuna de Valdivia
 
 **`valdivia-tasa-pobreza-ingresos`**
 
-- **Qué entrega.** El reporte comunal de la BCN en HTML. El parse busca la sección *2.1 Tasa de Pobreza por ingresos* y lee su tabla: una fila por unidad territorial (por ejemplo, la comuna y su región) con las tasas CASEN 2017 y CASEN 2022.
-- **Parámetro.** La URL lleva `{{year}}` (año del reporte). Se pasa con `?year=YYYY` en el `POST` (ver [modules.md](./modules.md)).
+- **Qué entrega.** El reporte comunal de la BCN en HTML. El parse busca la sección *2.1 Tasa de Pobreza por ingresos* y lee su tabla: una fila por unidad territorial (por ejemplo, la comuna y su región) con las tasas CASEN 2017 y CASEN 2022. Se guarda una fila por unidad territorial y año consultado.
+- **Parámetro.** La URL lleva `{{year}}` (año del reporte). Se pasa con `?year=YYYY` en el `POST`; el cron anual usa el año actual vía `setScheduledParams` (ver [modules.md](./modules.md)). El año queda guardado en cada registro como `year`.
 - **Decimales con coma.** Los valores vienen como `12,5`. El mapper cambia la coma por punto antes de convertir a número.
 - **Dependencia del HTML.** El parse depende del título de la sección. Si la BCN lo cambia, el parse devuelve una lista vacía y el pipeline falla con `ParseError`.
 
@@ -44,7 +44,7 @@ Hay una colección por tipo de dato más una para los resultados calculados. El 
 | Colección | Módulo | Qué guarda | Clave única |
 |---|---|---|---|
 | `emergencia-desastres` | `emergencias-desastres` | Un documento por simulacro: fecha, tipo de lugar, región normalizada y región original. | `key` (fecha y región) |
-| `tasa-pobreza-ingresos` | `biblioteca-congreso-nacional` | Un documento por unidad territorial con la tasa CASEN de cada medición. | `key` (unidad territorial) |
+| `tasa-pobreza-ingresos` | `biblioteca-congreso-nacional` | Un documento por unidad territorial y año consultado con la tasa CASEN de cada medición. | `key` (unidad territorial, año) |
 | `organizaciones-comunitarias` | `biblioteca-congreso-nacional` | Un documento por año con la cantidad de cada tipo de organización. | `key` (año) |
 | `indicator-results` | `emergencias-desastres` | Resultados agregados del calculator. | No tiene `key`: se deduplica comparando con el último. |
 

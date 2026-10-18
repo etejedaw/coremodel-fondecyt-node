@@ -39,15 +39,16 @@ docs: |-
         "unidadTerritorial": "Valdivia",
         "casen2017": 12.5,
         "casen2022": 10.3,
+        "year": "2023",
         "indicator": "valdivia-tasa-pobreza-ingresos",
         "module": "biblioteca-congreso-nacional",
-        "key": "valdivia-biblioteca-congreso-nacional-valdivia-tasa-pobreza-ingresos"
+        "key": "valdivia-2023-biblioteca-congreso-nacional-valdivia-tasa-pobreza-ingresos"
       }
     ]
   }
   ```
 
-  Las tasas vienen en porcentaje y con punto decimal. `key` combina la unidad territorial con el módulo y el indicador, así que una nueva consulta no duplica los registros ya guardados. Para leer lo guardado sin volver a consultar la fuente, usa `GET /biblioteca-congreso-nacional/valdivia-tasa-pobreza-ingresos`.
+  Las tasas vienen en porcentaje y con punto decimal. `year` es el año consultado y `key` combina la unidad territorial, el año, el módulo y el indicador, así que repetir la consulta del mismo año no duplica los registros ya guardados y cada año agrega los suyos. Para leer lo guardado sin volver a consultar la fuente, usa `GET /biblioteca-congreso-nacional/valdivia-tasa-pobreza-ingresos`.
 
   ## Errors
   - `404` — `{ "error": "Indicator valdivia-tasa-pobreza-ingresos not found" }` si el indicador no existe en el módulo.

@@ -76,7 +76,7 @@ Están en `src/core/adapters/fetch-adapter/`. Un módulo elige uno con `setFetch
 
 La URL de un indicador puede tener marcadores `{{nombre}}`. `ScrapeBase.init` recibe un objeto `params` y reemplaza cada `{{clave}}` por su valor antes de llamar al fetch.
 
-El caso en uso es `valdivia-tasa-pobreza-ingresos`, cuya URL tiene `{{year}}`. Quien llama a `init` es responsable de pasar los params: la ruta de ese módulo (`biblioteca-congreso-nacional.route.ts`) detecta si la URL contiene `{{year}}`, exige el query param `year` con cuatro dígitos y lo pasa. `CronRegistry` llama a `init` sin params, así que en una ejecución programada la URL conserva el marcador sin reemplazar.
+El caso en uso es `valdivia-tasa-pobreza-ingresos`, cuya URL tiene `{{year}}`. Quien llama a `init` es responsable de pasar los params: la ruta de ese módulo (`biblioteca-congreso-nacional.route.ts`) detecta si la URL contiene `{{year}}`, exige el query param `year` con cuatro dígitos y lo pasa. Para la ejecución programada, el indicador declara `setScheduledParams(resolver)` en el `IndicatorBuilder`: `resolver` es una función sin argumentos que devuelve `Record<string, string>` y se evalúa en cada ejecución del cron, no al construir. `CronRegistry` pasa ese resultado a `init` (`ScrapeBase.getIndicatorScheduledParams`, que devuelve `{}` si no hay resolver). `valdivia-tasa-pobreza-ingresos` resuelve `year` con el año actual. Los params también se agregan a cada registro antes del hash; si la fuente trae un campo con el mismo nombre, gana el dato de la fuente.
 
 ## Deduplicación
 
@@ -89,7 +89,7 @@ Ejecutar un indicador dos veces no debe duplicar registros. El mecanismo tiene t
 Consecuencia: una clave que ya existe nunca se actualiza. Si la fuente corrige un valor, el registro guardado queda con el valor antiguo. Por eso importa qué entra en el hash:
 
 - `emergencias-desastres`: fecha y región. Dos simulacros el mismo día en la misma región se consideran el mismo registro.
-- `tasa-pobreza-ingresos`: unidad territorial, módulo e indicador. El año del query param no entra en la clave.
+- `tasa-pobreza-ingresos`: unidad territorial, año, módulo e indicador.
 - `organizaciones-comunitarias`: año, indicador y módulo, comprimidos en un identificador corto.
 
 El storage de `emergencias-desastres` captura cualquier `MongoBulkWriteError`, no solo los de clave duplicada. Los de la BCN capturan solo el código 11000.
@@ -103,7 +103,7 @@ El calculator tiene su propia deduplicación, sin hash. `save` busca el último 
 1. Si el indicador comparte estructura con los que ya existen, reutiliza sus adapters. Si no, crea su subcarpeta con `parse-adapter.ts`, `mapper.ts`, `hash.ts`, `storage-adapter.ts`, `schema.ts` e `interfaces.ts` (y `calculator-adapter.ts` si necesita un resultado agregado).
 2. Declara el indicador en el `config.ts` del módulo con `IndicatorBuilder`: nombre, URL, frecuencia (de `FREQUENCIES`), los cinco adapters obligatorios y el calculator si corresponde. Llama a `build()` al final.
 3. Si el indicador usa una colección nueva, agrégala a `.docker/mongo/init.js` (ver [infrastructure.md](./infrastructure.md#inicialización-de-mongodb)).
-4. Si la URL usa `{{param}}`, haz que la ruta del módulo pase ese param.
+4. Si la URL usa `{{param}}`, haz que la ruta del módulo pase ese param y, si el indicador tiene frecuencia, declara `setScheduledParams` para que el cron también lo pase.
 5. Documenta el endpoint en la colección Bruno de `docs/api/` con la skill `bruno-endpoints`.
 6. Agrega los tests en `test/`, reflejando la estructura de `src/`: parse, mapper, hash, storage, y un `etl.test.ts` del flujo completo.
 
