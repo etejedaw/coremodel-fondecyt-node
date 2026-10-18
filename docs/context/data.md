@@ -57,7 +57,7 @@ La `key` es única por colección, no por indicador. Cómo se calcula en cada m�
 Guarda lo que calcula un `CalculatorAdapter`. Hoy solo lo usa `emergencias-desastres` (`TsunamiDrillsCalculatorAdapter`), que calcula por indicador el total de simulacros y la cantidad por región.
 
 - Cada documento lleva `indicator` y `module`, el resultado y las marcas de tiempo.
-- Solo se inserta un documento nuevo si el resultado cambió respecto al último de ese indicador y módulo. La colección es un historial de cambios, no un registro de ejecuciones.
+- La colección es un historial de cambios, no un registro de ejecuciones: solo guarda un resultado cuando cambia (ver [modules.md](./modules.md#resultados-del-calculator)).
 - `calculator.find` devuelve el más reciente (orden por `createdAt` descendente) sin `_id`, `__v` ni marcas de tiempo. Es lo que responde `GET /emergencia-desastres/:indicator/result`.
 - Como el cálculo agrupa por `region`, depende de que la normalización haya unificado las grafías.
 
