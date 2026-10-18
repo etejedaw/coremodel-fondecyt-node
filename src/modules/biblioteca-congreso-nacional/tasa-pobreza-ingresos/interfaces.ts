@@ -9,3 +9,7 @@ export interface Output {
 	casen2017: number;
 	casen2022: number;
 }
+
+export interface OutputWithYear extends Output {
+	year: string;
+}

@@ -15,6 +15,8 @@ import {
 } from "./tasa-pobreza-ingresos";
 import { TasaPobrezaIngresosHashAdapter } from "./tasa-pobreza-ingresos/hash";
 
+const resolveCurrentYear = () => ({ year: String(new Date().getFullYear()) });
+
 export const BIBLIOTECA_CONGRESO_NACIONAL_CONFIG: ModuleConfig = {
 	"valdivia-tasa-pobreza-ingresos": new IndicatorBuilder()
 		.setName("Reporte Comunal Valdivia: Tasa de Pobreza por ingresos")
@@ -22,6 +24,7 @@ export const BIBLIOTECA_CONGRESO_NACIONAL_CONFIG: ModuleConfig = {
 			"https://www.bcn.cl/siit/reportescomunales/comunas_v.html?anno={{year}}&idcom=14101"
 		)
 		.setFrequency(FREQUENCIES.year)
+		.setScheduledParams(resolveCurrentYear)
 		.setFetchAdapter(new RequestPromiseAdapter())
 		.setParseAdapter(new TasaPobrezaIngresosParseAdapter())
 		.setMapperAdapter(new TasaPobrezaMapperAdapter())

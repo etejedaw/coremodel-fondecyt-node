@@ -3,6 +3,7 @@ import { model, Schema } from "mongoose";
 const TasaPobrezaIngresosSchema = new Schema(
 	{
 		key: { type: String, required: true, unique: true },
+		year: { type: String, required: true },
 		unidadTerritorial: { type: String, required: true },
 		casen2017: { type: Number, required: true },
 		casen2022: { type: Number, required: true }
