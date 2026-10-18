@@ -55,7 +55,7 @@ Las rutas tampoco conocen los adapters: usan solo la interfaz pública de `Scrap
 | `ScrapeBase` | `src/core/ScrapeBase.ts` | Clase abstracta. Guarda el nombre del módulo y su configuración, expone los datos de cada indicador y ejecuta el pipeline. Cada módulo la extiende. |
 | `ScraperFactory` | `src/core/ScraperFactory.ts` | Registro de scrapers por nombre de módulo. Es un singleton (`getInstance`). Lanza `ScraperAlreadyRegisteredError` si se registra dos veces el mismo nombre y `ScraperNotFoundError` si se pide uno que no existe. |
 | `IndicatorBuilder` | `src/core/IndicatorBuilder.ts` | Builder con un `set*` por campo del indicador. `build()` valida los campos de datos con zod (nombre, URL, frecuencia, descripción y metadata) y devuelve el indicador. Una frecuencia vacía o una expresión cron inválida se valida ahí. Los adapters se asignan sin validación en runtime. |
-| `CronRegistry` | `src/core/CronRegistry.ts` | Singleton que programa con node-cron cada indicador cuya frecuencia no sea vacía. En cada ejecución llama a `init` con los params que resuelve `setScheduledParams`. Si una ejecución programada falla, la captura, la registra como `CronExecutionError` en el log y sigue con las demás. |
+| `CronRegistry` | `src/core/CronRegistry.ts` | Singleton que programa con node-cron cada indicador cuya frecuencia no sea vacía. En cada ejecución prueba en orden los params candidatos que resuelve `setScheduledParams` y se queda con el primero que no falla con `ParseError`. Si una ejecución programada falla, la captura, la registra como `CronExecutionError` en el log y sigue con las demás. |
 | `FREQUENCIES` | `src/core/enums/Frequencies.ts` | Enum con las expresiones cron disponibles. `FREQUENCIES.once` es la cadena vacía: el indicador no se programa y solo se ejecuta al llamar su endpoint `POST`. |
 | Logger | `src/core/logger/` | Instancia única de pino. Escribe en `logs/` y, en `dev`, también en consola con formato legible. El nivel depende de `NODE_ENV`. |
 
@@ -84,7 +84,7 @@ Ejemplo con `POST /<modulo>/:indicator`:
 
 Las lecturas (`GET`) no pasan por el pipeline: la ruta pide los registros guardados con `scraper.findStoredRecords` o el último resultado calculado con `calculator.find`.
 
-El mismo `init` lo llama `CronRegistry` en cada ejecución programada, con los params que resuelve `setScheduledParams` del indicador (`{}` si no lo declara).
+El mismo `init` lo llama `CronRegistry` en cada ejecución programada, con los params candidatos que resuelve `setScheduledParams` del indicador (`{}` si no lo declara; ver [context/modules.md](./context/modules.md#parámetros-param-en-la-url)).
 
 ## Nombre del módulo en la API
 
