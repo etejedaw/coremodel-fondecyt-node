@@ -1,0 +1,49 @@
+info:
+  name: Extraer Simulacros 2023
+  type: http
+  seq: 8
+
+http:
+  method: POST
+  url: "{{baseUrl}}/emergencia-desastres/simulacros-2023"
+
+settings:
+  encodeUrl: true
+
+docs: |-
+  # Extraer Simulacros 2023
+
+  Ejecuta el scraping de simulacros del año 2023 desde MINEDUC (Wayback Machine).
+
+  Extrae fecha, lugar y región de cada simulacro, los almacena en MongoDB y recalcula el resultado del indicador.
+
+  **Auth:** public
+
+  ## Path params
+  - `indicator` (string) — `simulacros-2023`
+
+  ## Response 200
+  ```json
+  {
+    "data": [
+      {
+        "date": "2023-09-27T00:00:00.000Z",
+        "place": "Simulacro de Tsunami",
+        "region": "Valparaíso",
+        "regionSource": "Región de Valparaíso - Provincia de San Antonio",
+        "indicator": "simulacros-2023",
+        "module": "emergencia-desastres",
+        "key": "2023-09-27-valparaiso"
+      }
+    ]
+  }
+  ```
+
+  `region` es el nombre oficial normalizado y `regionSource` el texto tal como aparece en la fuente. `key` combina fecha y región. Los simulacros que ya estaban guardados con la misma `key` no se duplican en MongoDB, pero igual aparecen en la respuesta. Cada llamada recalcula y guarda el resultado de `GET /emergencia-desastres/simulacros-2023/result`. Para leer lo guardado sin volver a consultar la fuente, usa `GET /emergencia-desastres/simulacros-2023`.
+
+  ## Errors
+  - `404` — `{ "error": "Indicator simulacros-2023 not found" }` si el indicador no existe en el módulo.
+  - `400` — `{ "error": "Cannot extract data from source" }` si la página no contiene simulacros (`ParseError`).
+  - `502` — `{ "error": "Fetch failed for https://web.archive.org/web/20250416015125/https://emergenciaydesastres.mineduc.cl/simulacros-2023/" }` si la fuente no responde o responde con un estado HTTP no exitoso (`FetchError`).
+  - `502` — `{ "error": "Storage failed: emergencia-desastres insertMany failed" }` si falla el guardado en MongoDB (`StorageError`).
+  - `500` — `{ "error": "Internal server error" }` ante un error inesperado, por ejemplo si falla el guardado del resultado calculado.

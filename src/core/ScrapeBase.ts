@@ -34,12 +34,22 @@ export abstract class ScrapeBase {
 		return this.#moduleConfig[indicator].frequency;
 	}
 
+	getIndicatorScheduledParams(
+		indicator: string
+	): Array<Record<string, string>> {
+		return this.#moduleConfig[indicator].scheduledParams?.() ?? [{}];
+	}
+
 	getStorageAdapter(indicator: string) {
 		return this.#moduleConfig[indicator].storageAdapter;
 	}
 
 	getCalculatorAdapter(indicator: string) {
 		return this.#moduleConfig[indicator].calculatorAdapter;
+	}
+
+	async findStoredRecords(indicator: string) {
+		return await this.getStorageAdapter(indicator).find(indicator);
 	}
 
 	#buildUrl(url: string, params: Record<string, string>) {
@@ -64,7 +74,7 @@ export abstract class ScrapeBase {
 
 		const data = parse
 			.map(mapperAdapter)
-			.map(data => ({ ...data, indicator, module: this.getName() }))
+			.map(data => ({ ...params, ...data, indicator, module: this.getName() }))
 			.map(data => ({ ...data, key: hasher.generate(data) }));
 
 		const storageAdapter = this.#moduleConfig[indicator].storageAdapter;

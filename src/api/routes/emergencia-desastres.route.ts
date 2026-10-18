@@ -10,47 +10,83 @@ router.get("/", (req, res) => {
 	res.json({ indicators });
 });
 
-router.get("/:indicator/result", async (req: Request, res: Response, next: NextFunction) => {
-	try {
-		const { indicator } = req.params;
-		const scrapeFactory = ScraperFactory.getInstance();
-		const scraper = scrapeFactory.get(MODULE);
+router.get(
+	"/:indicator/result",
+	async (req: Request, res: Response, next: NextFunction) => {
+		try {
+			const { indicator } = req.params;
+			const scrapeFactory = ScraperFactory.getInstance();
+			const scraper = scrapeFactory.get(MODULE);
 
-		if (!scraper.getIndicators().includes(indicator)) {
-			return res.status(404).json({ error: `Indicator ${indicator} not found` });
+			if (!scraper.getIndicators().includes(indicator)) {
+				return res
+					.status(404)
+					.json({ error: `Indicator ${indicator} not found` });
+			}
+
+			const calculator = scraper.getCalculatorAdapter(indicator);
+			if (!calculator) {
+				return res
+					.status(404)
+					.json({ error: `No calculator for ${indicator}` });
+			}
+
+			const result = await calculator.find(indicator, MODULE);
+			if (!result) {
+				return res
+					.status(404)
+					.json({ error: `No results yet for ${indicator}` });
+			}
+
+			return res.json({ result });
+		} catch (err) {
+			next(err);
 		}
-
-		const calculator = scraper.getCalculatorAdapter(indicator);
-		if (!calculator) {
-			return res.status(404).json({ error: `No calculator for ${indicator}` });
-		}
-
-		const result = await calculator.find(indicator, MODULE);
-		if (!result) {
-			return res.status(404).json({ error: `No results yet for ${indicator}` });
-		}
-
-		return res.json({ result });
-	} catch (err) {
-		next(err);
 	}
-});
+);
 
-router.get("/:indicator", async (req: Request, res: Response, next: NextFunction) => {
-	try {
-		const { indicator } = req.params;
-		const scrapeFactory = ScraperFactory.getInstance();
-		const scraper = scrapeFactory.get(MODULE);
+router.get(
+	"/:indicator",
+	async (req: Request, res: Response, next: NextFunction) => {
+		try {
+			const { indicator } = req.params;
+			const scrapeFactory = ScraperFactory.getInstance();
+			const scraper = scrapeFactory.get(MODULE);
 
-		if (!scraper.getIndicators().includes(indicator)) {
-			return res.status(404).json({ error: `Indicator ${indicator} not found` });
+			if (!scraper.getIndicators().includes(indicator)) {
+				return res
+					.status(404)
+					.json({ error: `Indicator ${indicator} not found` });
+			}
+
+			const data = await scraper.findStoredRecords(indicator);
+			return res.json({ data });
+		} catch (err) {
+			next(err);
 		}
-
-		const data = await scraper.init(indicator);
-		return res.json({ data });
-	} catch (err) {
-		next(err);
 	}
-});
+);
+
+router.post(
+	"/:indicator",
+	async (req: Request, res: Response, next: NextFunction) => {
+		try {
+			const { indicator } = req.params;
+			const scrapeFactory = ScraperFactory.getInstance();
+			const scraper = scrapeFactory.get(MODULE);
+
+			if (!scraper.getIndicators().includes(indicator)) {
+				return res
+					.status(404)
+					.json({ error: `Indicator ${indicator} not found` });
+			}
+
+			const data = await scraper.init(indicator);
+			return res.json({ data });
+		} catch (err) {
+			next(err);
+		}
+	}
+);
 
 export default router;

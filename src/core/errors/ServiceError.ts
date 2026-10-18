@@ -9,8 +9,11 @@ export class StorageError extends ServiceError {
 }
 
 export class FetchError extends ServiceError {
-	constructor(url: string, cause?: string) {
-		super(`Fetch failed for ${url}`, { url, cause });
+	constructor(url: string, cause?: unknown) {
+		super(`Fetch failed for ${url}`, {
+			url,
+			cause: cause instanceof Error ? cause.message : cause
+		});
 	}
 }
 

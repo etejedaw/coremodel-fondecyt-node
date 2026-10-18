@@ -27,4 +27,17 @@ describe("TasaPobrezaMapperAdapter", () => {
 		expect(result.casen2017).toBe(15);
 		expect(result.casen2022).toBe(10);
 	});
+	it("should convert every CASEN measurement present in the input", () => {
+		const result = mapper.map({
+			unidadTerritorial: "Comuna de Valdivia",
+			casen2017: "7,6",
+			casen2020: "9,8"
+		});
+
+		expect(result).toEqual({
+			unidadTerritorial: "Comuna de Valdivia",
+			casen2017: 7.6,
+			casen2020: 9.8
+		});
+	});
 });

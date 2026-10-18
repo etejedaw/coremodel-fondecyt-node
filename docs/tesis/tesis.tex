@@ -1300,10 +1300,11 @@ El segundo sub-indicador, \textit{organizaciones-comunitarias}, extrae la cantid
 \begin{figure}[H]
 \begin{lstlisting}[style=codigo, language=JSON]
 {
-  "key": "comuna-de-valdivia-biblioteca-congreso-nacional-...",
+  "key": "comuna-de-valdivia-2024-biblioteca-congreso-nacional-...",
   "unidadTerritorial": "Comuna de Valdivia",
   "casen2017": 7.6,
   "casen2022": 3.4,
+  "year": "2024",
   "indicator": "valdivia-tasa-pobreza-ingresos",
   "module": "biblioteca-congreso-nacional"
 }
@@ -1380,7 +1381,7 @@ Todos los errores heredan de una clase base \textit{BaseError} que incluye un ca
 
 El \textit{CronRegistry} permite que el sistema ejecute la extracci\'on de indicadores de forma peri\'odica sin intervenci\'on manual. Al iniciar la aplicaci\'on, el \textit{CronRegistry} recorre todos los m\'odulos registrados y programa una tarea cron para cada indicador que tenga una frecuencia definida.
 
-Las frecuencias se expresan mediante la sintaxis cron est\'andar y est\'an disponibles como un \textit{enum} predefinido que incluye valores para ejecuci\'on diaria, semanal, mensual, anual y \'unica. La ejecuci\'on \'unica se utiliza para fuentes hist\'oricas que no se actualizan, como es el caso de los simulacros obtenidos desde Wayback Machine.
+Las frecuencias se expresan mediante la sintaxis cron est\'andar y est\'an disponibles como un \textit{enum} predefinido que incluye valores para ejecuci\'on diaria, semanal, mensual, anual y \'unica. La ejecuci\'on \'unica se utiliza para fuentes hist\'oricas que no se actualizan, como es el caso de los simulacros obtenidos desde Wayback Machine. Cuando la URL de un indicador contiene par\'ametros din\'amicos, el indicador puede declarar una funci\'on que los resuelve en cada ejecuci\'on programada; as\'i, la tasa de pobreza consulta el reporte del a\~no en curso y, si a\'un no ha sido publicado, el de los dos a\~nos anteriores.
 
 \section{API REST}
 \label{sec:api-rest}
@@ -1400,41 +1401,47 @@ GET & / & Lista todos los m\'odulos con sus indicadores \\
 \hline
 GET & /emergencia-desastres & Lista los indicadores del m\'odulo \\
 \hline
-GET & /emergencia-desastres/\allowbreak :indicator & Ejecuta la extracci\'on del indicador \\
+GET & /emergencia-desastres/\allowbreak :indicator & Lee los registros almacenados en MongoDB, sin extraer \\
+\hline
+POST & /emergencia-desastres/\allowbreak :indicator & Ejecuta la extracci\'on, guarda los registros y recalcula el resultado \\
 \hline
 GET & /emergencia-desastres/\allowbreak :indicator/\allowbreak result & Consulta el \'ultimo resultado calculado \\
 \hline
 GET & /biblioteca-congreso-nacional & Lista los indicadores del m\'odulo \\
 \hline
-GET & /biblioteca-congreso-nacional/\allowbreak :indicator & Ejecuta la extracci\'on del indicador \\
+GET & /biblioteca-congreso-nacional/\allowbreak :indicator & Lee los registros almacenados en MongoDB, sin extraer \\
+\hline
+POST & /biblioteca-congreso-nacional/\allowbreak :indicator & Ejecuta la extracci\'on y guarda los registros \\
 \hline
 \end{tabular}
 \end{table}
 
-Cada \textit{endpoint} valida que el indicador solicitado exista antes de ejecutar la extracci\'on. En caso de que no exista, se retorna un error 404 con un mensaje descriptivo.
+La extracci\'on se dispara con \texttt{POST} y la lectura de lo almacenado con \texttt{GET}, de modo que consultar un indicador no vuelve a acceder a la fuente. Cada \textit{endpoint} con par\'ametro \texttt{:indicator} valida que el indicador exista antes de operar; en caso contrario se retorna un error 404 con un mensaje descriptivo. El \textit{endpoint} \texttt{/result} solo existe en el m\'odulo de emergencias y desastres, y retorna 404 si el indicador no tiene calculador o a\'un no tiene resultados. En el m\'odulo de la BCN, el \texttt{POST} del indicador \texttt{valdivia-\allowbreak tasa-\allowbreak pobreza-\allowbreak ingresos} exige el par\'ametro de consulta \texttt{year} con un a\~no de cuatro d\'igitos (\texttt{?year=YYYY}). Los errores de dominio responden 400 y los de acceso a la fuente o al almacenamiento, 502.
 
 La API se documenta mediante una colecci\'on Bruno \parencite{bruno} en formato OpenCollection, versionada junto al c\'odigo en el directorio \texttt{docs/api/}. A diferencia de una documentaci\'on redactada aparte, esta colecci\'on es ejecutable: cada \textit{endpoint} queda descrito en un archivo YAML que puede ser invocado directamente para verificar la respuesta del sistema. La Figura~\ref{fig:bruno-collection} muestra la definici\'on de uno de ellos.
 
 \begin{figure}[H]
 \begin{lstlisting}[style=codigo, language=JSON]
 info:
-  name: Simulacros 2021
+  name: Extraer Simulacros 2021
   type: http
   seq: 2
 
 http:
-  method: GET
+  method: POST
   url: "{{baseUrl}}/emergencia-desastres/simulacros-2021"
 
 settings:
   encodeUrl: true
 
 docs: |-
+  # Extraer Simulacros 2021
+
   Ejecuta el scraping de simulacros del año 2021 desde
   MINEDUC (Wayback Machine).
 
-  Extrae fecha, lugar y región de cada simulacro y los
-  almacena en MongoDB.
+  Extrae fecha, lugar y región de cada simulacro, los
+  almacena en MongoDB y recalcula el resultado.
 \end{lstlisting}
 \caption{Definici\'on de un \textit{endpoint} en la colecci\'on Bruno OpenCollection}
 \label{fig:bruno-collection}
@@ -1451,7 +1458,9 @@ En segundo lugar, se crearon pruebas de integraci\'on que verifican el flujo ETL
 
 En tercer lugar, se crearon pruebas de validaci\'on que comparan los datos extra\'idos contra datos de referencia verificados manualmente. Por ejemplo, se verifica que el formato decimal chileno (con coma) sea convertido correctamente al formato num\'erico est\'andar (con punto), que las fechas sean parseadas correctamente a partir de los meses en espa\~nol, y que los nombres de las unidades territoriales se preserven tal como aparecen en la fuente.
 
-El total de pruebas implementadas es de 76, distribuidas en 17 \textit{suites}. Entre ellas se incluye una bater\'ia dedicada a la normalizaci\'on de unidades territoriales descrita en la secci\'on~\ref{sec:normalizacion}, que verifica cada una de las graf\'ias observadas en la fuente contra su regi\'on can\'onica.
+Adem\'as, se crearon pruebas sobre el n\'ucleo (\textit{IndicatorBuilder}, \textit{ScrapeBase} y los \textit{fetch adapters}), sobre el manejador de errores de la API y sobre las rutas \textit{HTTP} de cada m\'odulo, que verifican los m\'etodos, los c\'odigos de estado y la validaci\'on de par\'ametros.
+
+El total de pruebas implementadas es de 136, distribuidas en 25 \textit{suites}. Entre ellas se incluye una bater\'ia dedicada a la normalizaci\'on de unidades territoriales descrita en la secci\'on~\ref{sec:normalizacion}, que verifica cada una de las graf\'ias observadas en la fuente contra su regi\'on can\'onica.
 
 \section{Volatilidad de las fuentes web}
 \label{sec:volatilidad}
@@ -1511,7 +1520,7 @@ simulacros-2023 & 9 \\
 
 Cada registro contiene la fecha del simulacro, el tipo de evento (sismo, tsunami, erupci\'on volc\'anica, remoci\'on en masa, entre otros) y la regi\'on donde se realiz\'o. Los datos fueron almacenados en la colecci\'on \texttt{emergencia-desastres} de MongoDB.
 
-La Figura~\ref{fig:registros-simulacros} muestra la respuesta del \textit{endpoint} \texttt{GET /emergencia-desastres/simulacros-2021}, que ejecuta la extracci\'on y devuelve los registros ya transformados. En ella se observa el resultado de la normalizaci\'on territorial descrita en la secci\'on~\ref{sec:normalizacion}: el campo \texttt{regionSource} conserva el texto original de la fuente (\texttt{Arica} en lugar de \texttt{Arica y Parinacota}) mientras que \texttt{region} contiene el nombre can\'onico.
+La Figura~\ref{fig:registros-simulacros} muestra la respuesta del \textit{endpoint} \texttt{GET /emergencia-desastres/simulacros-2021}, que devuelve los registros ya transformados y almacenados por una extracci\'on previa (\texttt{POST} al mismo \textit{endpoint}). En ella se observa el resultado de la normalizaci\'on territorial descrita en la secci\'on~\ref{sec:normalizacion}: el campo \texttt{regionSource} conserva el texto original de la fuente (\texttt{Arica} en lugar de \texttt{Arica y Parinacota}) mientras que \texttt{region} contiene el nombre can\'onico.
 
 \begin{figure}[H]
   \centering
@@ -1696,7 +1705,7 @@ En el caso de las organizaciones comunitarias se verific\'o que la suma total pu
 \section{Evitaci\'on de duplicados}
 \label{sec:duplicados}
 
-El sistema fue ejecutado m\'ultiples veces sobre las mismas fuentes de datos para verificar que los mecanismos de evitaci\'on de duplicados funcionaran correctamente. El \textit{HashAdapter} genera una clave \'unica para cada registro (basada en la fecha y la regi\'on para simulacros, en la unidad territorial para pobreza, y en el a\~no para organizaciones), y los esquemas de MongoDB declaran este campo como \'unico. En cada ejecuci\'on posterior a la primera, el sistema detect\'o los duplicados y los ignor\'o sin generar errores.
+El sistema fue ejecutado m\'ultiples veces sobre las mismas fuentes de datos para verificar que los mecanismos de evitaci\'on de duplicados funcionaran correctamente. El \textit{HashAdapter} genera una clave \'unica para cada registro (basada en la fecha y la regi\'on para simulacros, en la unidad territorial y el a\~no consultado para pobreza, y en el a\~no para organizaciones), y los esquemas de MongoDB declaran este campo como \'unico. En cada ejecuci\'on posterior a la primera, el sistema detect\'o los duplicados y los ignor\'o sin generar errores.
 
 De manera similar, el \textit{CalculatorAdapter} compar\'o los resultados calculados con el \'ultimo resultado almacenado y no cre\'o registros nuevos cuando los datos de origen no hab\'ian cambiado.
 
@@ -1795,7 +1804,7 @@ Los indicadores \textit{Civic Participation} (SCCP) y \textit{Special Needs Popu
 \subsection{Objetivo Espec\'ifico 3: API y anal\'iticas}
 \label{sec:conclusion-oe3}
 
-Se logr\'o poner a disposici\'on los indicadores por medio de una API REST y anal\'iticas. La API permite listar los m\'odulos e indicadores disponibles, ejecutar la extracci\'on de datos y consultar los resultados calculados. Los datos almacenados en MongoDB son visualizados mediante \textit{dashboards} en Metabase, los cuales se actualizan autom\'aticamente a medida que se pueblan las colecciones.
+Se logr\'o poner a disposici\'on los indicadores por medio de una API REST y anal\'iticas. La API permite listar los m\'odulos e indicadores disponibles, ejecutar la extracci\'on de datos mediante \texttt{POST}, leer lo almacenado y consultar los resultados calculados. Los datos almacenados en MongoDB son visualizados mediante \textit{dashboards} en Metabase, los cuales se actualizan autom\'aticamente a medida que se pueblan las colecciones.
 
 Dos decisiones refuerzan el cumplimiento de este objetivo m\'as all\'a de la mera existencia de los \textit{dashboards}. La primera es que el cat\'alogo de indicadores que expone la API se construye a partir de los m\'odulos registrados y no de una lista escrita a mano, de modo que todo indicador que se incorpore al sistema queda publicado sin tocar las rutas. La segunda es que la configuraci\'on completa de la capa de anal\'itica (la conexi\'on a la base de datos, las consultas y el \textit{dashboard}) se encuentra declarada en un archivo versionado junto al c\'odigo y se aplica sola al levantar el entorno. El resultado es que cualquier integrante del equipo de investigaci\'on obtiene el sistema completo, con sus visualizaciones, ejecutando un \'unico comando; la puesta a disposici\'on de los indicadores no queda atada al computador ni a la memoria de quien los configur\'o.
 
@@ -1907,15 +1916,16 @@ Cada documento corresponde a un simulacro. El campo \texttt{key} es la clave \'u
 \section{Colecci\'on tasa-pobreza-ingresos}
 \label{app:datos-pobreza}
 
-La colecci\'on contiene una fila por unidad territorial. Los porcentajes se almacenan como n\'umeros, convertidos desde el formato decimal chileno que utiliza la fuente.
+La colecci\'on contiene una fila por unidad territorial y a\~no consultado. Los porcentajes se almacenan como n\'umeros, convertidos desde el formato decimal chileno que utiliza la fuente.
 
 \begin{lstlisting}[style=codigo, language=JSON]
 {
-  "key": "comuna-de-valdivia-biblioteca-congreso-nacional-
+  "key": "comuna-de-valdivia-2024-biblioteca-congreso-nacional-
            valdivia-tasa-pobreza-ingresos",
   "unidadTerritorial": "Comuna de Valdivia",
   "casen2017": 7.6,
   "casen2022": 3.4,
+  "year": "2024",
   "indicator": "valdivia-tasa-pobreza-ingresos",
   "module": "biblioteca-congreso-nacional"
 }

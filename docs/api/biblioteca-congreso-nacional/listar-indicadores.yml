@@ -11,11 +11,18 @@ settings:
   encodeUrl: true
 
 docs: |-
+  # Listar indicadores
+
   Lista todos los indicadores disponibles en el módulo biblioteca-congreso-nacional.
 
-  Respuesta esperada:
+  **Auth:** public
+
+  ## Response 200
   ```json
   {
     "indicators": ["valdivia-tasa-pobreza-ingresos", "valdivia-organizaciones-comunitarias"]
   }
   ```
+
+  ## Errors
+  - `500` — `{ "error": "Internal server error" }` ante un error inesperado.

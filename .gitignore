@@ -110,7 +110,10 @@ dist
 # Others
 
 tmp/
-.claude/
 .DS_Store
-docs/tesis/tmp/
+docs/tesis/aux/
+.worktree/
+
+# Claude local settings (keep skills tracked)
+.claude/settings.local.json
 

@@ -5,8 +5,18 @@ import { logger } from "../../../core/logger";
 import { OrganizacionesComunitarias } from "./schema";
 
 export class OrganizacionesComunitariasStorageAdapter extends StorageAdapter {
-	async find() {
-		return await OrganizacionesComunitarias.find().lean();
+	async find(indicator: string) {
+		try {
+			return await OrganizacionesComunitarias.find(
+				{ indicator },
+				{ _id: 0, __v: 0 }
+			).lean();
+		} catch (error) {
+			throw new StorageError("organizaciones-comunitarias find failed", {
+				indicator,
+				error: error instanceof Error ? error.message : String(error)
+			});
+		}
 	}
 
 	async save(data: Array<Record<string, unknown>>): Promise<void> {
@@ -17,13 +27,9 @@ export class OrganizacionesComunitariasStorageAdapter extends StorageAdapter {
 				logger.warn(error.message, "Duplicate keys skipped");
 				return;
 			}
-			throw new StorageError(
-				"organizaciones-comunitarias insertMany failed",
-				{
-					error:
-						error instanceof Error ? error.message : String(error)
-				}
-			);
+			throw new StorageError("organizaciones-comunitarias insertMany failed", {
+				error: error instanceof Error ? error.message : String(error)
+			});
 		}
 	}
 }

@@ -1,11 +1,7 @@
-export interface Input {
-	unidadTerritorial: string;
-	casen2017: string;
-	casen2022: string;
-}
+export type CasenField = `casen${string}`;
 
-export interface Output {
-	unidadTerritorial: string;
-	casen2017: number;
-	casen2022: number;
-}
+export type Input = { unidadTerritorial: string } & Record<CasenField, string>;
+
+export type Output = { unidadTerritorial: string } & Record<CasenField, number>;
+
+export type OutputWithYear = Output & { year: string };

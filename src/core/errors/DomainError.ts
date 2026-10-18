@@ -25,3 +25,9 @@ export class ParseError extends DomainError {
 		super("Cannot extract data from source", { indicator, url });
 	}
 }
+
+export class InvalidQueryParamError extends DomainError {
+	constructor(param: string, reason: string, value?: unknown) {
+		super(`${param} query param ${reason}`, { param, value });
+	}
+}

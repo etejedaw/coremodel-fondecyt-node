@@ -3,6 +3,7 @@ import { TasaPobrezaMapperAdapter } from "../../../../src/modules/biblioteca-con
 import { TasaPobrezaIngresosHashAdapter } from "../../../../src/modules/biblioteca-congreso-nacional/tasa-pobreza-ingresos/hash";
 
 const MODULE = "biblioteca-congreso-nacional";
+const YEAR = "2025";
 const INDICATOR = "valdivia-tasa-pobreza-ingresos";
 
 const parseAdapter = new TasaPobrezaIngresosParseAdapter();
@@ -34,6 +35,7 @@ describe("Tasa Pobreza Ingresos - ETL integration", () => {
 
 		const withMetadata = mapped.map(item => ({
 			...item,
+			year: YEAR,
 			indicator: INDICATOR,
 			module: MODULE
 		}));
@@ -45,16 +47,17 @@ describe("Tasa Pobreza Ingresos - ETL integration", () => {
 
 		expect(final).toHaveLength(3);
 		expect(final[0].key).toBe(
-			"valdivia-biblioteca-congreso-nacional-valdivia-tasa-pobreza-ingresos"
+			"valdivia-2025-biblioteca-congreso-nacional-valdivia-tasa-pobreza-ingresos"
 		);
 
 		expect(final[0]).toEqual({
 			unidadTerritorial: "Valdivia",
 			casen2017: 12.5,
 			casen2022: 10.3,
+			year: YEAR,
 			indicator: INDICATOR,
 			module: MODULE,
-			key: "valdivia-biblioteca-congreso-nacional-valdivia-tasa-pobreza-ingresos"
+			key: "valdivia-2025-biblioteca-congreso-nacional-valdivia-tasa-pobreza-ingresos"
 		});
 	});
 
@@ -62,7 +65,12 @@ describe("Tasa Pobreza Ingresos - ETL integration", () => {
 		const parsed = parseAdapter.extract(sampleHtml);
 		const final = parsed
 			.map(item => mapper.map(item))
-			.map(item => ({ ...item, indicator: INDICATOR, module: MODULE }))
+			.map(item => ({
+				...item,
+				year: YEAR,
+				indicator: INDICATOR,
+				module: MODULE
+			}))
 			.map(item => ({ ...item, key: hasher.generate(item) }));
 
 		const keys = final.map(item => item.key);

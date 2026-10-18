@@ -4,7 +4,8 @@ export {
 	AdapterNotFoundError,
 	ScraperNotFoundError,
 	ScraperAlreadyRegisteredError,
-	ParseError
+	ParseError,
+	InvalidQueryParamError
 } from "./DomainError";
 export {
 	ServiceError,

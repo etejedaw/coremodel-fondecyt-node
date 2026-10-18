@@ -1,7 +1,7 @@
 info:
   name: Resultado Simulacros 2023
   type: http
-  seq: 7
+  seq: 10
 
 http:
   method: GET
@@ -11,6 +11,36 @@ settings:
   encodeUrl: true
 
 docs: |-
+  # Resultado Simulacros 2023
+
   Consulta el último resultado calculado para simulacros 2023.
 
   Retorna el total de simulacros y el desglose por región desde la colección `indicator-results`.
+
+  **Auth:** public
+
+  ## Path params
+  - `indicator` (string) — `simulacros-2023`
+
+  ## Response 200
+  ```json
+  {
+    "result": {
+      "indicator": "simulacros-2023",
+      "module": "emergencia-desastres",
+      "totalDrills": 3,
+      "drillsByRegion": {
+        "Valparaíso": 2,
+        "Coquimbo": 1
+      }
+    }
+  }
+  ```
+
+  Solo lee el resultado guardado; no ejecuta el scraping. El resultado se genera al llamar a `POST /emergencia-desastres/simulacros-2023`.
+
+  ## Errors
+  - `404` — `{ "error": "Indicator simulacros-2023 not found" }` si el indicador no existe en el módulo.
+  - `404` — `{ "error": "No calculator for simulacros-2023" }` si el indicador no tiene un `CalculatorAdapter`.
+  - `404` — `{ "error": "No results yet for simulacros-2023" }` si todavía no se ha ejecutado `POST /emergencia-desastres/simulacros-2023`.
+  - `500` — `{ "error": "Internal server error" }` ante un error inesperado.

@@ -1,7 +1,7 @@
 info:
   name: Resultado Simulacros 2022
   type: http
-  seq: 6
+  seq: 7
 
 http:
   method: GET
@@ -11,6 +11,36 @@ settings:
   encodeUrl: true
 
 docs: |-
+  # Resultado Simulacros 2022
+
   Consulta el último resultado calculado para simulacros 2022.
 
   Retorna el total de simulacros y el desglose por región desde la colección `indicator-results`.
+
+  **Auth:** public
+
+  ## Path params
+  - `indicator` (string) — `simulacros-2022`
+
+  ## Response 200
+  ```json
+  {
+    "result": {
+      "indicator": "simulacros-2022",
+      "module": "emergencia-desastres",
+      "totalDrills": 3,
+      "drillsByRegion": {
+        "Aysén": 1,
+        "Los Lagos": 2
+      }
+    }
+  }
+  ```
+
+  Solo lee el resultado guardado; no ejecuta el scraping. El resultado se genera al llamar a `POST /emergencia-desastres/simulacros-2022`.
+
+  ## Errors
+  - `404` — `{ "error": "Indicator simulacros-2022 not found" }` si el indicador no existe en el módulo.
+  - `404` — `{ "error": "No calculator for simulacros-2022" }` si el indicador no tiene un `CalculatorAdapter`.
+  - `404` — `{ "error": "No results yet for simulacros-2022" }` si todavía no se ha ejecutado `POST /emergencia-desastres/simulacros-2022`.
+  - `500` — `{ "error": "Internal server error" }` ante un error inesperado.

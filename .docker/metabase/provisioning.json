@@ -105,28 +105,66 @@
 		},
 		{
 			"name": "Tasa de pobreza por ingresos",
-			"description": "Comparacion CASEN 2017 vs CASEN 2022 por unidad territorial.",
+			"description": "Mediciones CASEN informadas por unidad territorial y ano de consulta. Cada reporte informa dos mediciones (2017 y 2020, o 2017 y 2022).",
 			"collection": "tasa-pobreza-ingresos",
 			"display": "bar",
 			"query": [
 				{
+					"$match": {
+						"year": {
+							"$exists": true
+						}
+					}
+				},
+				{
+					"$group": {
+						"_id": {
+							"unidadTerritorial": "$unidadTerritorial",
+							"year": "$year"
+						},
+						"CASEN 2017": {
+							"$max": "$casen2017"
+						},
+						"CASEN 2020": {
+							"$max": "$casen2020"
+						},
+						"CASEN 2022": {
+							"$max": "$casen2022"
+						}
+					}
+				},
+				{
+					"$sort": {
+						"_id.unidadTerritorial": 1,
+						"_id.year": 1
+					}
+				},
+				{
 					"$project": {
 						"_id": 0,
-						"unidadTerritorial": 1,
-						"CASEN 2017": "$casen2017",
-						"CASEN 2022": "$casen2022"
+						"unidadTerritorialYear": {
+							"$concat": [
+								"$_id.unidadTerritorial",
+								" ",
+								"$_id.year"
+							]
+						},
+						"CASEN 2017": 1,
+						"CASEN 2020": 1,
+						"CASEN 2022": 1
 					}
 				}
 			],
 			"visualization_settings": {
 				"graph.dimensions": [
-					"unidadTerritorial"
+					"unidadTerritorialYear"
 				],
 				"graph.metrics": [
 					"CASEN 2017",
+					"CASEN 2020",
 					"CASEN 2022"
 				],
-				"graph.x_axis.title_text": "Unidad territorial",
+				"graph.x_axis.title_text": "Unidad territorial y año",
 				"graph.y_axis.title_text": "Tasa de pobreza (%)"
 			},
 			"layout": {
