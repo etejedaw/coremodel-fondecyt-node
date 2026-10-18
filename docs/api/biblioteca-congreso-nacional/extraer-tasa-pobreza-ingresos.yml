@@ -1,0 +1,59 @@
+info:
+  name: Extraer Tasa de Pobreza por Ingresos (Valdivia)
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: "{{baseUrl}}/biblioteca-congreso-nacional/valdivia-tasa-pobreza-ingresos"
+  params:
+    - name: year
+      value: "2023"
+      type: query
+
+settings:
+  encodeUrl: true
+
+docs: |-
+  # Extraer Tasa de Pobreza por Ingresos (Valdivia)
+
+  Ejecuta el scraping de la tasa de pobreza por ingresos desde BCN para la comuna de Valdivia y la almacena en MongoDB.
+
+  Requiere el parámetro `year` para indicar el año del reporte comunal.
+
+  Extrae datos de la tabla HTML con tasas CASEN 2017 y CASEN 2022.
+
+  **Auth:** public
+
+  ## Path params
+  - `indicator` (string) — `valdivia-tasa-pobreza-ingresos`
+
+  ## Query
+  - `year` (string, requerido) — año de 4 dígitos del reporte comunal de la BCN, por ejemplo `2023`.
+
+  ## Response 200
+  ```json
+  {
+    "data": [
+      {
+        "unidadTerritorial": "Valdivia",
+        "casen2017": 12.5,
+        "casen2022": 10.3,
+        "indicator": "valdivia-tasa-pobreza-ingresos",
+        "module": "biblioteca-congreso-nacional",
+        "key": "valdivia-biblioteca-congreso-nacional-valdivia-tasa-pobreza-ingresos"
+      }
+    ]
+  }
+  ```
+
+  Las tasas vienen en porcentaje y con punto decimal. `key` combina la unidad territorial con el módulo y el indicador, así que una nueva consulta no duplica los registros ya guardados. Para leer lo guardado sin volver a consultar la fuente, usa `GET /biblioteca-congreso-nacional/valdivia-tasa-pobreza-ingresos`.
+
+  ## Errors
+  - `404` — `{ "error": "Indicator valdivia-tasa-pobreza-ingresos not found" }` si el indicador no existe en el módulo.
+  - `400` — `{ "error": "year query param is required" }` si falta `year` o viene vacío (`InvalidQueryParamError`).
+  - `400` — `{ "error": "year query param must be a 4-digit year" }` si `year` no son 4 dígitos o se repite en la query (`InvalidQueryParamError`).
+  - `400` — `{ "error": "Cannot extract data from source" }` si el reporte no contiene la tabla de pobreza, por ejemplo cuando el año no existe (`ParseError`).
+  - `502` — `{ "error": "Fetch failed for https://www.bcn.cl/siit/reportescomunales/comunas_v.html?anno=2023&idcom=14101" }` si la BCN no responde o responde con un estado HTTP no exitoso (`FetchError`).
+  - `502` — `{ "error": "Storage failed: tasa-pobreza-ingresos insertMany failed" }` si falla el guardado en MongoDB (`StorageError`).
+  - `500` — `{ "error": "Internal server error" }` ante un error inesperado.

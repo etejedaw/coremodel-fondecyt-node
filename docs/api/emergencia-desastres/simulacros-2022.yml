@@ -1,7 +1,7 @@
 info:
   name: Simulacros 2022
   type: http
-  seq: 3
+  seq: 6
 
 http:
   method: GET
@@ -13,9 +13,9 @@ settings:
 docs: |-
   # Simulacros 2022
 
-  Ejecuta el scraping de simulacros del año 2022 desde MINEDUC (Wayback Machine).
+  Lee desde MongoDB los simulacros del año 2022 guardados por `POST /emergencia-desastres/simulacros-2022`.
 
-  Extrae fecha, lugar y región de cada simulacro y los almacena en MongoDB.
+  No consulta la fuente ni modifica datos.
 
   **Auth:** public
 
@@ -33,16 +33,17 @@ docs: |-
         "regionSource": "Aysén- Cochrane",
         "indicator": "simulacros-2022",
         "module": "emergencia-desastres",
-        "key": "2022-06-15-aysen"
+        "key": "2022-06-15-aysen",
+        "createdAt": "2026-10-18T12:00:00.000Z",
+        "updatedAt": "2026-10-18T12:00:00.000Z"
       }
     ]
   }
   ```
 
-  `region` es el nombre oficial normalizado y `regionSource` el texto tal como aparece en la fuente. `key` combina fecha y región. Los simulacros que ya estaban guardados con la misma `key` no se duplican en MongoDB, pero igual aparecen en la respuesta. Cada llamada recalcula y guarda el resultado de `/simulacros-2022/result`.
+  Solo incluye los registros de `simulacros-2022`, aunque la colección `emergencia-desastres` guarda los tres años juntos. `createdAt` y `updatedAt` indican cuándo se guardó cada registro; `_id` y `__v` no se exponen. Si todavía no se ha ejecutado el scraping, responde `{ "data": [] }`.
 
   ## Errors
   - `404` — `{ "error": "Indicator simulacros-2022 not found" }` si el indicador no existe en el módulo.
-  - `400` — `{ "error": "Cannot extract data from source" }` si la página no contiene simulacros (`ParseError`).
-  - `400` — `{ "error": "Storage failed: emergencia-desastres insertMany failed" }` si falla el guardado en MongoDB (`StorageError`).
-  - `500` — `{ "error": "Internal server error" }` si la fuente no responde u ocurre otro error inesperado.
+  - `502` — `{ "error": "Storage failed: emergencia-desastres find failed" }` si falla la lectura en MongoDB (`StorageError`).
+  - `500` — `{ "error": "Internal server error" }` ante un error inesperado.

@@ -1,7 +1,7 @@
 info:
   name: Organizaciones Comunitarias (Valdivia)
   type: http
-  seq: 3
+  seq: 5
 
 http:
   method: GET
@@ -13,10 +13,9 @@ settings:
 docs: |-
   # Organizaciones Comunitarias (Valdivia)
 
-  Ejecuta la extracción de datos de organizaciones comunitarias desde la JSON API de BCN para Valdivia.
+  Lee desde MongoDB las organizaciones comunitarias de Valdivia guardadas por `POST /biblioteca-congreso-nacional/valdivia-organizaciones-comunitarias`.
 
-  Obtiene la cantidad de juntas de vecinos, clubes deportivos, centros de madres,
-  centros culturales, centros del adulto mayor, compañías de bomberos, entre otros.
+  No consulta la fuente ni modifica datos.
 
   **Auth:** public
 
@@ -41,16 +40,17 @@ docs: |-
         "anio": 2020,
         "indicator": "valdivia-organizaciones-comunitarias",
         "module": "biblioteca-congreso-nacional",
-        "key": "1vi5d50"
+        "key": "1vi5d50",
+        "createdAt": "2026-10-18T12:00:00.000Z",
+        "updatedAt": "2026-10-18T12:00:00.000Z"
       }
     ]
   }
   ```
 
-  Hay un registro por año disponible en la fuente. Los conteos que la fuente deja vacíos se informan como `0`. `key` se deriva del año, el indicador y el módulo, así que una nueva consulta no duplica los años ya guardados.
+  Hay un registro por año guardado. `createdAt` y `updatedAt` indican cuándo se guardó cada registro; `_id` y `__v` no se exponen. Si todavía no se ha ejecutado el scraping, responde `{ "data": [] }`.
 
   ## Errors
   - `404` — `{ "error": "Indicator valdivia-organizaciones-comunitarias not found" }` si el indicador no existe en el módulo.
-  - `400` — `{ "error": "Cannot extract data from source" }` si el JSON de la BCN no trae registros (`ParseError`).
-  - `400` — `{ "error": "Storage failed: organizaciones-comunitarias insertMany failed" }` si falla el guardado en MongoDB (`StorageError`).
-  - `500` — `{ "error": "Internal server error" }` si la fuente no responde u ocurre otro error inesperado.
+  - `502` — `{ "error": "Storage failed: organizaciones-comunitarias find failed" }` si falla la lectura en MongoDB (`StorageError`).
+  - `500` — `{ "error": "Internal server error" }` ante un error inesperado.
