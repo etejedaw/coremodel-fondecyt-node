@@ -42,6 +42,10 @@ export abstract class ScrapeBase {
 		return this.#moduleConfig[indicator].calculatorAdapter;
 	}
 
+	async findStoredRecords(indicator: string) {
+		return await this.getStorageAdapter(indicator).find(indicator);
+	}
+
 	#buildUrl(url: string, params: Record<string, string>) {
 		return Object.entries(params).reduce((acc, [key, value]) => {
 			return acc.replace(new RegExp(`{{${key}}}`, "g"), value.toString());

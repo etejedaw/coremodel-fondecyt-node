@@ -5,8 +5,18 @@ import { logger } from "../../../core/logger";
 import { TasaPobrezaIngresos } from "./schema";
 
 export class TasaPobrezaIngresosStorageAdapter extends StorageAdapter {
-	async find() {
-		return await TasaPobrezaIngresos.find().lean();
+	async find(indicator: string) {
+		try {
+			return await TasaPobrezaIngresos.find(
+				{ indicator },
+				{ _id: 0, __v: 0 }
+			).lean();
+		} catch (error) {
+			throw new StorageError("tasa-pobreza-ingresos find failed", {
+				indicator,
+				error: error instanceof Error ? error.message : String(error)
+			});
+		}
 	}
 
 	async save(data: Array<Record<string, unknown>>): Promise<void> {
