@@ -109,5 +109,5 @@ Detalles:
 
 - Los defaults de la API coinciden con las credenciales fijas de `mongo` en `docker-compose.yml`, por eso en local no hace falta editar nada.
 - `NODE_ENV` define el nivel del logger (ver [architecture.md](../architecture.md#componentes-del-core)).
-- El código de la API no carga el `.env`: `dotenv` está en `package.json` pero ningún archivo de `src/` lo importa, y `environment.config.ts` lee `process.env` directamente. Compose sí lee el `.env` para los puertos. Para que la API use valores propios hay que exportarlos en el shell o cargarlos al lanzar el proceso.
-- Una variable definida como vacía no usa el default del esquema zod (`""` no es `undefined`). Si exportas una, dale valor.
+- Los scripts `dev` y `start` cargan el `.env` con `--env-file-if-exists`; si no existe, se usan los defaults del esquema zod. `npm test` no lo carga.
+- Una variable definida como vacía no usa el default del esquema zod (`""` no es `undefined`). Si copias `.env.example` a `.env` sin completarlo, la API recibe cadenas vacías: dale valor a las variables que dejes o bórralas.
