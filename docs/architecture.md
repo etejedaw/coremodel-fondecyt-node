@@ -90,12 +90,4 @@ El mismo `init` lo llama `CronRegistry` en cada ejecución programada, sin `para
 
 El nombre con el que un módulo se registra y aparece en la URL sale del primer argumento de `super("<nombre>", ...)` en la clase del módulo, no del nombre de su carpeta. No siempre coinciden: la carpeta `src/modules/emergencias-desastres/` registra el módulo `emergencia-desastres`. La constante `MODULE` de su archivo de rutas debe usar ese mismo nombre.
 
-## Dónde seguir
-
-| Tema | Archivo |
-|---|---|
-| Anatomía de módulos e indicadores, contrato de cada adapter, deduplicación, cómo agregar un indicador o módulo | [context/modules.md](./context/modules.md) |
-| Fuentes de datos, colecciones MongoDB, normalización de regiones | [context/data.md](./context/data.md) |
-| Jerarquía de errores y su traducción a HTTP | [context/errors.md](./context/errors.md) |
-| Docker Compose, inicialización de Mongo y Metabase | [context/infrastructure.md](./context/infrastructure.md) |
-| Endpoints, parámetros y respuestas | [api/](./api/) (colección Bruno) |
+Índice completo de la documentación: [README](./README.md).
