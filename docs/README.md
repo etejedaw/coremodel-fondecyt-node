@@ -4,32 +4,18 @@
 
 ## Qué leer según la tarea
 
-| Quiero... | Leer |
-|---|---|
-| Entender el proyecto | [`architecture.md`](./architecture.md) |
-| Agregar un indicador | [`context/modules.md`](./context/modules.md) |
-| Agregar un módulo | [`context/modules.md`](./context/modules.md) y [`architecture.md`](./architecture.md) |
-| Tocar el manejo de errores | [`context/errors.md`](./context/errors.md) |
-| Tocar Docker, Mongo o Metabase | [`context/infrastructure.md`](./context/infrastructure.md) |
-| Saber de dónde salen los datos y cómo se guardan | [`context/data.md`](./context/data.md) |
-| Revisar convenciones de código, tests y commits | [`context/conventions.md`](./context/conventions.md) |
-| Consultar o cambiar endpoints | [`api/`](./api/) |
-| Ver el historial de cambios | [`changelogs/`](./changelogs/) |
-| Entender el porqué de las decisiones | [`tesis/`](./tesis/) |
-
-## Archivos
-
-| Archivo | Qué cubre |
-|---|---|
-| [`architecture.md`](./architecture.md) | Capas (API, core, módulos), pipeline ETL, componentes del core y patrones usados |
-| [`context/modules.md`](./context/modules.md) | Anatomía de módulo e indicador, contrato de cada adapter, fetch adapters disponibles, deduplicación por hash y pasos para agregar indicadores y módulos |
-| [`context/data.md`](./context/data.md) | Fuentes (Mineduc vía Wayback Machine, BCN), colecciones de MongoDB, `indicator-results` y normalización de regiones |
-| [`context/errors.md`](./context/errors.md) | Jerarquía de errores y su traducción a HTTP |
-| [`context/infrastructure.md`](./context/infrastructure.md) | Servicios de Docker Compose, init de Mongo y aprovisionamiento de Metabase |
-| [`context/conventions.md`](./context/conventions.md) | Estilo, nombres, tests, git y commits |
-| [`api/`](./api/) | Colección Bruno: única fuente de los endpoints |
-| [`changelogs/`](./changelogs/) | Un archivo por feature entregada, con contexto y commits, generado con la skill `release-changelog` |
-| [`tesis/`](./tesis/) | Documento de tesis en LaTeX y su PDF |
+| Quiero... | Leer | Qué cubre |
+|---|---|---|
+| Entender el proyecto | [`architecture.md`](./architecture.md) | Capas (API, core, módulos), pipeline ETL, componentes del core y patrones usados |
+| Agregar un indicador | [`context/modules.md`](./context/modules.md) | Anatomía de módulo e indicador, contrato de cada adapter, fetch adapters disponibles, deduplicación por hash y pasos para agregar indicadores y módulos |
+| Agregar un módulo | [`context/modules.md`](./context/modules.md) y [`architecture.md`](./architecture.md) | Pasos para crear y registrar un módulo, y de dónde sale su nombre en la API |
+| Tocar el manejo de errores | [`context/errors.md`](./context/errors.md) | Jerarquía de errores y su traducción a HTTP |
+| Tocar Docker, Mongo o Metabase | [`context/infrastructure.md`](./context/infrastructure.md) | Servicios de Docker Compose, init de Mongo y aprovisionamiento de Metabase |
+| Saber de dónde salen los datos y cómo se guardan | [`context/data.md`](./context/data.md) | Fuentes (Mineduc vía Wayback Machine, BCN), colecciones de MongoDB, `indicator-results` y normalización de regiones |
+| Revisar convenciones de código, tests y commits | [`context/conventions.md`](./context/conventions.md) | Estilo, nombres, tests, git y commits |
+| Consultar o cambiar endpoints | [`api/`](./api/) | Colección Bruno: única fuente de los endpoints |
+| Ver el historial de cambios | [`changelogs/`](./changelogs/) | Un archivo por feature entregada, con contexto y commits, generado con la skill `release-changelog` |
+| Entender el porqué de las decisiones | [`tesis/`](./tesis/) | Documento de tesis en LaTeX y su PDF |
 
 ## Reglas para mantener esta carpeta
 
