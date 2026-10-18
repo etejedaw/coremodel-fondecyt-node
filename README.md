@@ -50,8 +50,6 @@ Más un cuarto servicio de un solo uso, `metabase-provision`, que espera a que M
 
 MongoDB, por su parte, crea en su primer arranque las colecciones vacías declaradas en `.docker/mongo/init.js`. Sin ellas la base de datos no existiría todavía y Metabase rechazaría la conexión, porque valida que la base esté creada antes de registrarla como fuente de datos.
 
-El `docker-compose.yml` define además un servicio `tesis` para compilar el documento de tesis. Está bajo el perfil `docs`, por lo que `docker compose up` lo ignora por completo (ver [Documento de tesis](#documento-de-tesis)).
-
 4. Levantar proyecto en modo desarrollo
 
 ```bash
@@ -354,22 +352,22 @@ Basta con añadir una entrada al arreglo `cards` de `.docker/metabase/provisioni
 
 ## Documento de tesis
 
-El documento de tesis está en `docs/tesis/`: `tesis.tex` es el único archivo fuente, `referencias.bib` la bibliografía e `img/` las imágenes que referencia. Se compila dentro de un contenedor Docker, por lo que no es necesario instalar TeX Live en la máquina:
+El documento de tesis está en `docs/tesis/`: `tesis.tex` es el único archivo fuente, `referencias.bib` la bibliografía e `img/` las imágenes que referencia.
+
+La redacción y la compilación se apoyan en las skills de [uach-thesis-skills](https://github.com/etejedaw/uach-thesis-skills): `thesis-format`, con la pauta de formato de la escuela, y `thesis-build`, que compila el `.tex` dentro de un contenedor Docker con TeX Live fijado por digest, por lo que no es necesario instalar LaTeX en la máquina. Están instaladas en `.claude/skills/` con el CLI de [skills.sh](https://skills.sh) y `skills-lock.json` registra la versión instalada. No se editan a mano: cualquier cambio se hace en su repositorio.
+
+Para compilar, desde la raíz del proyecto:
 
 ```bash
-docker compose run --rm tesis
+bash .claude/skills/thesis-build/build.sh docs/tesis/tesis.tex --out docs/tesis
 ```
 
-El PDF queda en `docs/tesis/tesis.pdf` y los archivos intermedios en `docs/tesis/tmp/`, ignorada por git. `latexmk` decide qué pasadas de `xelatex` y `biber` repetir, así que basta con volver a ejecutar el comando tras cada edición. La primera ejecución descarga la imagen `texlive/texlive` (~5,6 GB) y tarda unos minutos.
+El PDF queda en `docs/tesis/tesis.pdf` y los archivos intermedios en `docs/tesis/aux/`, ignorada por git. `latexmk` decide qué pasadas de `xelatex` y `biber` repetir, así que basta con volver a ejecutar el comando tras cada edición. El script usa tu UID y GID, así que los archivos generados no quedan como `root`. La primera ejecución descarga la imagen de TeX Live (~5,6 GB) y tarda unos minutos.
 
-Si el índice o la numeración quedan inconsistentes tras un cambio grande, conviene borrar el PDF y los intermedios antes de recompilar:
+Si el índice o la numeración quedan inconsistentes tras un cambio grande, agrega `--clean` para borrar el PDF y los intermedios antes de recompilar.
 
-```bash
-docker compose run --rm tesis latexmk -C -auxdir=tmp -outdir=. tesis.tex
-```
-
-El servicio corre con el usuario `1000:1000`. Si tu UID o GID son distintos, el PDF y los intermedios quedarían como `root`, así que conviene pasarlos de forma explícita:
+Para actualizar las skills a la última versión del repositorio:
 
 ```bash
-DOCKER_UID=$(id -u) DOCKER_GID=$(id -g) docker compose run --rm tesis
+npx skills update -p
 ```
