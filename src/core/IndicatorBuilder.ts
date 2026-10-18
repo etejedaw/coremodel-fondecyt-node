@@ -104,7 +104,7 @@ type Indicator = z.infer<typeof IndicatorSchema> & {
 	mapperAdapter: MapperAdapter;
 	hashAdapter: HashAdapter;
 	calculatorAdapter?: CalculatorAdapter;
-	scheduledParams?: () => Record<string, string>;
+	scheduledParams?: () => Array<Record<string, string>>;
 };
 
 export type ModuleConfig = Record<string, Indicator>;

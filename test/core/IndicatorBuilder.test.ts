@@ -92,7 +92,7 @@ describe("Every Indicator Builder instance", () => {
 	});
 
 	it("should keep the scheduled params resolver without evaluating it", () => {
-		const resolver = jest.fn(() => ({ year: "2025" }));
+		const resolver = jest.fn(() => [{ year: "2025" }]);
 
 		const indicator = builder
 			.setName("Test")
@@ -103,7 +103,7 @@ describe("Every Indicator Builder instance", () => {
 			.build();
 
 		expect(resolver).not.toHaveBeenCalled();
-		expect(indicator.scheduledParams?.()).toEqual({ year: "2025" });
+		expect(indicator.scheduledParams?.()).toEqual([{ year: "2025" }]);
 		expect(resolver).toHaveBeenCalledTimes(1);
 	});
 

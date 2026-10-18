@@ -1,6 +1,7 @@
 import { schedule, ScheduledTask } from "node-cron";
 import { ScraperFactory } from "./ScraperFactory";
-import { CronExecutionError } from "./errors";
+import { CronExecutionError, ParseError } from "./errors";
+import { ScrapeBase } from "./ScrapeBase";
 import { logger } from "./logger";
 
 export class CronRegistry {
@@ -27,10 +28,7 @@ export class CronRegistry {
 				const key = `${scraper.getName()}:${indicator}`;
 				const task = schedule(frequency, async () => {
 					try {
-						await scraper.init(
-							indicator,
-							scraper.getIndicatorScheduledParams(indicator)
-						);
+						await runWithFirstAvailableParams(scraper, indicator);
 					} catch (error) {
 						const cronError = new CronExecutionError(indicator, error);
 						logger.error({ context: cronError.context }, cronError.message);
@@ -54,5 +52,20 @@ export class CronRegistry {
 		const promises = [...this.#tasks.values()].map(task => task.stop());
 		await Promise.all(promises);
 		this.#tasks.clear();
+	}
+}
+
+async function runWithFirstAvailableParams(
+	scraper: ScrapeBase,
+	indicator: string,
+	candidates = scraper.getIndicatorScheduledParams(indicator)
+): ReturnType<ScrapeBase["init"]> {
+	const [params, ...fallbacks] = candidates;
+	try {
+		return await scraper.init(indicator, params);
+	} catch (error) {
+		const sourceHasNoDataYet = error instanceof ParseError;
+		if (!sourceHasNoDataYet || fallbacks.length === 0) throw error;
+		return await runWithFirstAvailableParams(scraper, indicator, fallbacks);
 	}
 }

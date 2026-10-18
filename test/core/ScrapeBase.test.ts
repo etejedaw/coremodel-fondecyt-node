@@ -42,7 +42,7 @@ class TestScraper extends ScrapeBase {
 				.setMapperAdapter({} as MapperAdapter)
 				.setHashAdapter({} as HashAdapter)
 				.setStorageAdapter(storage)
-				.setScheduledParams(() => ({ year: "2030" }))
+				.setScheduledParams(() => [{ year: "2030" }, { year: "2029" }])
 				.build()
 		});
 	}
@@ -89,15 +89,16 @@ describe("ScrapeBase.getIndicatorScheduledParams", () => {
 	it("should return the resolved params of the indicator", () => {
 		const scraper = new TestScraper(new InMemoryStorageAdapter());
 
-		expect(scraper.getIndicatorScheduledParams("scheduled")).toEqual({
-			year: "2030"
-		});
+		expect(scraper.getIndicatorScheduledParams("scheduled")).toEqual([
+			{ year: "2030" },
+			{ year: "2029" }
+		]);
 	});
 
-	it("should return an empty object when the indicator has no resolver", () => {
+	it("should return a single empty candidate when the indicator has no resolver", () => {
 		const scraper = new TestScraper(new InMemoryStorageAdapter());
 
-		expect(scraper.getIndicatorScheduledParams("first")).toEqual({});
+		expect(scraper.getIndicatorScheduledParams("first")).toEqual([{}]);
 	});
 });
 

@@ -34,8 +34,10 @@ export abstract class ScrapeBase {
 		return this.#moduleConfig[indicator].frequency;
 	}
 
-	getIndicatorScheduledParams(indicator: string): Record<string, string> {
-		return this.#moduleConfig[indicator].scheduledParams?.() ?? {};
+	getIndicatorScheduledParams(
+		indicator: string
+	): Array<Record<string, string>> {
+		return this.#moduleConfig[indicator].scheduledParams?.() ?? [{}];
 	}
 
 	getStorageAdapter(indicator: string) {
