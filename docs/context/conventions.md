@@ -8,13 +8,13 @@ El formato lo imponen Prettier y ESLint. No se discute a mano: se corre la herra
 
 - Prettier: `.prettierrc.json` (tabs, comillas dobles, sin trailing commas, arrow functions sin paréntesis en un solo parámetro).
 - ESLint: `.eslintrc.json`, que extiende `standard-with-typescript` y `prettier`. Ignora `test/` y `tmp/`.
-- `npm run lint` revisa, `npm run lint:fix` corrige, `npm run typecheck` compila sin emitir e incluye `test/`.
+- Los scripts de lint y typecheck están en el [README](../../README.md#scripts-disponibles).
 
 ## Nombres
 
 - Código en inglés: variables, funciones, clases y mensajes de error. Los textos de dominio en español (nombres de indicadores, claves de datos de la fuente) se dejan como los publica la fuente.
 - Archivos de módulo en kebab-case (`parse-adapter.ts`, `storage-adapter.ts`). Las clases del core van en PascalCase y su archivo también (`ScrapeBase.ts`).
-- Los nombres de módulo y de indicador son kebab-case y forman parte de la URL de la API. El nombre del módulo en la API sale de `super("<nombre>", ...)` y no siempre coincide con la carpeta (carpeta `emergencias-desastres`, módulo `emergencia-desastres`).
+- Los nombres de módulo y de indicador son kebab-case y forman parte de la URL de la API (ver [architecture.md](../architecture.md#nombre-del-módulo-en-la-api)).
 
 ## Sin comentarios
 
@@ -41,11 +41,7 @@ npx jest test/core/ScrapeBase.test.ts
 | Rutas | `test/api/routes/` | Cada router montado en un servidor Express real en un puerto efímero (`test/api/helpers/test-server.ts`), con el scraper simulado |
 | Error handler | `test/api/error-handler.test.ts` | Mapeo de errores a HTTP y logging |
 
-Reglas prácticas:
-
-- Los tests no tocan la red ni MongoDB. Todo lo externo se simula.
-- Un indicador nuevo suma sus tests en `test/modules/<modulo>/`, con la misma estructura que los existentes.
-- Un error nuevo suma un caso donde se lanza y, si cambia el mapeo, en `error-handler.test.ts`. Ver [errors.md](./errors.md).
+Los tests no tocan la red ni MongoDB. Todo lo externo se simula.
 
 ## Git
 
