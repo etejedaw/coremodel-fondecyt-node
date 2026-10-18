@@ -41,11 +41,3 @@ services:
     depends_on:
       - metabase
       - mongo
-  tesis:
-    profiles: ["docs"]
-    image: texlive/texlive:latest
-    working_dir: /doc
-    user: "${DOCKER_UID:-1000}:${DOCKER_GID:-1000}"
-    volumes:
-      - ./docs/tesis:/doc
-    command: latexmk -xelatex -interaction=nonstopmode -halt-on-error -auxdir=tmp -outdir=. tesis.tex
