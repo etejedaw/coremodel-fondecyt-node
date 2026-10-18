@@ -15,7 +15,14 @@ import {
 } from "./tasa-pobreza-ingresos";
 import { TasaPobrezaIngresosHashAdapter } from "./tasa-pobreza-ingresos/hash";
 
-const resolveCurrentYear = () => ({ year: String(new Date().getFullYear()) });
+const PREVIOUS_YEARS_TO_TRY = 2;
+
+const resolveCurrentAndPreviousYears = () => {
+	const currentYear = new Date().getFullYear();
+	return Array.from({ length: PREVIOUS_YEARS_TO_TRY + 1 }, (_, offset) => ({
+		year: String(currentYear - offset)
+	}));
+};
 
 export const BIBLIOTECA_CONGRESO_NACIONAL_CONFIG: ModuleConfig = {
 	"valdivia-tasa-pobreza-ingresos": new IndicatorBuilder()
@@ -24,7 +31,7 @@ export const BIBLIOTECA_CONGRESO_NACIONAL_CONFIG: ModuleConfig = {
 			"https://www.bcn.cl/siit/reportescomunales/comunas_v.html?anno={{year}}&idcom=14101"
 		)
 		.setFrequency(FREQUENCIES.year)
-		.setScheduledParams(resolveCurrentYear)
+		.setScheduledParams(resolveCurrentAndPreviousYears)
 		.setFetchAdapter(new RequestPromiseAdapter())
 		.setParseAdapter(new TasaPobrezaIngresosParseAdapter())
 		.setMapperAdapter(new TasaPobrezaMapperAdapter())
