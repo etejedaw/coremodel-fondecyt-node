@@ -1300,10 +1300,11 @@ El segundo sub-indicador, \textit{organizaciones-comunitarias}, extrae la cantid
 \begin{figure}[H]
 \begin{lstlisting}[style=codigo, language=JSON]
 {
-  "key": "comuna-de-valdivia-biblioteca-congreso-nacional-...",
+  "key": "comuna-de-valdivia-2024-biblioteca-congreso-nacional-...",
   "unidadTerritorial": "Comuna de Valdivia",
   "casen2017": 7.6,
   "casen2022": 3.4,
+  "year": "2024",
   "indicator": "valdivia-tasa-pobreza-ingresos",
   "module": "biblioteca-congreso-nacional"
 }
@@ -1380,7 +1381,7 @@ Todos los errores heredan de una clase base \textit{BaseError} que incluye un ca
 
 El \textit{CronRegistry} permite que el sistema ejecute la extracci\'on de indicadores de forma peri\'odica sin intervenci\'on manual. Al iniciar la aplicaci\'on, el \textit{CronRegistry} recorre todos los m\'odulos registrados y programa una tarea cron para cada indicador que tenga una frecuencia definida.
 
-Las frecuencias se expresan mediante la sintaxis cron est\'andar y est\'an disponibles como un \textit{enum} predefinido que incluye valores para ejecuci\'on diaria, semanal, mensual, anual y \'unica. La ejecuci\'on \'unica se utiliza para fuentes hist\'oricas que no se actualizan, como es el caso de los simulacros obtenidos desde Wayback Machine.
+Las frecuencias se expresan mediante la sintaxis cron est\'andar y est\'an disponibles como un \textit{enum} predefinido que incluye valores para ejecuci\'on diaria, semanal, mensual, anual y \'unica. La ejecuci\'on \'unica se utiliza para fuentes hist\'oricas que no se actualizan, como es el caso de los simulacros obtenidos desde Wayback Machine. Cuando la URL de un indicador contiene par\'ametros din\'amicos, el indicador puede declarar una funci\'on que los resuelve en cada ejecuci\'on programada; as\'i, la tasa de pobreza consulta cada a\~no el reporte del a\~no en curso.
 
 \section{API REST}
 \label{sec:api-rest}
@@ -1704,7 +1705,7 @@ En el caso de las organizaciones comunitarias se verific\'o que la suma total pu
 \section{Evitaci\'on de duplicados}
 \label{sec:duplicados}
 
-El sistema fue ejecutado m\'ultiples veces sobre las mismas fuentes de datos para verificar que los mecanismos de evitaci\'on de duplicados funcionaran correctamente. El \textit{HashAdapter} genera una clave \'unica para cada registro (basada en la fecha y la regi\'on para simulacros, en la unidad territorial para pobreza, y en el a\~no para organizaciones), y los esquemas de MongoDB declaran este campo como \'unico. En cada ejecuci\'on posterior a la primera, el sistema detect\'o los duplicados y los ignor\'o sin generar errores.
+El sistema fue ejecutado m\'ultiples veces sobre las mismas fuentes de datos para verificar que los mecanismos de evitaci\'on de duplicados funcionaran correctamente. El \textit{HashAdapter} genera una clave \'unica para cada registro (basada en la fecha y la regi\'on para simulacros, en la unidad territorial y el a\~no consultado para pobreza, y en el a\~no para organizaciones), y los esquemas de MongoDB declaran este campo como \'unico. En cada ejecuci\'on posterior a la primera, el sistema detect\'o los duplicados y los ignor\'o sin generar errores.
 
 De manera similar, el \textit{CalculatorAdapter} compar\'o los resultados calculados con el \'ultimo resultado almacenado y no cre\'o registros nuevos cuando los datos de origen no hab\'ian cambiado.
 
@@ -1915,15 +1916,16 @@ Cada documento corresponde a un simulacro. El campo \texttt{key} es la clave \'u
 \section{Colecci\'on tasa-pobreza-ingresos}
 \label{app:datos-pobreza}
 
-La colecci\'on contiene una fila por unidad territorial. Los porcentajes se almacenan como n\'umeros, convertidos desde el formato decimal chileno que utiliza la fuente.
+La colecci\'on contiene una fila por unidad territorial y a\~no consultado. Los porcentajes se almacenan como n\'umeros, convertidos desde el formato decimal chileno que utiliza la fuente.
 
 \begin{lstlisting}[style=codigo, language=JSON]
 {
-  "key": "comuna-de-valdivia-biblioteca-congreso-nacional-
+  "key": "comuna-de-valdivia-2024-biblioteca-congreso-nacional-
            valdivia-tasa-pobreza-ingresos",
   "unidadTerritorial": "Comuna de Valdivia",
   "casen2017": 7.6,
   "casen2022": 3.4,
+  "year": "2024",
   "indicator": "valdivia-tasa-pobreza-ingresos",
   "module": "biblioteca-congreso-nacional"
 }
