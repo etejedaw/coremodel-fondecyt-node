@@ -25,7 +25,7 @@ El `context` no viaja al cliente. Sirve solo para el log: el error handler lo es
 | `ParseError` | `DomainError` | `Cannot extract data from source` | `indicator`, `url` | `ScrapeBase.init` cuando el `ParseAdapter` devuelve una lista vacía |
 | `ScraperNotFoundError` | `DomainError` | `Scraper <módulo> not found` | `module` | `ScraperFactory.get` |
 | `ScraperAlreadyRegisteredError` | `DomainError` | `Scraper <módulo> is already registered` | `module` | `ScraperFactory.register` |
-| `AdapterNotFoundError` | `DomainError` | `<tipo> not found` | `adapterType`, `indicator` | Nadie hoy: está declarado y exportado, pero ningún código lo lanza |
+| `AdapterNotFoundError` | `DomainError` | `<tipo> not found` | `adapterType`, `indicator` | Nadie hoy: está declarado y exportado, pero reservado para desarrollos posteriores |
 | `FetchError` | `ServiceError` | `Fetch failed for <url>` | `url`, `cause` | Los fetch adapters de `src/core/adapters/fetch-adapter/` |
 | `StorageError` | `ServiceError` | `Storage failed: <detalle>` | el que pase quien lo lanza | Los `storage-adapter.ts` de cada módulo, en `find` e `insertMany` |
 | `CronExecutionError` | `ServiceError` | `Cron execution failed for <indicador>` | `indicator`, `cause` | `CronRegistry.start`, solo para registrar el fallo (ver [Errores en el cron](#errores-en-el-cron)) |
