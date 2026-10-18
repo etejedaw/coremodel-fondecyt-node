@@ -21,7 +21,7 @@ docs: |-
 
   Requiere el parámetro `year` para indicar el año del reporte comunal.
 
-  Extrae datos de la tabla HTML con tasas CASEN 2017 y CASEN 2022.
+  Extrae datos de la tabla HTML con una tasa por cada medición CASEN que informe el reporte, en campos `casen<año>` leídos desde los encabezados (por ejemplo, `casen2017` y `casen2022` en el reporte 2024, o `casen2017` y `casen2020` en el de 2023).
 
   **Auth:** public
 

@@ -22,7 +22,7 @@ Módulo `biblioteca-congreso-nacional`, dos indicadores de la comuna de Valdivia
 
 **`valdivia-tasa-pobreza-ingresos`**
 
-- **Qué entrega.** El reporte comunal de la BCN en HTML. El parse busca la sección *2.1 Tasa de Pobreza por ingresos* y lee su tabla: una fila por unidad territorial (por ejemplo, la comuna y su región) con las tasas CASEN 2017 y CASEN 2022. Se guarda una fila por unidad territorial y año consultado.
+- **Qué entrega.** El reporte comunal de la BCN en HTML. El parse busca la sección *2.1 Tasa de Pobreza por ingresos* y lee su tabla: una fila por unidad territorial (por ejemplo, la comuna y su región) con una tasa por cada medición CASEN que informe el reporte. Cada reporte informa mediciones distintas (el de 2023 trae CASEN 2017 y 2020; los de 2024 y 2025, CASEN 2017 y 2022), así que el parse lee los años desde los encabezados de la tabla y nombra cada campo `casen<año>`. Se guarda una fila por unidad territorial y año consultado.
 - **Parámetro.** La URL lleva `{{year}}` (año del reporte). Se pasa con `?year=YYYY` en el `POST`; el cron anual pide el año actual y, si el reporte todavía no está publicado, los dos anteriores (ver [modules.md](./modules.md#parámetros-param-en-la-url)). El año queda guardado en cada registro como `year`.
 - **Decimales con coma.** Los valores vienen como `12,5`. El mapper cambia la coma por punto antes de convertir a número.
 - **Dependencia del HTML.** El parse depende del título de la sección. Si la BCN lo cambia, el parse devuelve una lista vacía y el pipeline falla con `ParseError`.
