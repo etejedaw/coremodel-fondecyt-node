@@ -1381,7 +1381,7 @@ Todos los errores heredan de una clase base \textit{BaseError} que incluye un ca
 
 El \textit{CronRegistry} permite que el sistema ejecute la extracci\'on de indicadores de forma peri\'odica sin intervenci\'on manual. Al iniciar la aplicaci\'on, el \textit{CronRegistry} recorre todos los m\'odulos registrados y programa una tarea cron para cada indicador que tenga una frecuencia definida.
 
-Las frecuencias se expresan mediante la sintaxis cron est\'andar y est\'an disponibles como un \textit{enum} predefinido que incluye valores para ejecuci\'on diaria, semanal, mensual, anual y \'unica. La ejecuci\'on \'unica se utiliza para fuentes hist\'oricas que no se actualizan, como es el caso de los simulacros obtenidos desde Wayback Machine. Cuando la URL de un indicador contiene par\'ametros din\'amicos, el indicador puede declarar una funci\'on que los resuelve en cada ejecuci\'on programada; as\'i, la tasa de pobreza consulta cada a\~no el reporte del a\~no en curso.
+Las frecuencias se expresan mediante la sintaxis cron est\'andar y est\'an disponibles como un \textit{enum} predefinido que incluye valores para ejecuci\'on diaria, semanal, mensual, anual y \'unica. La ejecuci\'on \'unica se utiliza para fuentes hist\'oricas que no se actualizan, como es el caso de los simulacros obtenidos desde Wayback Machine. Cuando la URL de un indicador contiene par\'ametros din\'amicos, el indicador puede declarar una funci\'on que los resuelve en cada ejecuci\'on programada; as\'i, la tasa de pobreza consulta el reporte del a\~no en curso y, si a\'un no ha sido publicado, el de los dos a\~nos anteriores.
 
 \section{API REST}
 \label{sec:api-rest}
@@ -1460,7 +1460,7 @@ En tercer lugar, se crearon pruebas de validaci\'on que comparan los datos extra
 
 Adem\'as, se crearon pruebas sobre el n\'ucleo (\textit{IndicatorBuilder}, \textit{ScrapeBase} y los \textit{fetch adapters}), sobre el manejador de errores de la API y sobre las rutas \textit{HTTP} de cada m\'odulo, que verifican los m\'etodos, los c\'odigos de estado y la validaci\'on de par\'ametros.
 
-El total de pruebas implementadas es de 120, distribuidas en 24 \textit{suites}. Entre ellas se incluye una bater\'ia dedicada a la normalizaci\'on de unidades territoriales descrita en la secci\'on~\ref{sec:normalizacion}, que verifica cada una de las graf\'ias observadas en la fuente contra su regi\'on can\'onica.
+El total de pruebas implementadas es de 136, distribuidas en 25 \textit{suites}. Entre ellas se incluye una bater\'ia dedicada a la normalizaci\'on de unidades territoriales descrita en la secci\'on~\ref{sec:normalizacion}, que verifica cada una de las graf\'ias observadas en la fuente contra su regi\'on can\'onica.
 
 \section{Volatilidad de las fuentes web}
 \label{sec:volatilidad}
