@@ -55,11 +55,11 @@ Todas las respuestas de error tienen la forma `{ "error": "<mensaje>" }`.
 
 El 404 no es una clase de error. Lo responde directamente cada ruta en `src/api/routes/<modulo>.route.ts`, con el mismo formato `{ "error": "<mensaje>" }`, sin pasar por el error handler:
 
-| Caso | Mensaje | Rutas |
-|---|---|---|
-| El indicador no está en `scraper.getIndicators()` | `Indicator <indicador> not found` | `GET` y `POST` de `/:indicator` en ambos módulos, y `GET /:indicator/result` |
-| El indicador no define `CalculatorAdapter` | `No calculator for <indicador>` | `GET /:indicator/result` |
-| Hay calculator pero todavía no hay resultado guardado | `No results yet for <indicador>` | `GET /:indicator/result` |
+| Caso | Rutas |
+|---|---|
+| El indicador no está en `scraper.getIndicators()` | `GET` y `POST` de `/:indicator` en ambos módulos, y `GET /:indicator/result` |
+| El indicador no define `CalculatorAdapter` | `GET /:indicator/result` |
+| Hay calculator pero todavía no hay resultado guardado | `GET /:indicator/result` |
 
 Hoy solo el módulo `emergencia-desastres` expone `/result`, porque es el único con calculator. Los endpoints y sus respuestas completas están en [`docs/api/`](../api/).
 
@@ -69,7 +69,7 @@ Los trabajos del `CronRegistry` no tienen request, así que no hay error handler
 
 El `CronExecutionError` se instancia solo para dar forma al log (mensaje y contexto consistentes); nunca se lanza.
 
-Los logs van a `logs/all.log` (todos los niveles) y `logs/errors.log` (desde `warn`), más la consola con `pino-pretty` cuando `NODE_ENV` es `dev`. Ver `src/core/logger/Logger.ts`.
+Los errores quedan en `logs/errors.log` (desde `warn`). El resto del logger está en [architecture.md](../architecture.md#componentes-del-core).
 
 ## Agregar un error nuevo
 
