@@ -11,6 +11,45 @@ settings:
   encodeUrl: true
 
 docs: |-
+  # Resumen de módulos
+
   Retorna todos los módulos registrados con sus indicadores.
 
   Cada indicador incluye: key, name, url y frequency.
+
+  **Auth:** public
+
+  ## Response 200
+  ```json
+  {
+    "modules": [
+      {
+        "module": "emergencia-desastres",
+        "indicators": [
+          {
+            "key": "simulacros-2021",
+            "name": "Simulacros 2021",
+            "url": "https://web.archive.org/web/20211026024955/https://emergenciaydesastres.mineduc.cl/simulacros-2021/",
+            "frequency": ""
+          }
+        ]
+      },
+      {
+        "module": "biblioteca-congreso-nacional",
+        "indicators": [
+          {
+            "key": "valdivia-tasa-pobreza-ingresos",
+            "name": "Reporte Comunal Valdivia: Tasa de Pobreza por ingresos",
+            "url": "https://www.bcn.cl/siit/reportescomunales/comunas_v.html?anno={{year}}&idcom=14101",
+            "frequency": "0 0 1 1 *"
+          }
+        ]
+      }
+    ]
+  }
+  ```
+
+  `frequency` es la expresión cron con que se programa el indicador. Un string vacío significa que se ejecuta solo bajo demanda. `url` muestra la plantilla sin reemplazar los parámetros como `{{year}}`.
+
+  ## Errors
+  - `500` — `{ "error": "Internal server error" }` ante un error inesperado.

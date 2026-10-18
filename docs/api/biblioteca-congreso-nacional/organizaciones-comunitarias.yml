@@ -11,7 +11,46 @@ settings:
   encodeUrl: true
 
 docs: |-
+  # Organizaciones Comunitarias (Valdivia)
+
   Ejecuta la extracción de datos de organizaciones comunitarias desde la JSON API de BCN para Valdivia.
 
   Obtiene la cantidad de juntas de vecinos, clubes deportivos, centros de madres,
   centros culturales, centros del adulto mayor, compañías de bomberos, entre otros.
+
+  **Auth:** public
+
+  ## Path params
+  - `indicator` (string) — `valdivia-organizaciones-comunitarias`
+
+  ## Response 200
+  ```json
+  {
+    "data": [
+      {
+        "nDeCentrosDeMadres": 12,
+        "nDeOtrasOrganizacionesComunitariasFuncionalesOtros": 45,
+        "nDeCentrosDePadresYApoderados": 30,
+        "nDeUnionesComunales": 5,
+        "nDeJuntasDeVecinos": 98,
+        "nCentrosCulturales": 15,
+        "nDeOrganizacionesComunitariasSumaTotal": 250,
+        "nDeClubesDeportivos": 35,
+        "nDeCentrosUOrganizacionesDelAdultoMayor": 8,
+        "nDeCompaniasDeBomberos": 2,
+        "anio": 2020,
+        "indicator": "valdivia-organizaciones-comunitarias",
+        "module": "biblioteca-congreso-nacional",
+        "key": "1vi5d50"
+      }
+    ]
+  }
+  ```
+
+  Hay un registro por año disponible en la fuente. Los conteos que la fuente deja vacíos se informan como `0`. `key` se deriva del año, el indicador y el módulo, así que una nueva consulta no duplica los años ya guardados.
+
+  ## Errors
+  - `404` — `{ "error": "Indicator valdivia-organizaciones-comunitarias not found" }` si el indicador no existe en el módulo.
+  - `400` — `{ "error": "Cannot extract data from source" }` si el JSON de la BCN no trae registros (`ParseError`).
+  - `400` — `{ "error": "Storage failed: organizaciones-comunitarias insertMany failed" }` si falla el guardado en MongoDB (`StorageError`).
+  - `500` — `{ "error": "Internal server error" }` si la fuente no responde u ocurre otro error inesperado.

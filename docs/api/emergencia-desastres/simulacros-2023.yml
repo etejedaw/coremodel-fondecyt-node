@@ -11,6 +11,38 @@ settings:
   encodeUrl: true
 
 docs: |-
+  # Simulacros 2023
+
   Ejecuta el scraping de simulacros del año 2023 desde MINEDUC (Wayback Machine).
 
   Extrae fecha, lugar y región de cada simulacro y los almacena en MongoDB.
+
+  **Auth:** public
+
+  ## Path params
+  - `indicator` (string) — `simulacros-2023`
+
+  ## Response 200
+  ```json
+  {
+    "data": [
+      {
+        "date": "2023-09-27T00:00:00.000Z",
+        "place": "Simulacro de Tsunami",
+        "region": "Valparaíso",
+        "regionSource": "Región de Valparaíso - Provincia de San Antonio",
+        "indicator": "simulacros-2023",
+        "module": "emergencia-desastres",
+        "key": "2023-09-27-valparaiso"
+      }
+    ]
+  }
+  ```
+
+  `region` es el nombre oficial normalizado y `regionSource` el texto tal como aparece en la fuente. `key` combina fecha y región. Los simulacros que ya estaban guardados con la misma `key` no se duplican en MongoDB, pero igual aparecen en la respuesta. Cada llamada recalcula y guarda el resultado de `/simulacros-2023/result`.
+
+  ## Errors
+  - `404` — `{ "error": "Indicator simulacros-2023 not found" }` si el indicador no existe en el módulo.
+  - `400` — `{ "error": "Cannot extract data from source" }` si la página no contiene simulacros (`ParseError`).
+  - `400` — `{ "error": "Storage failed: emergencia-desastres insertMany failed" }` si falla el guardado en MongoDB (`StorageError`).
+  - `500` — `{ "error": "Internal server error" }` si la fuente no responde u ocurre otro error inesperado.

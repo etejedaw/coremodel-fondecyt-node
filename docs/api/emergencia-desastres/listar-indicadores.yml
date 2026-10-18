@@ -11,11 +11,18 @@ settings:
   encodeUrl: true
 
 docs: |-
+  # Listar indicadores
+
   Lista todos los indicadores disponibles en el módulo emergencia-desastres.
 
-  Respuesta esperada:
+  **Auth:** public
+
+  ## Response 200
   ```json
   {
     "indicators": ["simulacros-2021", "simulacros-2022", "simulacros-2023"]
   }
   ```
+
+  ## Errors
+  - `500` — `{ "error": "Internal server error" }` ante un error inesperado.
