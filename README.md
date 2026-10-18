@@ -61,11 +61,11 @@ npm run dev
 En el primer arranque MongoDB está vacía, por lo que los dashboards de Metabase existen pero no muestran datos. Las queries ya están creadas y apuntando a las colecciones: se llenan solas en cuanto haya registros. Para ejecutar la extracción de todos los indicadores:
 
 ```bash
-curl localhost:3000/emergencia-desastres/simulacros-2021
-curl localhost:3000/emergencia-desastres/simulacros-2022
-curl localhost:3000/emergencia-desastres/simulacros-2023
-curl "localhost:3000/biblioteca-congreso-nacional/valdivia-tasa-pobreza-ingresos?year=2024"
-curl localhost:3000/biblioteca-congreso-nacional/valdivia-organizaciones-comunitarias
+curl -X POST localhost:3000/emergencia-desastres/simulacros-2021
+curl -X POST localhost:3000/emergencia-desastres/simulacros-2022
+curl -X POST localhost:3000/emergencia-desastres/simulacros-2023
+curl -X POST "localhost:3000/biblioteca-congreso-nacional/valdivia-tasa-pobreza-ingresos?year=2024"
+curl -X POST localhost:3000/biblioteca-congreso-nacional/valdivia-organizaciones-comunitarias
 ```
 
 Cada llamada extrae desde la fuente, almacena en MongoDB e ignora los registros que ya existan, así que se pueden repetir sin generar duplicados. Al recargar Metabase los gráficos ya muestran la data.
@@ -218,10 +218,27 @@ scraperFactory.register(new MiNuevoModuloScraper());
 | ------ | ---------------------------------------------------- | ------------------------------------------- |
 | GET    | `/`                                                  | Lista todos los módulos con sus indicadores |
 | GET    | `/emergencia-desastres`                              | Lista indicadores del módulo                |
-| GET    | `/emergencia-desastres/:indicator`                   | Ejecuta scraping del indicador              |
+| POST   | `/emergencia-desastres/:indicator`                   | Ejecuta scraping del indicador y lo guarda  |
+| GET    | `/emergencia-desastres/:indicator`                   | Lee los registros guardados del indicador   |
 | GET    | `/emergencia-desastres/:indicator/result`            | Consulta el resultado calculado             |
 | GET    | `/biblioteca-congreso-nacional`                      | Lista indicadores del módulo                |
-| GET    | `/biblioteca-congreso-nacional/:indicator?year=YYYY` | Ejecuta scraping del indicador              |
+| POST   | `/biblioteca-congreso-nacional/:indicator?year=YYYY` | Ejecuta scraping del indicador y lo guarda  |
+| GET    | `/biblioteca-congreso-nacional/:indicator`           | Lee los registros guardados del indicador   |
+
+`POST /:indicator` consulta la fuente, guarda en MongoDB (ignorando duplicados), ejecuta el CalculatorAdapter si existe y responde `{ "data": [...] }` con lo extraído. `GET /:indicator` solo lee de MongoDB los registros de ese indicador, sin `_id` ni `__v`, y responde `{ "data": [] }` si todavía no se ha extraído nada.
+
+En la BCN, `year` es obligatorio en el `POST` de `valdivia-tasa-pobreza-ingresos` y debe ser un año de 4 dígitos; `valdivia-organizaciones-comunitarias` no lo usa.
+
+### Códigos de error
+
+Todas las respuestas de error tienen la forma `{ "error": "<mensaje>" }`.
+
+| Código | Cuándo                                                                                            | Ejemplo de mensaje                    |
+| ------ | ------------------------------------------------------------------------------------------------- | ------------------------------------- |
+| 400    | Error de dominio (`DomainError`): query inválida o fuente sin datos extraíbles                    | `year query param is required`        |
+| 404    | El indicador no existe en el módulo, o no hay resultado calculado todavía                         | `Indicator simulacros-2024 not found` |
+| 502    | Falla de un servicio externo (`ServiceError`): la fuente o MongoDB (`FetchError`, `StorageError`) | `Fetch failed for <url>`              |
+| 500    | Cualquier otro error inesperado                                                                   | `Internal server error`               |
 
 La documentación completa de la API está disponible como colección Bruno en [`docs/api/`](docs/api/).
 
