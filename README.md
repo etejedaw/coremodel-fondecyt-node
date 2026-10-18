@@ -275,6 +275,12 @@ Los tests cubren:
 | `npm run lint:fix`   | Ejecuta ESLint y corrige errores automáticamente   |
 | `npm run prettier`   | Formatea el código con Prettier                    |
 
+## Hooks de git
+
+El proyecto usa [husky](https://typicode.github.io/husky/) y [lint-staged](https://github.com/lint-staged/lint-staged). El hook `pre-commit` (`.husky/pre-commit`) ejecuta `npx lint-staged`, que corre `eslint --fix` y `prettier --write` sobre los archivos `.ts` en stage y los vuelve a agregar al commit.
+
+Los hooks se instalan solos al ejecutar `npm install`, gracias al script `prepare` (`husky`). Si necesitas reinstalarlos manualmente, ejecuta `npm run prepare`.
+
 ## Visualización con Metabase
 
 Metabase (`http://localhost:3001`) permite visualizar los datos almacenados en MongoDB a través de dashboards que se actualizan automáticamente a medida que se pueblan las colecciones, ya sea por el CronRegistry o al llamar los endpoints de extracción.
