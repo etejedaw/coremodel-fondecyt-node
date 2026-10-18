@@ -3,7 +3,7 @@ services:
     image: mongo:6
     restart: always
     ports:
-      - "27017:27017"
+      - "${DB_PORT:-27017}:27017"
     volumes:
       - ./.docker/mongo:/docker-entrypoint-initdb.d:ro
     environment:
@@ -13,7 +13,7 @@ services:
     image: mongo-express
     restart: unless-stopped
     ports:
-      - 8081:8081
+      - "${MONGO_EXPRESS_PORT:-8081}:8081"
     environment:
       - ME_CONFIG_MONGODB_SERVER=mongo
       - ME_CONFIG_BASICAUTH_USERNAME=root
@@ -26,7 +26,7 @@ services:
     image: metabase/metabase:latest
     restart: unless-stopped
     ports:
-      - 3001:3000
+      - "${METABASE_PORT:-3001}:3000"
     depends_on:
       - mongo
   metabase-provision:
