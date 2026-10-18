@@ -1,6 +1,6 @@
 services:
   mongo:
-    image: mongo:6
+    image: mongo:6.0
     restart: always
     ports:
       - "${DB_PORT:-27017}:27017"
@@ -10,7 +10,7 @@ services:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: toor
   mongo-express:
-    image: mongo-express
+    image: mongo-express:1.0
     restart: unless-stopped
     ports:
       - "${MONGO_EXPRESS_PORT:-8081}:8081"
@@ -23,7 +23,7 @@ services:
     depends_on:
       - mongo
   metabase:
-    image: metabase/metabase:latest
+    image: metabase/metabase:v0.64.x
     restart: unless-stopped
     ports:
       - "${METABASE_PORT:-3001}:3000"
