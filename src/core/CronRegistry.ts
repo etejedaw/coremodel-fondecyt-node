@@ -27,7 +27,10 @@ export class CronRegistry {
 				const key = `${scraper.getName()}:${indicator}`;
 				const task = schedule(frequency, async () => {
 					try {
-						await scraper.init(indicator);
+						await scraper.init(
+							indicator,
+							scraper.getIndicatorScheduledParams(indicator)
+						);
 					} catch (error) {
 						const cronError = new CronExecutionError(indicator, error);
 						logger.error({ context: cronError.context }, cronError.message);

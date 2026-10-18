@@ -65,6 +65,11 @@ export class IndicatorBuilder {
 		return this;
 	}
 
+	setScheduledParams(resolver: Indicator["scheduledParams"]) {
+		this.#config.scheduledParams = resolver;
+		return this;
+	}
+
 	build(): Indicator {
 		return {
 			...IndicatorSchema.parse(this.#config),
@@ -73,7 +78,8 @@ export class IndicatorBuilder {
 			storageAdapter: this.#config.storageAdapter,
 			mapperAdapter: this.#config.mapperAdapter,
 			hashAdapter: this.#config.hashAdapter,
-			calculatorAdapter: this.#config.calculatorAdapter
+			calculatorAdapter: this.#config.calculatorAdapter,
+			scheduledParams: this.#config.scheduledParams
 		};
 	}
 }
@@ -98,6 +104,7 @@ type Indicator = z.infer<typeof IndicatorSchema> & {
 	mapperAdapter: MapperAdapter;
 	hashAdapter: HashAdapter;
 	calculatorAdapter?: CalculatorAdapter;
+	scheduledParams?: () => Record<string, string>;
 };
 
 export type ModuleConfig = Record<string, Indicator>;

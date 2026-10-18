@@ -90,4 +90,31 @@ describe("Every Indicator Builder instance", () => {
 				.build()
 		).toThrow(z.ZodError);
 	});
+
+	it("should keep the scheduled params resolver without evaluating it", () => {
+		const resolver = jest.fn(() => ({ year: "2025" }));
+
+		const indicator = builder
+			.setName("Test")
+			.setUrl("https://example.com")
+			.setFetchAdapter(mockFetch)
+			.setParseAdapter(mockParse)
+			.setScheduledParams(resolver)
+			.build();
+
+		expect(resolver).not.toHaveBeenCalled();
+		expect(indicator.scheduledParams?.()).toEqual({ year: "2025" });
+		expect(resolver).toHaveBeenCalledTimes(1);
+	});
+
+	it("should leave the scheduled params undefined when not set", () => {
+		const indicator = builder
+			.setName("Test")
+			.setUrl("https://example.com")
+			.setFetchAdapter(mockFetch)
+			.setParseAdapter(mockParse)
+			.build();
+
+		expect(indicator.scheduledParams).toBeUndefined();
+	});
 });
