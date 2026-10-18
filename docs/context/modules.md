@@ -72,8 +72,6 @@ Están en `src/core/adapters/fetch-adapter/`. Un módulo elige uno con `setFetch
 | `PuppeteerAdapter` | Abre un navegador headless, navega a la URL y devuelve el HTML ya renderizado. Cierra el navegador siempre. | Ningún módulo hoy. Disponible para páginas que dependen de JavaScript. |
 | `DownloadAdapter` | Descarga el archivo a `/tmp/<nombre>` y devuelve la ruta, no el contenido. | Ningún módulo hoy. El parse adapter que lo use debe leer el archivo desde esa ruta. |
 
-Todos convierten cualquier fallo en `FetchError` con ayuda de `fetch-errors.ts`.
-
 ## Parámetros `{{param}}` en la URL
 
 La URL de un indicador puede tener marcadores `{{nombre}}`. `ScrapeBase.init` recibe un objeto `params` y reemplaza cada `{{clave}}` por su valor antes de llamar al fetch.
@@ -104,9 +102,10 @@ El calculator tiene su propia deduplicación, sin hash. `save` busca el último 
 
 1. Si el indicador comparte estructura con los que ya existen, reutiliza sus adapters. Si no, crea su subcarpeta con `parse-adapter.ts`, `mapper.ts`, `hash.ts`, `storage-adapter.ts`, `schema.ts` e `interfaces.ts` (y `calculator-adapter.ts` si necesita un resultado agregado).
 2. Declara el indicador en el `config.ts` del módulo con `IndicatorBuilder`: nombre, URL, frecuencia (de `FREQUENCIES`), los cinco adapters obligatorios y el calculator si corresponde. Llama a `build()` al final.
-3. Si la URL usa `{{param}}`, haz que la ruta del módulo pase ese param.
-4. Documenta el endpoint en la colección Bruno de `docs/api/` con la skill `bruno-endpoints`.
-5. Agrega los tests en `test/`, reflejando la estructura de `src/`: parse, mapper, hash, storage, y un `etl.test.ts` del flujo completo.
+3. Si el indicador usa una colección nueva, agrégala a `.docker/mongo/init.js` (ver [infrastructure.md](./infrastructure.md#inicialización-de-mongodb)).
+4. Si la URL usa `{{param}}`, haz que la ruta del módulo pase ese param.
+5. Documenta el endpoint en la colección Bruno de `docs/api/` con la skill `bruno-endpoints`.
+6. Agrega los tests en `test/`, reflejando la estructura de `src/`: parse, mapper, hash, storage, y un `etl.test.ts` del flujo completo.
 
 ## Agregar un módulo nuevo
 
@@ -116,5 +115,3 @@ El calculator tiene su propia deduplicación, sin hash. `save` busca el último 
 4. Crea la ruta en `src/api/routes/<modulo>.route.ts`, con `MODULE` igual al nombre del `super(...)`, y móntala en `src/api/routes/index.ts`.
 5. Documenta los endpoints en `docs/api/` con la skill `bruno-endpoints`.
 6. Agrega los tests en `test/modules/<modulo>/` y, si hay ruta, en `test/api/routes/`.
-
-Si el nombre de la carpeta y el nombre del módulo difieren, lo que cuenta para la API es el del `super(...)` (ver [../architecture.md](../architecture.md)).
