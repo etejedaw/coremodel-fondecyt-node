@@ -81,7 +81,7 @@ MB_URL=http://localhost:3001 node .docker/metabase/provision.mjs
 
 Las questions concretas viven en `provisioning.json`. Por qué algunas agrupan por `region` y por qué una recalcula el total de organizaciones comunitarias se explica en [data.md](./data.md).
 
-Las queries leen las colecciones en vivo: no necesitan ajustes cuando llegan datos nuevos. Con la base vacía el dashboard existe, pero los gráficos aparecen sin datos hasta que se ejecuten los endpoints `POST` de extracción (ver [`docs/api/`](../api/)).
+Las queries leen las colecciones en vivo: no necesitan ajustes cuando llegan datos nuevos.
 
 ## Qué conserva cada comando
 
@@ -108,6 +108,6 @@ Tras un `down` hay que volver a poblar la base con los `POST` de extracción. El
 Detalles:
 
 - Los defaults de la API coinciden con las credenciales fijas de `mongo` en `docker-compose.yml`, por eso en local no hace falta editar nada.
-- `NODE_ENV` cambia el logger: con `dev` el nivel es `trace` y se agrega `pino-pretty`; con otro valor el nivel es `warn`. Ver `src/core/logger/Logger.ts`.
+- `NODE_ENV` define el nivel del logger (ver [architecture.md](../architecture.md#componentes-del-core)).
 - El código de la API no carga el `.env`: `dotenv` está en `package.json` pero ningún archivo de `src/` lo importa, y `environment.config.ts` lee `process.env` directamente. Compose sí lee el `.env` para los puertos. Para que la API use valores propios hay que exportarlos en el shell o cargarlos al lanzar el proceso.
 - Una variable definida como vacía no usa el default del esquema zod (`""` no es `undefined`). Si exportas una, dale valor.
