@@ -31,7 +31,7 @@ npm install
 cp .env.example .env
 ```
 
-El `.env` lo lee Docker Compose. La API no lo carga: usa los valores por defecto de `src/config/environment.config.ts`, que coinciden con el `docker-compose.yml`, así que no es necesario modificarlo para desarrollo local. Detalle en [`docs/context/infrastructure.md`](docs/context/infrastructure.md#variables-de-entorno).
+`npm run dev` y `npm start` cargan el `.env` con el soporte nativo de Node (`--env-file-if-exists`) y Docker Compose lo lee para los puertos. Si no existe, la API usa los defaults de `src/config/environment.config.ts`, que coinciden con el `docker-compose.yml`. Detalle en [`docs/context/infrastructure.md`](docs/context/infrastructure.md#variables-de-entorno).
 
 3. Levantar la base de datos
 
