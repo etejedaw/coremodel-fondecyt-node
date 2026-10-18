@@ -6,8 +6,8 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "typecheck": "tsc -p . --noEmit",
-    "start": "node dist/app.js",
-    "dev": "nodemon -w './**/*.ts' --exec 'ts-node' src/app.ts",
+    "start": "node --env-file-if-exists=.env dist/app.js",
+    "dev": "nodemon -w './**/*.ts' --exec 'node --env-file-if-exists=.env -r ts-node/register' src/app.ts",
     "test": "jest",
     "test:watch": "jest --watch",
     "lint": "eslint . --ext .ts",
@@ -55,7 +55,6 @@
   },
   "dependencies": {
     "cheerio": "^1.0.0-rc.12",
-    "dotenv": "^16.0.3",
     "express": "^4.21.2",
     "mongoose": "^6.6.5",
     "morgan": "^1.10.0",
