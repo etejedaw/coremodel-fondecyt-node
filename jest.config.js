@@ -3,5 +3,7 @@ module.exports = {
 	transform: {
 		"^.+.tsx?$": ["ts-jest", {}]
 	},
-	testEnvironment: "node"
+	testEnvironment: "node",
+	modulePathIgnorePatterns: ["<rootDir>/.worktree/"],
+	testPathIgnorePatterns: ["/node_modules/", "<rootDir>/.worktree/"]
 };
