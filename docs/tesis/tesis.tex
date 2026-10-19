@@ -280,7 +280,7 @@ La presente tesis aborda la sistematizaci\'on del proceso de captura de indicado
 
 Se desarroll\'o un sistema de extracci\'on, transformaci\'on y carga (ETL) basado en una arquitectura modular de \textit{adapters} intercambiables, implementado en TypeScript con Node.js y MongoDB. El sistema permite agregar nuevos indicadores y fuentes de datos sin modificar la l\'ogica central, soportando distintos tipos de conexi\'on y estrategias de extracci\'on: \textit{web scraping} de HTML, extracci\'on de tablas y consumo de APIs JSON.
 
-Se implementaron cuatro indicadores del modelo CORE distribuidos en dos m\'odulos: simulacros de tsunami y participaci\'on electoral (dimensi\'on institucional), y tasa de pobreza y organizaciones comunitarias (dimensi\'on sociocomunitaria). El sistema extrajo un total de 70 registros: 29 simulacros, 21 registros de participaci\'on electoral, tres de pobreza a nivel comunal, regional y nacional, y 17 registros hist\'oricos de organizaciones comunitarias. Los datos fueron validados contra extracciones manuales y se verific\'o el correcto funcionamiento de los mecanismos de evitaci\'on de duplicados.
+Se implementaron cuatro indicadores del modelo CORE distribuidos en dos m\'odulos: simulacros de tsunami y participaci\'on electoral (dimensi\'on institucional), y tasa de pobreza y organizaciones comunitarias (dimensi\'on sociocomunitaria). El sistema extrajo un total de 70 registros: 29 simulacros, 21 registros de participaci\'on electoral, tres de pobreza a nivel comunal, regional y nacional, y 17 registros hist\'oricos de organizaciones comunitarias. Los datos fueron validados contra las mismas fuentes y se verific\'o el correcto funcionamiento de los mecanismos de evitaci\'on de duplicados.
 
 Los resultados se ponen a disposici\'on mediante una API REST y \textit{dashboards} en Metabase, permitiendo al equipo de investigaci\'on consultar los indicadores de forma directa sin procesamiento manual.
 
@@ -298,7 +298,7 @@ This thesis addresses the systematization of the process of capturing quantitati
 
 An extraction, transformation, and loading (ETL) system was developed based on a modular architecture of interchangeable adapters, implemented in TypeScript with Node.js and MongoDB. The system allows adding new indicators and data sources without modifying the core logic, supporting different connection types and extraction strategies: HTML web scraping, table extraction, and JSON API consumption.
 
-Four indicators of the CORE model were implemented across two modules: tsunami drills and electoral participation (institutional dimension), and poverty rate and community organizations (socio-community dimension). The system extracted a total of 70 records: 29 drills, 21 electoral participation records, three poverty records at municipal, regional, and national levels, and 17 historical records of community organizations. The data was validated against manual extractions and the correct functioning of duplicate avoidance mechanisms was verified.
+Four indicators of the CORE model were implemented across two modules: tsunami drills and electoral participation (institutional dimension), and poverty rate and community organizations (socio-community dimension). The system extracted a total of 70 records: 29 drills, 21 electoral participation records, three poverty records at municipal, regional, and national levels, and 17 historical records of community organizations. The data was validated against the same sources and the correct functioning of duplicate avoidance mechanisms was verified.
 
 Results are made available through a REST API and Metabase dashboards, allowing the research team to query indicators directly without manual processing.
 
@@ -379,7 +379,7 @@ Para esto, se debe comenzar con la premisa de que la informaci\'on requerida se 
 
 Una vez que la informaci\'on es extra\'ida, esta debe ser transformada. Para este proceso se debe recordar que cada c\'alculo var\'ia seg\'un el indicador. Por ejemplo, en la dimensi\'on social del modelo CORE presentada por \textcite{villagra2017}, se puede encontrar un indicador llamado ``Tsunami Drills'' (Simulacros ante tsunamis) y se calcula con la suma de todos los simulacros realizados entre los a\~nos 2010 y 2015. Por lo tanto, los datos extra\'idos ser\'ian los simulacros entre estos a\~nos, pero la transformaci\'on ser\'ia la suma total de todos estos simulacros.
 
-Finalmente, una vez que la informaci\'on es transformada, esta debe ser almacenada en una base de datos para luego ser cargada en alguna plataforma. De tal manera que el equipo de investigaci\'on pueda acceder a esta f\'acilmente. La plataforma permite visualizar la informaci\'on por medio de distintos gr\'aficos y en funci\'on del tiempo, junto con informaci\'on extra como la web de donde fue obtenida y la fecha en la que fue extra\'ida.
+Finalmente, una vez que la informaci\'on es transformada, esta debe ser almacenada en una base de datos para luego ser cargada en alguna plataforma. De tal manera que el equipo de investigaci\'on pueda acceder a esta f\'acilmente. La plataforma permite visualizar la informaci\'on por medio de distintos gr\'aficos y en funci\'on del tiempo, mientras que la API entrega, junto con los datos, la URL de la fuente de cada indicador y la fecha en que se almacen\'o cada registro.
 
 % ---
 \subsection{Impacto del proyecto}
@@ -796,14 +796,14 @@ Pruebas & Jest & 29.7.0 \\
 \hline
 Contenedores & Docker Compose & \textit{Compose Specification} \\
 \hline
-Visualizaci\'on & Metabase & \texttt{latest} \\
+Visualizaci\'on & Metabase & 0.64 \\
 \hline
 Control de versiones & Git & --- \\
 \hline
 \end{tabular}
 \end{table}
 
-La versi\'on de Node.js se fija mediante el archivo \texttt{.nvmrc} con el alias \texttt{lts/jod}, que corresponde a la l\'inea 22 de soporte extendido. Esta decisi\'on responde a que las versiones recientes de Cheerio y de sus dependencias transitivas requieren caracter\'isticas de m\'odulos ECMAScript no disponibles en las l\'ineas anteriores. La \'unica versi\'on no fijada es la de Metabase, cuya imagen Docker se referencia mediante la etiqueta \texttt{latest}: al tratarse de una herramienta de visualizaci\'on externa al flujo ETL, su versi\'on exacta no compromete la reproducibilidad de los resultados del sistema.
+La versi\'on de Node.js se fija mediante el archivo \texttt{.nvmrc} con el alias \texttt{lts/jod}, que corresponde a la l\'inea 22 de soporte extendido. Esta decisi\'on responde a que las versiones recientes de Cheerio y de sus dependencias transitivas requieren caracter\'isticas de m\'odulos ECMAScript no disponibles en las l\'ineas anteriores. Las im\'agenes Docker de los servicios tambi\'en se fijan a una versi\'on expl\'icita; en el caso de Metabase se utiliza la l\'inea \texttt{v0.64.x}, que recibe solo actualizaciones menores.
 
 \section{Lenguaje de programaci\'on}
 \label{sec:lenguaje}
@@ -864,7 +864,7 @@ A continuaci\'on se muestra una lista de las librer\'ias principales y secundari
 
 Para facilitar el despliegue y la reproducibilidad del entorno de desarrollo, se utiliza Docker junto con Docker Compose \parencite{docker}.
 
-Docker permite crear contenedores aislados que encapsulan la aplicaci\'on y sus dependencias, mientras que Docker Compose permite definir y orquestar m\'ultiples servicios de forma declarativa. En el caso de este proyecto, se definen tres servicios: la base de datos MongoDB, una interfaz de administraci\'on (Mongo Express) y una herramienta de visualizaci\'on de datos (Metabase).
+Docker permite crear contenedores aislados que encapsulan la aplicaci\'on y sus dependencias, mientras que Docker Compose permite definir y orquestar m\'ultiples servicios de forma declarativa. En el caso de este proyecto, se definen cuatro servicios: la base de datos MongoDB, una interfaz de administraci\'on (Mongo Express), una herramienta de visualizaci\'on de datos (Metabase) y un servicio que configura Metabase de forma autom\'atica al levantar el entorno.
 
 Esta decisi\'on permite que cualquier integrante del equipo de investigaci\'on pueda levantar el entorno completo con un solo comando, sin necesidad de instalar ni configurar cada servicio de forma manual.
 
@@ -1146,7 +1146,7 @@ Cada etapa del flujo ETL se define mediante un \textit{adapter} abstracto que es
   \item \textbf{MapperAdapter}: Define c\'omo se transforman los datos extra\'idos al formato que se almacena en la base de datos.
   \item \textbf{HashAdapter}: Genera una clave \'unica por registro para evitar duplicados.
   \item \textbf{StorageAdapter}: Controla el almacenamiento de los datos procesados.
-  \item \textbf{CalculatorAdapter} (opcional): Calcula un resultado agregado a partir de los datos almacenados y lo persiste en una colecci\'on separada.
+  \item \textbf{CalculatorAdapter} (opcional): Calcula un resultado agregado a partir de los registros de cada ejecuci\'on y lo persiste en una colecci\'on separada.
 \end{itemize}
 
 La Figura~\ref{fig:diagrama-adapters} presenta estos \textit{adapters} con sus m\'etodos abstractos, junto con las implementaciones concretas disponibles para la etapa de obtenci\'on de datos.
@@ -1357,7 +1357,7 @@ El campo \texttt{region} contiene el nombre can\'onico de la unidad territorial,
 
 Este m\'odulo contiene tres sub-indicadores que extraen informaci\'on desde la Biblioteca del Congreso Nacional de Chile (BCN).
 
-El primer sub-indicador, \textit{tasa-pobreza-ingresos}, extrae la tasa de pobreza por ingresos desde la secci\'on de reportes comunales de la BCN. Se utiliza un \textit{ParseAdapter} basado en Cheerio que identifica la tabla de la secci\'on ``2.1 Tasa de Pobreza por ingresos'' y extrae las filas correspondientes a la comuna, la regi\'on y el pa\'is, junto con los valores de las encuestas CASEN 2017 y CASEN 2022.
+El primer sub-indicador, \textit{tasa-pobreza-ingresos}, extrae la tasa de pobreza por ingresos desde la secci\'on de reportes comunales de la BCN. Se utiliza un \textit{ParseAdapter} basado en Cheerio que identifica la tabla de la secci\'on ``2.1 Tasa de Pobreza por ingresos'' y extrae las filas correspondientes a la comuna, la regi\'on y el pa\'is, junto con el valor de cada medici\'on CASEN que informe el reporte (por ejemplo, CASEN 2017 y CASEN 2022 en el reporte de 2024). Los nombres de las mediciones se leen desde los encabezados de la tabla, ya que cambian entre reportes.
 
 El segundo sub-indicador, \textit{organizaciones-comunitarias}, extrae la cantidad de organizaciones comunitarias por tipo y a\~no desde la API JSON de estad\'isticas territoriales de la BCN. Se utiliza un \textit{JsonFetchAdapter} que obtiene el JSON directamente y un \textit{ParseAdapter} que extrae el campo \texttt{datosTemaN} que contiene los datos hist\'oricos. En la Figura~\ref{fig:datos-bcn} se muestra un registro de ambos sub-indicadores.
 
@@ -1459,7 +1459,7 @@ Un territorio que no coincida con ninguna de las 16 regiones se conserva sin mod
 El sistema implementa una jerarqu\'ia de errores tipados que permite identificar el origen y el contexto de cada fallo. Los errores se dividen en dos categor\'ias:
 
 \begin{itemize}
-  \item \textbf{DomainError}: Errores propios de la l\'ogica del negocio, como un indicador no encontrado (\textit{ParseError}) o un m\'odulo no registrado (\textit{ScraperNotFoundError}).
+  \item \textbf{DomainError}: Errores propios de la l\'ogica del negocio, como una fuente de la que no se pueden extraer datos (\textit{ParseError}), un par\'ametro de consulta inv\'alido (\textit{InvalidQueryParamError}) o un m\'odulo no registrado (\textit{ScraperNotFoundError}).
   \item \textbf{ServiceError}: Errores de servicios externos, como fallos en la conexi\'on HTTP (\textit{FetchError}), en el almacenamiento (\textit{StorageError}) o en la ejecuci\'on de tareas programadas (\textit{CronExecutionError}).
 \end{itemize}
 
@@ -1470,7 +1470,7 @@ Todos los errores heredan de una clase base \textit{BaseError} que incluye un ca
 
 El \textit{CronRegistry} permite que el sistema ejecute la extracci\'on de indicadores de forma peri\'odica sin intervenci\'on manual. Al iniciar la aplicaci\'on, el \textit{CronRegistry} recorre todos los m\'odulos registrados y programa una tarea cron para cada indicador que tenga una frecuencia definida.
 
-Las frecuencias se expresan mediante la sintaxis cron est\'andar y est\'an disponibles como un \textit{enum} predefinido que incluye valores para ejecuci\'on diaria, semanal, mensual, anual y \'unica. La ejecuci\'on \'unica se utiliza para fuentes hist\'oricas que no se actualizan, como es el caso de los simulacros obtenidos desde Wayback Machine. Cuando la URL de un indicador contiene par\'ametros din\'amicos, el indicador puede declarar una funci\'on que los resuelve en cada ejecuci\'on programada; as\'i, la tasa de pobreza consulta el reporte del a\~no en curso y, si a\'un no ha sido publicado, el de los dos a\~nos anteriores.
+Las frecuencias se expresan mediante la sintaxis cron est\'andar y est\'an disponibles como un \textit{enum} predefinido que incluye valores para ejecuci\'on diaria, semanal, mensual, anual y \'unica. La ejecuci\'on \'unica se utiliza para fuentes hist\'oricas que no se actualizan, como es el caso de los simulacros obtenidos desde Wayback Machine. Cuando la URL de un indicador contiene par\'ametros din\'amicos, el indicador puede declarar una funci\'on que los resuelve en cada ejecuci\'on programada; as\'i, la tasa de pobreza y la participaci\'on electoral consultan el reporte del a\~no en curso y, si a\'un no ha sido publicado, el de los dos a\~nos anteriores.
 
 \section{API REST}
 \label{sec:api-rest}
@@ -1505,7 +1505,7 @@ POST & /biblioteca-congreso-nacional/\allowbreak :indicator & Ejecuta la extracc
 \end{tabular}
 \end{table}
 
-La extracci\'on se dispara con \texttt{POST} y la lectura de lo almacenado con \texttt{GET}, de modo que consultar un indicador no vuelve a acceder a la fuente. Cada \textit{endpoint} con par\'ametro \texttt{:indicator} valida que el indicador exista antes de operar; en caso contrario se retorna un error 404 con un mensaje descriptivo. El \textit{endpoint} \texttt{/result} solo existe en el m\'odulo de emergencias y desastres, y retorna 404 si el indicador no tiene calculador o a\'un no tiene resultados. En el m\'odulo de la BCN, el \texttt{POST} del indicador \texttt{valdivia-\allowbreak tasa-\allowbreak pobreza-\allowbreak ingresos} exige el par\'ametro de consulta \texttt{year} con un a\~no de cuatro d\'igitos (\texttt{?year=YYYY}). Los errores de dominio responden 400 y los de acceso a la fuente o al almacenamiento, 502.
+La extracci\'on se dispara con \texttt{POST} y la lectura de lo almacenado con \texttt{GET}, de modo que consultar un indicador no vuelve a acceder a la fuente. Cada \textit{endpoint} con par\'ametro \texttt{:indicator} valida que el indicador exista antes de operar; en caso contrario se retorna un error 404 con un mensaje descriptivo. El \textit{endpoint} \texttt{/result} solo existe en el m\'odulo de emergencias y desastres, y retorna 404 si el indicador no tiene calculador o a\'un no tiene resultados. En el m\'odulo de la BCN, el \texttt{POST} de los indicadores \texttt{valdivia-\allowbreak tasa-\allowbreak pobreza-\allowbreak ingresos} y \texttt{valdivia-\allowbreak participacion-\allowbreak electoral} exige el par\'ametro de consulta \texttt{year} con un a\~no de cuatro d\'igitos (\texttt{?year=YYYY}). Los errores de dominio responden 400 y los de acceso a la fuente o al almacenamiento, 502.
 
 La API se documenta mediante una colecci\'on Bruno \parencite{bruno} en formato OpenCollection, versionada junto al c\'odigo en el directorio \texttt{docs/api/}. A diferencia de una documentaci\'on redactada aparte, esta colecci\'on es ejecutable: cada \textit{endpoint} queda descrito en un archivo YAML que puede ser invocado directamente para verificar la respuesta del sistema. La Figura~\ref{fig:bruno-collection} muestra la definici\'on de uno de ellos.
 
@@ -1798,7 +1798,7 @@ Tanto la conexi\'on a MongoDB como las consultas y el \textit{dashboard} se encu
 \section{Validaci\'on de la extracci\'on}
 \label{sec:validacion}
 
-Para validar que los datos extra\'idos por el sistema son correctos, se realiz\'o una comparaci\'on con los valores le\'idos de forma manual en las mismas fuentes. La Tabla~\ref{tab:validacion} resume esta comparaci\'on.
+Para validar que los datos extra\'idos por el sistema son correctos, se realiz\'o una comparaci\'on con los valores publicados en las mismas fuentes, le\'idos de forma manual o mediante un procedimiento independiente del sistema. La Tabla~\ref{tab:validacion} resume esta comparaci\'on.
 
 \begin{table}[H]
 \centering
@@ -1909,7 +1909,7 @@ Se verific\'o que el \textit{CronRegistry} programe correctamente las tareas de 
 
 El presente proyecto logr\'o desarrollar un sistema de extracci\'on, transformaci\'on y carga de datos que sistematiza el proceso de captura de indicadores para el modelo CORE de resiliencia comunitaria. La arquitectura modular basada en \textit{adapters} permite agregar nuevos indicadores y fuentes de datos sin modificar la l\'ogica central del sistema, lo cual constituye el principal aporte t\'ecnico del trabajo. De este modo se verifica la hip\'otesis de trabajo planteada en la secci\'on~\ref{sec:objetivos}: la captura de los indicadores cuantitativos sociocomunitarios e institucionales del modelo CORE puede sistematizarse mediante la extracci\'on autom\'atica de datos disponibles en la web, con la condici\'on de que exista una fuente p\'ublica accesible para cada indicador.
 
-El sistema demostr\'o ser funcional para fuentes de datos de naturaleza distinta (\textit{web scraping} de HTML, extracci\'on de tablas y consumo de APIs JSON), extrayendo y almacenando 70 registros correspondientes a cuatro indicadores del modelo CORE distribuidos en dos m\'odulos. La validaci\'on realizada confirm\'o que los datos extra\'idos coinciden con los obtenidos de forma manual, y que los mecanismos de evitaci\'on de duplicados operan correctamente ante ejecuciones repetidas.
+El sistema demostr\'o ser funcional para fuentes de datos de naturaleza distinta (\textit{web scraping} de HTML, extracci\'on de tablas y consumo de APIs JSON), extrayendo y almacenando 70 registros correspondientes a cuatro indicadores del modelo CORE distribuidos en dos m\'odulos. La validaci\'on realizada confirm\'o que los datos extra\'idos coinciden con los publicados en las fuentes, y que los mecanismos de evitaci\'on de duplicados operan correctamente ante ejecuciones repetidas.
 
 El ciclo completo que persegu\'ia el proyecto se cierra en los \textit{dashboards} presentados en la secci\'on~\ref{sec:visualizacion-resultados}: un dato que antes se obten\'ia navegando manualmente cada fuente y transcribi\'endolo a una planilla hoy se extrae, se normaliza, se almacena, se agrega y se grafica sin intervenci\'on humana. La distribuci\'on de simulacros por regi\'on, la comparaci\'on de la tasa de pobreza entre dos mediciones CASEN, la serie hist\'orica de organizaciones comunitarias y la participaci\'on electoral de la comuna frente a la regi\'on y el pa\'is son lecturas que el equipo de investigaci\'on puede consultar de forma directa, y que se actualizan solas cada vez que el \textit{CronRegistry} ejecuta una extracci\'on. En ese sentido, el sistema no entrega \'unicamente datos crudos, sino indicadores en el sentido en que los define el modelo CORE.
 
@@ -1957,7 +1957,7 @@ El indicador \textit{Emergency Organizations} (SCEO) no pudo ser implementado de
 
 Se implementaron dos indicadores: \textit{Population Poverty} mediante la extracci\'on de la tasa de pobreza por ingresos desde la BCN, y \textit{Civic Organizations} mediante la extracci\'on de organizaciones comunitarias desde la API JSON de la BCN.
 
-El indicador \textit{Special Needs Population} (SNP) no fue implementado dentro del alcance de este proyecto, aunque se identificaron sus fuentes de datos en el cap\'itulo de viabilidad (CASEN e INE \parencite{ine-a}). Dado que estas fuentes ofrecen descargas directas en formato CSV y XLSX, la arquitectura desarrollada ya lo soporta mediante el \textit{DownloadAdapter} existente, lo cual facilita su incorporaci\'on sin modificaciones al \textit{core} del sistema.
+El indicador \textit{Special Needs Population} (SNP) no fue implementado dentro del alcance de este proyecto, aunque se identificaron sus fuentes de datos en el cap\'itulo de viabilidad (Observatorio Social \parencite{observatoriosocial}, INE \parencite{ine-b} y BCN \parencite{bcn-c}). Dado que la mayor\'ia de estas fuentes ofrece descargas directas, el \textit{DownloadAdapter} existente permite obtener los archivos sin modificaciones al \textit{core} del sistema; su incorporaci\'on requiere un \textit{ParseAdapter} para sus formatos (XLS y archivos de datos estad\'isticos como SAV y DTA).
 
 \subsection{Objetivo Espec\'ifico 3: API y anal\'iticas}
 \label{sec:conclusion-oe3}
@@ -1982,7 +1982,7 @@ El tercer aporte proviene de las mediciones de rendimiento de la secci\'on~\ref{
 
 Un resultado transversal del proyecto, no previsto al inicio, es que el principal obst\'aculo para operacionalizar el modelo CORE en Chile no es t\'ecnico sino de disponibilidad y calidad de los datos p\'ublicos.
 
-De los seis indicadores de las dimensiones sociocomunitaria e institucional analizados en el cap\'itulo de viabilidad, solo cuatro cuentan con una fuente p\'ublica que permita construirlos de forma automatizada, y la de uno de ellos, SCCP, debi\'o reemplazarse durante el desarrollo porque la publicaci\'on original fue retirada. El indicador SCEO carece por completo de fuente centralizada, y SNP depende de encuestas cuya periodicidad no coincide con la frecuencia con que se querr\'ia medir la resiliencia de un territorio.
+De los seis indicadores de las dimensiones sociocomunitaria e institucional analizados en el cap\'itulo de viabilidad, cuatro fueron construidos de forma automatizada, y la fuente de uno de ellos, SCCP, debi\'o reemplazarse durante el desarrollo porque la publicaci\'on original fue retirada. El indicador SCEO carece por completo de fuente centralizada, y SNP, aunque dispone de fuentes descargables, depende de encuestas cuya periodicidad no coincide con la frecuencia con que se querr\'ia medir la resiliencia de un territorio.
 
 A esto se suma que las fuentes disponibles presentan problemas de consistencia que solo se hacen visibles al automatizar su lectura. Los 29 simulacros publicados por el MINEDUC dan lugar a 21 nombres de territorio distintos en un pa\'is que tiene 16 regiones, al punto de que dos de esas graf\'ias difieren \'unicamente en un ap\'ostrofo tipogr\'afico frente a un acento agudo. La BCN, por su parte, informa el car\'acter \texttt{-} donde no dispone de un valor, publica a\~nos con datos parciales sin se\~nalarlo y, en el reporte comunal de 2023, informa para Valdivia una cantidad de inscritos que no corresponde a la comuna. Ninguno de estos problemas es perceptible para una persona que consulta la p\'agina puntualmente; todos ellos comprometen la agregaci\'on autom\'atica de los datos.
 
@@ -2085,6 +2085,27 @@ La colecci\'on contiene una fila por unidad territorial y a\~no consultado. Los 
   "casen2022": 3.4,
   "year": "2024",
   "indicator": "valdivia-tasa-pobreza-ingresos",
+  "module": "biblioteca-congreso-nacional"
+}
+\end{lstlisting}
+
+\section{Colecci\'on participacion-electoral}
+\label{app:datos-sccp}
+
+Cada documento corresponde a una unidad territorial en una elecci\'on. La clave combina la unidad territorial y la elecci\'on, por lo que dos reportes que informan la misma elecci\'on no generan documentos duplicados. El documento conserva el porcentaje publicado por la fuente (\texttt{participacionFuente}) junto al calculado por el sistema (\texttt{participacion}).
+
+\begin{lstlisting}[style=codigo, language=JSON]
+{
+  "key": "comuna-de-valdivia-elecciones-generales-2025-
+           biblioteca-congreso-nacional-valdivia-participacion-electoral",
+  "eleccion": "Elecciones generales 2025",
+  "unidadTerritorial": "Comuna de Valdivia",
+  "inscritos": 147528,
+  "votantes": 125299,
+  "participacionFuente": 84.9,
+  "participacion": 84.93,
+  "year": "2026",
+  "indicator": "valdivia-participacion-electoral",
   "module": "biblioteca-congreso-nacional"
 }
 \end{lstlisting}
