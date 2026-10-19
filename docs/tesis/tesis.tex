@@ -585,6 +585,33 @@ En este cap\'itulo se analiza la viabilidad de extracci\'on autom\'atica de cada
 
 Dentro del modelo CORE se especifican los indicadores correspondientes a las dimensiones sociocomunitaria e institucional que ser\'an objeto de an\'alisis (ver Anexo~\ref{app:indicadores-core}). La finalidad de esta b\'usqueda es analizar cu\'ales indicadores son viables para realizar la extracci\'on autom\'atica de sus datos.
 
+El modelo CORE agrupa estos indicadores dentro de su dimensi\'on social. Para responder a los objetivos espec\'ificos del proyecto, que distinguen la dimensi\'on institucional de la sociocomunitaria, los seis indicadores analizados se clasificaron como se muestra en la Tabla~\ref{tab:clasificacion-indicadores}. Se consideran institucionales los indicadores que miden la participaci\'on de la poblaci\'on en procesos organizados por instituciones o la capacidad de respuesta organizada ante una emergencia, y sociocomunitarios los que describen las condiciones de la poblaci\'on y las organizaciones que la propia comunidad forma.
+
+\begin{table}[H]
+\centering
+\caption{Clasificaci\'on de los indicadores analizados por dimensi\'on}
+\label{tab:clasificacion-indicadores}
+\begin{tabular}{|p{2.8cm}|p{5.6cm}|p{5.2cm}|}
+\hline
+\textbf{Dimensi\'on} & \textbf{Indicador} & \textbf{Qu\'e mide} \\
+\hline
+Institucional & \textit{Tsunami Drills} (TD) & Simulacros organizados por instituciones del Estado \\
+\hline
+Institucional & \textit{Civic Participation} (SCCP) & Participaci\'on en elecciones, un proceso que organiza el Servicio Electoral \\
+\hline
+Institucional & \textit{Emergency Organizations} (SCEO) & Voluntarios en organizaciones de respuesta ante emergencias \\
+\hline
+Sociocomunitaria & \textit{Population Poverty} (PP) & Situaci\'on de pobreza de la poblaci\'on \\
+\hline
+Sociocomunitaria & \textit{Civic Organizations} (SCCO) & Organizaciones que la propia comunidad forma \\
+\hline
+Sociocomunitaria & \textit{Special Needs Population} (SNP) & Poblaci\'on que presenta alg\'un tipo de discapacidad \\
+\hline
+\end{tabular}
+\end{table}
+
+La clasificaci\'on de SCCP requiere una aclaraci\'on. En el modelo CORE forma parte del capital social, junto a SCCO y SCEO. Se la considera institucional porque lo que mide es la participaci\'on de la poblaci\'on en un proceso institucional, las elecciones, y no una forma de organizaci\'on propia de la comunidad.
+
 \section{Population Poverty (PP)}
 \label{sec:pp}
 
@@ -624,12 +651,16 @@ SCCP hace referencia al porcentaje de la poblaci\'on que participa activamente e
 \hline
 \textbf{Fuente} & \textbf{Tipo dato} & \textbf{Segm.} & \textbf{Formato} & \textbf{Notas} \\
 \hline
-SERVEL \parencite{servel} & Datos en bruto & Comunal & .csv & \'Unica fuente identificada \\
+SERVEL \parencite{servel} & Datos en bruto & Comunal & .csv & Publicaci\'on retirada; hoy solo tableros Power BI \\
+\hline
+BCN \parencite{bcn-d} & Datos en bruto y porcentaje & Comunal & Tabla HTML & Republica datos del SERVEL; requiere \textit{web scraping} \\
 \hline
 \end{tabular}
 \end{table}
 
-La informaci\'on es compleja de encontrar debido a que solo se identific\'o una fuente. El Servicio Electoral de Chile (SERVEL) provee datos en formato CSV que pueden ser descargados directamente.
+En el an\'alisis de viabilidad inicial se identific\'o una \'unica fuente: el Servicio Electoral de Chile (SERVEL), que publicaba los datos de participaci\'on en formato CSV para su descarga directa. Al implementar el indicador, esa publicaci\'on ya no estaba disponible: el SERVEL muestra hoy la participaci\'on electoral por comuna solo en tableros interactivos de Power BI \parencite{servel-participacion}, que no ofrecen una descarga directa de los datos.
+
+Los mismos datos se encuentran en el reporte comunal de la BCN \parencite{bcn-d}, que en su secci\'on de indicadores electorales informa, a partir de las estad\'isticas del SERVEL, la cantidad de inscritos, la cantidad de votantes y el porcentaje de participaci\'on de la comuna, la regi\'on y el pa\'is en la elecci\'on m\'as reciente. Esta fue la fuente utilizada. Al igual que la tasa de pobreza, requiere \textit{web scraping} de una tabla HTML.
 
 \section{Social Capital -- Civic Organizations (SCCO)}
 \label{sec:scco}
