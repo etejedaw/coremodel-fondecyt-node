@@ -117,52 +117,74 @@
 					}
 				},
 				{
-					"$group": {
-						"_id": {
-							"unidadTerritorial": "$unidadTerritorial",
-							"year": "$year"
+					"$project": {
+						"_id": 0,
+						"unidadTerritorialYear": {
+							"$concat": [
+								"$unidadTerritorial",
+								" ",
+								"$year"
+							]
 						},
-						"CASEN 2017": {
-							"$max": "$casen2017"
-						},
-						"CASEN 2020": {
-							"$max": "$casen2020"
-						},
-						"CASEN 2022": {
-							"$max": "$casen2022"
+						"mediciones": {
+							"$filter": {
+								"input": {
+									"$objectToArray": "$$ROOT"
+								},
+								"cond": {
+									"$regexMatch": {
+										"input": "$$this.k",
+										"regex": "^casen\\d{4}$"
+									}
+								}
+							}
 						}
 					}
 				},
 				{
-					"$sort": {
-						"_id.unidadTerritorial": 1,
-						"_id.year": 1
+					"$unwind": "$mediciones"
+				},
+				{
+					"$group": {
+						"_id": {
+							"unidadTerritorialYear": "$unidadTerritorialYear",
+							"medicion": "$mediciones.k"
+						},
+						"tasa": {
+							"$max": "$mediciones.v"
+						}
 					}
 				},
 				{
 					"$project": {
 						"_id": 0,
-						"unidadTerritorialYear": {
-							"$concat": [
-								"$_id.unidadTerritorial",
-								" ",
-								"$_id.year"
-							]
+						"unidadTerritorialYear": "$_id.unidadTerritorialYear",
+						"medicion": {
+							"$replaceOne": {
+								"input": {
+									"$toUpper": "$_id.medicion"
+								},
+								"find": "CASEN",
+								"replacement": "CASEN "
+							}
 						},
-						"CASEN 2017": 1,
-						"CASEN 2020": 1,
-						"CASEN 2022": 1
+						"tasa": 1
+					}
+				},
+				{
+					"$sort": {
+						"unidadTerritorialYear": 1,
+						"medicion": 1
 					}
 				}
 			],
 			"visualization_settings": {
 				"graph.dimensions": [
-					"unidadTerritorialYear"
+					"unidadTerritorialYear",
+					"medicion"
 				],
 				"graph.metrics": [
-					"CASEN 2017",
-					"CASEN 2020",
-					"CASEN 2022"
+					"tasa"
 				],
 				"graph.x_axis.title_text": "Unidad territorial y año",
 				"graph.y_axis.title_text": "Tasa de pobreza (%)"
