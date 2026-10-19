@@ -276,18 +276,15 @@ VALDIVIA -- CHILE\\
 \chapter*{Resumen}
 \addcontentsline{toc}{chapter}{Resumen}
 
-% TODO: Escribir resumen (150-300 palabras)
-% El resumen debe ser una descripcion autosuficiente del Proyecto de Titulo.
-% Debe permitir una lectura comprensiva del problema planteado, el metodo,
-% su significancia y hallazgos.
-
 La presente tesis aborda la sistematizaci\'on del proceso de captura de indicadores cuantitativos sociocomunitarios e institucionales mediante la extracci\'on automatizada de datos de la web, con el objetivo de alimentar el modelo CORE de resiliencia comunitaria ante tsunamis en zonas costeras de Chile.
 
 Se desarroll\'o un sistema de extracci\'on, transformaci\'on y carga (ETL) basado en una arquitectura modular de \textit{adapters} intercambiables, implementado en TypeScript con Node.js y MongoDB. El sistema permite agregar nuevos indicadores y fuentes de datos sin modificar la l\'ogica central, soportando distintos tipos de conexi\'on y estrategias de extracci\'on: \textit{web scraping} de HTML, extracci\'on de tablas y consumo de APIs JSON.
 
-Se implementaron cinco indicadores distribuidos en dos m\'odulos: simulacros de emergencia (dimensi\'on institucional) y tasa de pobreza junto con organizaciones comunitarias (dimensi\'on sociocomunitaria). El sistema extrajo un total de 29 registros de simulacros, datos de pobreza a nivel comunal, regional y nacional, y 17 registros hist\'oricos de organizaciones comunitarias. Los datos fueron validados contra extracciones manuales y se verific\'o el correcto funcionamiento de los mecanismos de evitaci\'on de duplicados.
+Se implementaron cuatro indicadores del modelo CORE distribuidos en dos m\'odulos: simulacros de tsunami y participaci\'on electoral (dimensi\'on institucional), y tasa de pobreza y organizaciones comunitarias (dimensi\'on sociocomunitaria). El sistema extrajo un total de 70 registros: 29 simulacros, 21 registros de participaci\'on electoral, tres de pobreza a nivel comunal, regional y nacional, y 17 registros hist\'oricos de organizaciones comunitarias. Los datos fueron validados contra extracciones manuales y se verific\'o el correcto funcionamiento de los mecanismos de evitaci\'on de duplicados.
 
 Los resultados se ponen a disposici\'on mediante una API REST y \textit{dashboards} en Metabase, permitiendo al equipo de investigaci\'on consultar los indicadores de forma directa sin procesamiento manual.
+
+El desarrollo evidenci\'o que el principal obst\'aculo para automatizar el modelo CORE no es t\'ecnico, sino la disponibilidad y calidad de los datos p\'ublicos: dos de las fuentes identificadas fueron retiradas durante el proyecto, y otras presentan graf\'ias inconsistentes o valores err\'oneos que solo se hacen visibles al automatizar su lectura.
 
 \textbf{Palabras clave:} resiliencia comunitaria, ETL, \textit{web scraping}, modelo CORE, indicadores sociocomunitarios, TypeScript.
 
@@ -297,15 +294,15 @@ Los resultados se ponen a disposici\'on mediante una API REST y \textit{dashboar
 \chapter*{Abstract}
 \addcontentsline{toc}{chapter}{Abstract}
 
-% TODO: Traducir el resumen al ingles
-
 This thesis addresses the systematization of the process of capturing quantitative socio-community and institutional indicators through automated web data extraction, aiming to feed the CORE community resilience model for tsunami-prone coastal areas in Chile.
 
 An extraction, transformation, and loading (ETL) system was developed based on a modular architecture of interchangeable adapters, implemented in TypeScript with Node.js and MongoDB. The system allows adding new indicators and data sources without modifying the core logic, supporting different connection types and extraction strategies: HTML web scraping, table extraction, and JSON API consumption.
 
-Five indicators were implemented across two modules: emergency drills (institutional dimension) and poverty rate together with community organizations (socio-community dimension). The system extracted a total of 29 drill records, poverty data at municipal, regional, and national levels, and 17 historical records of community organizations. The data was validated against manual extractions and the correct functioning of duplicate avoidance mechanisms was verified.
+Four indicators of the CORE model were implemented across two modules: tsunami drills and electoral participation (institutional dimension), and poverty rate and community organizations (socio-community dimension). The system extracted a total of 70 records: 29 drills, 21 electoral participation records, three poverty records at municipal, regional, and national levels, and 17 historical records of community organizations. The data was validated against manual extractions and the correct functioning of duplicate avoidance mechanisms was verified.
 
 Results are made available through a REST API and Metabase dashboards, allowing the research team to query indicators directly without manual processing.
+
+The development showed that the main obstacle to automating the CORE model is not technical, but the availability and quality of public data: two of the identified sources were withdrawn during the project, and others present inconsistent spellings or erroneous values that only become visible when their reading is automated.
 
 \textbf{Keywords:} community resilience, ETL, web scraping, CORE model, socio-community indicators, TypeScript.
 
@@ -1864,7 +1861,7 @@ De manera similar, el \textit{CalculatorAdapter} compar\'o los resultados calcul
 \section{Rendimiento de la extracci\'on}
 \label{sec:rendimiento}
 
-Se instrument\'o el flujo ETL para medir el tiempo de cada etapa por separado. La Tabla~\ref{tab:rendimiento} presenta los tiempos obtenidos al ejecutar los cinco indicadores sobre colecciones vac\'ias, es decir, en el escenario en que todos los registros deben insertarse.
+Se instrument\'o el flujo ETL para medir el tiempo de cada etapa por separado. La Tabla~\ref{tab:rendimiento} presenta los tiempos obtenidos al ejecutar cada extracci\'on del sistema sobre colecciones vac\'ias, es decir, en el escenario en que todos los registros deben insertarse.
 
 \begin{table}[H]
 \centering
@@ -1893,7 +1890,7 @@ La columna \textit{Total} incluye adem\'as la etapa de c\'alculo, presente solo 
 
 La lectura relevante de estas mediciones no es la magnitud absoluta, sino su distribuci\'on: entre el 88\% y el 99\% del tiempo total corresponde a la obtenci\'on del documento desde la fuente externa, mientras que las etapas de transformaci\'on y persistencia representan en conjunto menos del 10\%. Esto implica que el rendimiento del sistema est\'a determinado por la latencia de las fuentes web y no por su procesamiento interno, por lo que optimizar las etapas propias del ETL tendr\'ia un efecto marginal.
 
-En t\'erminos agregados, la extracci\'on completa de los seis indicadores (55 registros) tom\'o alrededor de cuatro segundos. Frente al procedimiento manual que este trabajo busca sistematizar (consistente en navegar cada fuente, copiar los valores y transcribirlos a una planilla), la diferencia no radica \'unicamente en el tiempo, sino en que el proceso queda documentado, es repetible y no introduce errores de transcripci\'on.
+En t\'erminos agregados, la extracci\'on completa de los cuatro indicadores CORE (55 registros) tom\'o alrededor de cuatro segundos. Frente al procedimiento manual que este trabajo busca sistematizar (consistente en navegar cada fuente, copiar los valores y transcribirlos a una planilla), la diferencia no radica \'unicamente en el tiempo, sino en que el proceso queda documentado, es repetible y no introduce errores de transcripci\'on.
 
 \section{Ejecuci\'on automatizada}
 \label{sec:ejecucion-automatizada}
@@ -1912,7 +1909,7 @@ Se verific\'o que el \textit{CronRegistry} programe correctamente las tareas de 
 
 El presente proyecto logr\'o desarrollar un sistema de extracci\'on, transformaci\'on y carga de datos que sistematiza el proceso de captura de indicadores para el modelo CORE de resiliencia comunitaria. La arquitectura modular basada en \textit{adapters} permite agregar nuevos indicadores y fuentes de datos sin modificar la l\'ogica central del sistema, lo cual constituye el principal aporte t\'ecnico del trabajo.
 
-El sistema demostr\'o ser funcional para fuentes de datos de naturaleza distinta (\textit{web scraping} de HTML, extracci\'on de tablas y consumo de APIs JSON), extrayendo y almacenando 70 registros correspondientes a seis indicadores distribuidos en dos m\'odulos. La validaci\'on realizada confirm\'o que los datos extra\'idos coinciden con los obtenidos de forma manual, y que los mecanismos de evitaci\'on de duplicados operan correctamente ante ejecuciones repetidas.
+El sistema demostr\'o ser funcional para fuentes de datos de naturaleza distinta (\textit{web scraping} de HTML, extracci\'on de tablas y consumo de APIs JSON), extrayendo y almacenando 70 registros correspondientes a cuatro indicadores del modelo CORE distribuidos en dos m\'odulos. La validaci\'on realizada confirm\'o que los datos extra\'idos coinciden con los obtenidos de forma manual, y que los mecanismos de evitaci\'on de duplicados operan correctamente ante ejecuciones repetidas.
 
 El ciclo completo que persegu\'ia el proyecto se cierra en los \textit{dashboards} presentados en la secci\'on~\ref{sec:visualizacion-resultados}: un dato que antes se obten\'ia navegando manualmente cada fuente y transcribi\'endolo a una planilla hoy se extrae, se normaliza, se almacena, se agrega y se grafica sin intervenci\'on humana. La distribuci\'on de simulacros por regi\'on, la comparaci\'on de la tasa de pobreza entre dos mediciones CASEN, la serie hist\'orica de organizaciones comunitarias y la participaci\'on electoral de la comuna frente a la regi\'on y el pa\'is son lecturas que el equipo de investigaci\'on puede consultar de forma directa, y que se actualizan solas cada vez que el \textit{CronRegistry} ejecuta una extracci\'on. En ese sentido, el sistema no entrega \'unicamente datos crudos, sino indicadores en el sentido en que los define el modelo CORE.
 
