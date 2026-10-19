@@ -27,7 +27,8 @@ describe("Biblioteca Congreso Nacional Route - input validation", () => {
 		const indicators = factory.getIndicators("biblioteca-congreso-nacional");
 		expect(indicators).toEqual([
 			"valdivia-tasa-pobreza-ingresos",
-			"valdivia-organizaciones-comunitarias"
+			"valdivia-organizaciones-comunitarias",
+			"valdivia-participacion-electoral"
 		]);
 	});
 
@@ -93,6 +94,35 @@ describe("Biblioteca Congreso Nacional Route - HTTP", () => {
 			expect(init).toHaveBeenCalledWith("valdivia-tasa-pobreza-ingresos", {
 				year: "2023"
 			});
+		});
+
+		it("should scrape the electoral participation for the requested year", async () => {
+			const init = jest.spyOn(scraper, "init").mockResolvedValue([] as never);
+
+			const response = await fetch(
+				`${server.baseUrl}/valdivia-participacion-electoral?year=2024`,
+				{ method: "POST" }
+			);
+
+			expect(response.status).toBe(200);
+			expect(init).toHaveBeenCalledWith("valdivia-participacion-electoral", {
+				year: "2024"
+			});
+		});
+
+		it("should respond 400 when year is missing for the electoral participation", async () => {
+			const init = jest.spyOn(scraper, "init");
+
+			const response = await fetch(
+				`${server.baseUrl}/valdivia-participacion-electoral`,
+				{ method: "POST" }
+			);
+
+			expect(response.status).toBe(400);
+			expect(await response.json()).toEqual({
+				error: "year query param is required"
+			});
+			expect(init).not.toHaveBeenCalled();
 		});
 
 		it("should respond 400 when year is missing", async () => {
