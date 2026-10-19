@@ -309,6 +309,112 @@
 				"size_x": 12,
 				"size_y": 12
 			}
+		},
+		{
+			"name": "Participación electoral por elección",
+			"description": "Participación (votantes sobre inscritos) calculada por el sistema para Valdivia, la Región de Los Ríos y el país en cada elección que informa el reporte comunal de la BCN. Para el país se usa el total sin voto exterior.",
+			"collection": "participacion-electoral",
+			"display": "row",
+			"query": [
+				{
+					"$group": {
+						"_id": "$eleccion",
+						"Valdivia": {
+							"$max": {
+								"$cond": [
+									{
+										"$regexMatch": {
+											"input": "$unidadTerritorial",
+											"regex": "Valdivia"
+										}
+									},
+									"$participacion",
+									null
+								]
+							}
+						},
+						"Región de Los Ríos": {
+							"$max": {
+								"$cond": [
+									{
+										"$regexMatch": {
+											"input": "$unidadTerritorial",
+											"regex": "^Región"
+										}
+									},
+									"$participacion",
+									null
+								]
+							}
+						},
+						"País": {
+							"$max": {
+								"$cond": [
+									{
+										"$regexMatch": {
+											"input": "$unidadTerritorial",
+											"regex": "^País(, sin voto exterior)?$"
+										}
+									},
+									"$participacion",
+									null
+								]
+							}
+						}
+					}
+				},
+				{
+					"$project": {
+						"_id": 0,
+						"eleccion": "$_id",
+						"anio": {
+							"$getField": {
+								"field": "match",
+								"input": {
+									"$regexFind": {
+										"input": "$_id",
+										"regex": "\\d{4}$"
+									}
+								}
+							}
+						},
+						"Valdivia": 1,
+						"Región de Los Ríos": 1,
+						"País": 1
+					}
+				},
+				{
+					"$sort": {
+						"anio": 1,
+						"eleccion": -1
+					}
+				},
+				{
+					"$project": {
+						"anio": 0
+					}
+				}
+			],
+			"visualization_settings": {
+				"graph.dimensions": [
+					"eleccion"
+				],
+				"graph.metrics": [
+					"Valdivia",
+					"Región de Los Ríos",
+					"País"
+				],
+				"graph.x_axis.title_text": "Elección",
+				"graph.y_axis.title_text": "Participación (%)",
+				"graph.max_categories_enabled": true,
+				"graph.max_categories": 20
+			},
+			"layout": {
+				"col": 0,
+				"row": 24,
+				"size_x": 24,
+				"size_y": 16
+			}
 		}
 	]
 }
