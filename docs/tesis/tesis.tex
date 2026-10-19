@@ -1295,11 +1295,11 @@ La arquitectura soporta distintos tipos de conexi\'on a fuentes de datos, cada u
 \centering
 \caption{Tipos de conexi\'on implementados en los m\'odulos}
 \label{tab:tipos-conexion}
-\begin{tabular}{|p{4cm}|p{4cm}|p{4.5cm}|}
+\begin{tabular}{|p{4cm}|p{3.6cm}|p{5.8cm}|}
 \hline
 \textbf{FetchAdapter} & \textbf{Tipo de conexi\'on} & \textbf{M\'odulo} \\
 \hline
-RequestPromiseAdapter & \textit{Web scraping} de HTML est\'atico & emergencias-desastres, BCN tasa-pobreza-ingresos \\
+RequestPromiseAdapter & \textit{Web scraping} de HTML est\'atico & emergencias-desastres\newline BCN tasa-pobreza-ingresos\newline BCN participacion-electoral \\
 \hline
 JsonFetchAdapter & Consumo de API JSON & BCN organizaciones-comunitarias \\
 \hline
@@ -1358,11 +1358,11 @@ El campo \texttt{region} contiene el nombre can\'onico de la unidad territorial,
 \subsection{M\'odulo biblioteca-congreso-nacional}
 \label{sec:modulo-bcn}
 
-Este m\'odulo contiene dos sub-indicadores que extraen informaci\'on desde la Biblioteca del Congreso Nacional de Chile (BCN).
+Este m\'odulo contiene tres sub-indicadores que extraen informaci\'on desde la Biblioteca del Congreso Nacional de Chile (BCN).
 
 El primer sub-indicador, \textit{tasa-pobreza-ingresos}, extrae la tasa de pobreza por ingresos desde la secci\'on de reportes comunales de la BCN. Se utiliza un \textit{ParseAdapter} basado en Cheerio que identifica la tabla de la secci\'on ``2.1 Tasa de Pobreza por ingresos'' y extrae las filas correspondientes a la comuna, la regi\'on y el pa\'is, junto con los valores de las encuestas CASEN 2017 y CASEN 2022.
 
-El segundo sub-indicador, \textit{organizaciones-comunitarias}, extrae la cantidad de organizaciones comunitarias por tipo y a\~no desde la API JSON de estad\'isticas territoriales de la BCN. Se utiliza un \textit{JsonFetchAdapter} que obtiene el JSON directamente y un \textit{ParseAdapter} que extrae el campo \texttt{datosTemaN} que contiene los datos hist\'oricos. En la Figura~\ref{fig:datos-bcn} se muestra un registro de cada sub-indicador.
+El segundo sub-indicador, \textit{organizaciones-comunitarias}, extrae la cantidad de organizaciones comunitarias por tipo y a\~no desde la API JSON de estad\'isticas territoriales de la BCN. Se utiliza un \textit{JsonFetchAdapter} que obtiene el JSON directamente y un \textit{ParseAdapter} que extrae el campo \texttt{datosTemaN} que contiene los datos hist\'oricos. En la Figura~\ref{fig:datos-bcn} se muestra un registro de ambos sub-indicadores.
 
 \begin{figure}[H]
 \begin{lstlisting}[style=codigo, language=JSON]
@@ -1396,6 +1396,31 @@ El segundo sub-indicador, \textit{organizaciones-comunitarias}, extrae la cantid
 \end{figure}
 
 Los porcentajes de pobreza se almacenan como valores num\'ericos, convertidos desde el formato decimal chileno con coma que utiliza la fuente. En el caso de las organizaciones comunitarias, el segundo registro se muestra abreviado: cada documento contiene 11 tipos de organizaci\'on, de los cuales se omiten aqu\'i los que no aportan a la lectura del ejemplo.
+
+El tercer sub-indicador, \textit{participacion-electoral}, extrae la participaci\'on electoral desde la misma secci\'on de reportes comunales de la BCN, a partir de su cap\'itulo de indicadores electorales, cuyos datos provienen del SERVEL. Se utiliza un \textit{ParseAdapter} basado en Cheerio que identifica las tablas cuyo t\'itulo corresponde a la participaci\'on y extrae, para la comuna, la regi\'on y el pa\'is, la cantidad de inscritos, la cantidad de votantes y el porcentaje de participaci\'on publicado. Las columnas se identifican por su encabezado y no por su posici\'on, ya que sus nombres cambian entre reportes (por ejemplo, ``Inscritos Total'' o ``N\textdegree{} Electores'').
+
+Cada reporte informa la elecci\'on m\'as reciente a la fecha de su publicaci\'on, por lo que el nombre de la elecci\'on se obtiene desde el t\'itulo de la tabla y forma parte de la clave del registro. De esta forma, dos reportes que informan la misma elecci\'on no generan registros duplicados. La Figura~\ref{fig:datos-sccp} muestra un registro de este sub-indicador.
+
+\begin{figure}[H]
+\begin{lstlisting}[style=codigo, language=JSON]
+{
+  "key": "comuna-de-valdivia-elecciones-generales-2025-...",
+  "eleccion": "Elecciones generales 2025",
+  "unidadTerritorial": "Comuna de Valdivia",
+  "inscritos": 147528,
+  "votantes": 125299,
+  "participacionFuente": 84.9,
+  "participacion": 84.93,
+  "year": "2026",
+  "indicator": "valdivia-participacion-electoral",
+  "module": "biblioteca-congreso-nacional"
+}
+\end{lstlisting}
+\caption{Registro almacenado por el sub-indicador de participaci\'on electoral del m\'odulo BCN}
+\label{fig:datos-sccp}
+\end{figure}
+
+El registro conserva el porcentaje publicado por la fuente (\texttt{participacionFuente}) junto al porcentaje calculado por el sistema como el cociente entre votantes e inscritos (\texttt{participacion}). Ambos valores se redondean a dos decimales, ya que la fuente publica algunos porcentajes con errores de redondeo, como \texttt{83,4000000000000057}.
 
 \section{Normalizaci\'on de unidades territoriales}
 \label{sec:normalizacion}
@@ -1538,7 +1563,9 @@ Durante el desarrollo de este proyecto se experiment\'o directamente esta proble
 
 Para resolver esta situaci\'on, se recurri\'o a Wayback Machine \parencite{waybackmachine}, un servicio de archivo digital de Internet Archive que almacena instant\'aneas hist\'oricas de p\'aginas web. Mediante este servicio se accedi\'o a las versiones archivadas de las p\'aginas del MINEDUC, lo cual permiti\'o completar la extracci\'on de los datos. Sin embargo, esta soluci\'on no es generalizable: Wayback Machine no archiva todas las p\'aginas ni con la misma frecuencia, y su disponibilidad depende de un servicio externo.
 
-Este caso evidencia un conjunto de riesgos inherentes a la extracci\'on de datos desde la web que deben ser considerados en el dise\~no de sistemas ETL de este tipo:
+El indicador \textit{Civic Participation} present\'o un caso similar. El an\'alisis de viabilidad identific\'o como fuente los archivos CSV que publicaba el SERVEL; sin embargo, al momento de implementar el indicador esa publicaci\'on hab\'ia sido retirada y la participaci\'on por comuna solo se encontraba disponible en tableros interactivos de Power BI. En este caso la soluci\'on fue cambiar de fuente: la BCN republica los mismos datos en su reporte comunal, lo que permiti\'o implementar el indicador reutilizando el \textit{FetchAdapter} y la estrategia de extracci\'on de tablas ya existentes.
+
+Estos casos evidencian un conjunto de riesgos inherentes a la extracci\'on de datos desde la web que deben ser considerados en el dise\~no de sistemas ETL de este tipo:
 
 \begin{itemize}
   \item \textbf{Cambios en la estructura HTML}: Una p\'agina puede redise\~nar su interfaz sin modificar la URL, invalidando los selectores CSS o XPath que el \textit{ParseAdapter} utiliza para extraer los datos. Este tipo de cambio es silencioso, ya que el sistema no recibe un error expl\'icito sino que extrae datos incorrectos o vac\'ios.
