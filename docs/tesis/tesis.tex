@@ -978,6 +978,42 @@ En s\'intesis, el prototipo no se descart\'o ni se traslad\'o tal cual: su estru
 
 En este cap\'itulo se describe la arquitectura del software desarrollado, los patrones de dise\~no utilizados y la implementaci\'on de los m\'odulos de extracci\'on de datos. La arquitectura fue dise\~nada con el objetivo de que agregar un nuevo indicador al sistema requiera el m\'inimo esfuerzo posible, manteniendo la separaci\'on de responsabilidades y la reutilizaci\'on de componentes.
 
+\section{Metodolog\'ia de desarrollo}
+\label{sec:metodologia-desarrollo}
+
+El desarrollo se abord\'o de forma incremental. Primero se construy\'o el prototipo acotado descrito en el Cap\'itulo~\ref{ch:prototipo}, cuyo prop\'osito fue identificar qu\'e partes del proceso ETL var\'ian entre fuentes, y a partir de \'el se defini\'o la arquitectura que se presenta en este cap\'itulo. Cada componente de esa arquitectura se valid\'o mediante las pruebas automatizadas descritas en la secci\'on~\ref{sec:testing}.
+
+Para organizar el trabajo en la etapa inicial se utiliz\'o una adaptaci\'on de Scrum, un marco de trabajo \'agil que organiza el desarrollo en iteraciones cortas de duraci\'on fija, denominadas \textit{sprints}, a partir de una lista priorizada de trabajo pendiente o \textit{product backlog} \parencite{scrumguide2020}. El marco no se sigui\'o de manera estricta, ya que el equipo de desarrollo estuvo conformado \'unicamente por el estudiante tesista. De \'el se tomaron sus elementos organizativos: la lista priorizada de trabajo, el trabajo por iteraciones y la revisi\'on peri\'odica de avances. Estas revisiones se realizaron en reuniones cada dos semanas con el profesor patrocinante y la co-patrocinante, en las que se revisaban los avances y se acordaban las tareas siguientes.
+
+La Tabla~\ref{tab:adaptacion-scrum} muestra c\'omo se adaptaron los principales elementos de Scrum al contexto del proyecto.
+
+\begin{table}[H]
+\centering
+\caption{Adaptaci\'on de los elementos de Scrum al proyecto}
+\label{tab:adaptacion-scrum}
+\begin{tabular}{|p{4cm}|p{9.5cm}|}
+\hline
+\textbf{Elemento de Scrum} & \textbf{Aplicaci\'on en el proyecto} \\
+\hline
+\textit{Product backlog} & Indicadores del modelo CORE por implementar y funcionalidades del sistema (API REST, \textit{dashboards} y ejecuci\'on automatizada). \\
+\hline
+\textit{Sprint} & Iteraciones de dos semanas, delimitadas por las reuniones de seguimiento. \\
+\hline
+\textit{Sprint planning} & Definici\'on de las tareas y prioridades de la iteraci\'on siguiente junto con el profesor patrocinante y la co-patrocinante. \\
+\hline
+\textit{Sprint review} & Revisi\'on de los avances en cada reuni\'on de seguimiento. \\
+\hline
+\textit{Developers} & Estudiante tesista, a cargo del dise\~no y la implementaci\'on del sistema. \\
+\hline
+\textit{Stakeholder} (patrocinante) & Gu\'ia t\'ecnica del proyecto y revisi\'on de los avances. \\
+\hline
+\textit{Stakeholder} (co-patrocinante) & Autora principal del modelo CORE; valida la pertinencia de los indicadores y de sus fuentes de datos. \\
+\hline
+\textit{Increment} & Indicadores y componentes del \textit{core} incorporados progresivamente, cada uno validado con pruebas automatizadas. \\
+\hline
+\end{tabular}
+\end{table}
+
 \section{Arquitectura general}
 \label{sec:arquitectura}
 
@@ -1765,24 +1801,29 @@ El ciclo completo que persegu\'ia el proyecto se cierra en los \textit{dashboard
 \section{Conclusiones por objetivo}
 \label{sec:conclusiones-objetivos}
 
-La Tabla~\ref{tab:cumplimiento} resume el grado de cumplimiento de cada objetivo espec\'ifico y se\~nala d\'onde se encuentra la evidencia que lo respalda. Las subsecciones siguientes desarrollan cada caso.
+La Tabla~\ref{tab:cumplimiento} resume el grado de cumplimiento de cada objetivo espec\'ifico, lo contrasta con la meta fijada al inicio del proyecto y se\~nala d\'onde se encuentra la evidencia que lo respalda. Las subsecciones siguientes desarrollan cada caso.
 
 \begin{table}[H]
 \centering
 \caption{Cumplimiento de los objetivos espec\'ificos}
 \label{tab:cumplimiento}
 \small
-\begin{tabular}{|c|p{5.2cm}|p{3.2cm}|p{2.8cm}|}
+\begin{tabular}{|c|p{3.6cm}|p{2.2cm}|p{3.8cm}|p{2.6cm}|}
 \hline
-\textbf{OE} & \textbf{Objetivo} & \textbf{Implementado} & \textbf{Evidencia} \\
+\textbf{OE} & \textbf{Objetivo} & \textbf{Meta} & \textbf{Logrado} & \textbf{Evidencia} \\
 \hline
-1 & Capturar variables de la dimensi\'on institucional & \textit{Tsunami Drills} (29 registros) & Secciones~\ref{sec:resultado-td} y~\ref{sec:resultado-calculator} \\
+1 & Capturar variables de la dimensi\'on institucional & CE $\geq$ 2 & CE = 1: \textit{Tsunami Drills} (29 registros) & Secciones~\ref{sec:resultado-td} y~\ref{sec:resultado-calculator} \\
 \hline
-2 & Capturar variables de la dimensi\'on sociocomunitaria & \textit{Population Poverty} y \textit{Civic Organizations} (20 registros) & Secciones~\ref{sec:resultado-pobreza} y~\ref{sec:resultado-orgs} \\
+2 & Capturar variables de la dimensi\'on sociocomunitaria & CE $\geq$ 2 & CE = 2: \textit{Population Poverty} y \textit{Civic Organizations} (20 registros) & Secciones~\ref{sec:resultado-pobreza} y~\ref{sec:resultado-orgs} \\
 \hline
-3 & Poner a disposici\'on los indicadores mediante una API y anal\'iticas & API REST y \textit{dashboards} de Metabase & Secciones~\ref{sec:api-funcionamiento} y~\ref{sec:visualizacion-resultados} \\
+1, 2 & Arquitectura de extracci\'on extensible & CT $\geq$ 2 & CT = 2: HTML est\'atico y API JSON, sin modificar el \textit{core} & Secci\'on~\ref{sec:tipos-conexion} \\
+\hline
+3 & Poner a disposici\'on los indicadores mediante una API y anal\'iticas & CEI $\geq$ 2\newline CES $\geq$ 2 & CEI = 1, CES = 2: API REST y \textit{dashboards} de Metabase & Secciones~\ref{sec:api-funcionamiento} y~\ref{sec:visualizacion-resultados} \\
 \hline
 \end{tabular}
+
+\vspace{2pt}
+{\footnotesize CE: indicadores calculados autom\'aticamente. CT: tipos de conexi\'on soportados. CEI y CES: indicadores visualizados en las dimensiones institucional y sociocomunitaria.}
 \end{table}
 
 Los tres objetivos se cumplieron, con una cobertura parcial de indicadores en los objetivos 1 y 2: tres de los seis indicadores analizados quedaron fuera del alcance por las razones que se detallan a continuaci\'on. En ning\'un caso la causa fue una limitaci\'on de la arquitectura desarrollada.
