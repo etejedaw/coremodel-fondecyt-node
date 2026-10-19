@@ -1724,6 +1724,52 @@ El sub-indicador \textit{organizaciones-comunitarias} extrajo 17 registros corre
 
 La construcci\'on de esta serie revel\'o una particularidad de la fuente que conviene explicitar. La BCN publica, adem\'as de la cantidad de cada tipo de organizaci\'on, un campo con la suma total; sin embargo, para algunos a\~nos ese campo viene informado con el car\'acter \texttt{-} en lugar de un n\'umero. El \textit{MapperAdapter} convierte esos valores a cero, lo que hace indistinguible un dato ausente de un cero real: en el a\~no 2017 la suma total qued\'o almacenada como cero pese a que los tipos individuales suman 3.485 organizaciones. Por esta raz\'on el gr\'afico recalcula el total a partir de los tipos individuales en lugar de utilizar el campo publicado por la fuente. La ca\'ida observada en el a\~no 2024 no responde a este problema, sino a que la fuente a\'un no publica todos los tipos para ese a\~no.
 
+\subsection{Participaci\'on Electoral}
+\label{sec:resultado-sccp}
+
+El sub-indicador \textit{participacion-electoral} extrajo 21 registros a partir de los reportes comunales de los a\~nos 2020, 2021 y 2023 a 2026, correspondientes a seis tablas de participaci\'on: cinco elecciones y la segunda vuelta presidencial de 2025. Los reportes de 2020 y 2021 informan la misma elecci\'on, por lo que el segundo no agreg\'o registros nuevos. El reporte de 2022 no se encuentra disponible: al consultarlo, la BCN entrega el reporte m\'as reciente. La Tabla~\ref{tab:participacion} resume el porcentaje de participaci\'on calculado por el sistema para la comuna, la regi\'on y el pa\'is.
+
+\begin{table}[H]
+\centering
+\caption{Participaci\'on electoral calculada por elecci\'on y unidad territorial}
+\label{tab:participacion}
+\begin{tabular}{|p{6.4cm}|c|c|c|}
+\hline
+\textbf{Elecci\'on} & \textbf{Valdivia} & \textbf{Los R\'ios} & \textbf{Pa\'is} \\
+\hline
+Presidencial, parlamentarias y consejeros regionales 2017 & 49,24\% & 46,12\% & 46,65\% \\
+\hline
+Plebiscito Constitucional 2022 & 91,52\% & 83,72\% & 86,02\% \\
+\hline
+Plebiscito Constitucional 2023 & 84,01\% & 83,39\% & 84,99\% \\
+\hline
+Padr\'on definitivo 2024 & 83,53\% & 83,53\% & 84,89\% \\
+\hline
+Elecciones generales 2025 & 84,93\% & 84,62\% & 85,41\% \\
+\hline
+Segunda vuelta presidencial 2025 & 84,71\% & 84,44\% & 85,13\% \\
+\hline
+\end{tabular}
+\end{table}
+
+Para el pa\'is se utiliza el total sin voto en el exterior en los reportes que distinguen ambos valores. La elecci\'on de 2024 aparece en la fuente con el nombre ``Padr\'on definitivo 2024'', que se conserva tal como se publica. La participaci\'on de 2017 es cercana al 49\%, mientras que desde el plebiscito de 2022 supera el 83\% en las tres unidades territoriales; esta diferencia coincide con el retorno del voto obligatorio, que el propio reporte de la BCN destaca para el plebiscito de 2022. El valor de Valdivia para ese plebiscito corresponde a un error de la fuente, que se detalla en la secci\'on~\ref{sec:validacion}.
+
+La Figura~\ref{fig:api-participacion} muestra la respuesta de la API y la Figura~\ref{fig:metabase-participacion} la comparaci\'on entre elecciones en Metabase.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.92\textwidth]{img_23.png}
+  \caption{Respuesta de la API para el indicador de participaci\'on electoral}
+  \label{fig:api-participacion}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{img_24.png}
+  \caption{Participaci\'on electoral por elecci\'on en Valdivia, la Regi\'on de Los R\'ios y el pa\'is en Metabase}
+  \label{fig:metabase-participacion}
+\end{figure}
+
 \section{La API REST en funcionamiento}
 \label{sec:api-funcionamiento}
 
@@ -1741,7 +1787,7 @@ Este cat\'alogo se construye din\'amicamente a partir de los m\'odulos registrad
 \section{Visualizaci\'on en Metabase}
 \label{sec:visualizacion-resultados}
 
-Los datos almacenados en MongoDB se visualizan mediante un \textit{dashboard} de Metabase que agrupa los cinco indicadores implementados (Figura~\ref{fig:metabase-dashboard}). Los gr\'aficos consultan directamente las colecciones, de modo que se actualizan de forma autom\'atica cada vez que el \textit{CronRegistry} ejecuta una extracci\'on.
+Los datos almacenados en MongoDB se visualizan mediante un \textit{dashboard} de Metabase que agrupa los indicadores implementados (Figura~\ref{fig:metabase-dashboard}). Los gr\'aficos consultan directamente las colecciones, de modo que se actualizan de forma autom\'atica cada vez que el \textit{CronRegistry} ejecuta una extracci\'on.
 
 \begin{figure}[H]
   \centering
@@ -1787,6 +1833,14 @@ organizaciones & Suma total 2023 & 2.972 & 2972 \\
 \hline
 organizaciones & Suma total 2024 & 531 & 531 \\
 \hline
+participaci\'on & Valdivia, inscritos 2025 & 147.528 & 147528 \\
+\hline
+participaci\'on & Valdivia, votantes 2025 & 125.299 & 125299 \\
+\hline
+participaci\'on & Valdivia, participaci\'on 2025 & 84,9 & 84.9 \\
+\hline
+participaci\'on & Valdivia, participaci\'on 2017 & 49,24 & 49.24 \\
+\hline
 \end{tabular}
 \end{table}
 
@@ -1796,10 +1850,14 @@ En el caso de la tasa de pobreza se compararon los seis valores publicados en la
 
 En el caso de las organizaciones comunitarias se verific\'o que la suma total publicada por la BCN coincidiera con la suma de los tipos individuales extra\'idos por el sistema. La coincidencia se cumple en todos los a\~nos en que la fuente informa dicho campo; los a\~nos en que la fuente lo entrega vac\'io se discuten en la secci\'on~\ref{sec:resultado-orgs}.
 
+En el caso de la participaci\'on electoral se compararon los inscritos, los votantes y el porcentaje publicados en las seis tablas de participaci\'on de los reportes comunales con los almacenados en la base de datos, leyendo las tablas con un procedimiento independiente del \textit{ParseAdapter}. Los 21 registros coinciden con la fuente. Adem\'as, en todos ellos el porcentaje calculado por el sistema como el cociente entre votantes e inscritos coincide con el publicado al redondearlo a la misma cantidad de decimales.
+
+Esta comparaci\'on revel\'o tambi\'en un error en la propia fuente. El reporte de 2023 informa para la comuna de Valdivia 23.008 inscritos y 60 mesas en el Plebiscito Constitucional 2022, pese a que la comuna registra alrededor de 145 mil inscritos en las dem\'as elecciones. El dato es consistente consigo mismo (91,5\% de participaci\'on), pero no corresponde a la comuna. El sistema lo almacena tal como lo publica la fuente: corregirlo exigir\'ia conocer el valor real, y descartarlo ocultar\'ia el defecto a quien consulte los datos.
+
 \section{Evitaci\'on de duplicados}
 \label{sec:duplicados}
 
-El sistema fue ejecutado m\'ultiples veces sobre las mismas fuentes de datos para verificar que los mecanismos de evitaci\'on de duplicados funcionaran correctamente. El \textit{HashAdapter} genera una clave \'unica para cada registro (basada en la fecha y la regi\'on para simulacros, en la unidad territorial y el a\~no consultado para pobreza, y en el a\~no para organizaciones), y los esquemas de MongoDB declaran este campo como \'unico. En cada ejecuci\'on posterior a la primera, el sistema detect\'o los duplicados y los ignor\'o sin generar errores.
+El sistema fue ejecutado m\'ultiples veces sobre las mismas fuentes de datos para verificar que los mecanismos de evitaci\'on de duplicados funcionaran correctamente. El \textit{HashAdapter} genera una clave \'unica para cada registro (basada en la fecha y la regi\'on para simulacros, en la unidad territorial y el a\~no consultado para pobreza, en la unidad territorial y la elecci\'on para participaci\'on electoral, y en el a\~no para organizaciones), y los esquemas de MongoDB declaran este campo como \'unico. En cada ejecuci\'on posterior a la primera, el sistema detect\'o los duplicados y los ignor\'o sin generar errores. En el caso de la participaci\'on electoral, el mismo mecanismo evit\'o duplicar la elecci\'on de 2017, que informan tanto el reporte de 2020 como el de 2021.
 
 De manera similar, el \textit{CalculatorAdapter} compar\'o los resultados calculados con el \'ultimo resultado almacenado y no cre\'o registros nuevos cuando los datos de origen no hab\'ian cambiado.
 
@@ -1826,14 +1884,16 @@ tasa-pobreza-ingresos & 3 & 333,8 & 38,5 & 0,3 & 3,0 & 375,5 \\
 \hline
 organizaciones-comunitarias & 17 & 121,6 & 0,1 & 0,5 & 8,3 & 130,3 \\
 \hline
+participacion-electoral & 6 & 2.084,2 & 27,0 & 0,7 & 1,9 & 2.113,9 \\
+\hline
 \end{tabular}
 \end{table}
 
-La columna \textit{Total} incluye adem\'as la etapa de c\'alculo, presente solo en los indicadores de simulacros. El tiempo mayor del primer indicador se explica por el costo inicial de establecer la conexi\'on HTTP y no por la cantidad de registros: en una segunda ejecuci\'on ese mismo indicador baj\'o a 182,4 ms.
+La columna \textit{Total} incluye adem\'as la etapa de c\'alculo, presente solo en los indicadores de simulacros. El tiempo mayor del primer indicador se explica por el costo inicial de establecer la conexi\'on HTTP y no por la cantidad de registros: en una segunda ejecuci\'on ese mismo indicador baj\'o a 182,4 ms. El indicador de participaci\'on electoral se midi\'o en una ejecuci\'on posterior, al incorporarse al sistema; en esa misma ejecuci\'on, la obtenci\'on del reporte comunal para la tasa de pobreza tom\'o 1.765,1 ms, por lo que su mayor tiempo responde a la latencia de la BCN en ese momento y no al indicador.
 
-La lectura relevante de estas mediciones no es la magnitud absoluta, sino su distribuci\'on: entre el 88\% y el 93\% del tiempo total corresponde a la obtenci\'on del documento desde la fuente externa, mientras que las etapas de transformaci\'on y persistencia representan en conjunto menos del 10\%. Esto implica que el rendimiento del sistema est\'a determinado por la latencia de las fuentes web y no por su procesamiento interno, por lo que optimizar las etapas propias del ETL tendr\'ia un efecto marginal.
+La lectura relevante de estas mediciones no es la magnitud absoluta, sino su distribuci\'on: entre el 88\% y el 99\% del tiempo total corresponde a la obtenci\'on del documento desde la fuente externa, mientras que las etapas de transformaci\'on y persistencia representan en conjunto menos del 10\%. Esto implica que el rendimiento del sistema est\'a determinado por la latencia de las fuentes web y no por su procesamiento interno, por lo que optimizar las etapas propias del ETL tendr\'ia un efecto marginal.
 
-En t\'erminos agregados, la extracci\'on completa de los cinco indicadores (49 registros) tom\'o menos de dos segundos. Frente al procedimiento manual que este trabajo busca sistematizar (consistente en navegar cada fuente, copiar los valores y transcribirlos a una planilla), la diferencia no radica \'unicamente en el tiempo, sino en que el proceso queda documentado, es repetible y no introduce errores de transcripci\'on.
+En t\'erminos agregados, la extracci\'on completa de los seis indicadores (55 registros) tom\'o alrededor de cuatro segundos. Frente al procedimiento manual que este trabajo busca sistematizar (consistente en navegar cada fuente, copiar los valores y transcribirlos a una planilla), la diferencia no radica \'unicamente en el tiempo, sino en que el proceso queda documentado, es repetible y no introduce errores de transcripci\'on.
 
 \section{Ejecuci\'on automatizada}
 \label{sec:ejecucion-automatizada}
