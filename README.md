@@ -56,6 +56,7 @@ curl -X POST localhost:3000/emergencia-desastres/simulacros-2021
 curl -X POST localhost:3000/emergencia-desastres/simulacros-2022
 curl -X POST localhost:3000/emergencia-desastres/simulacros-2023
 curl -X POST "localhost:3000/biblioteca-congreso-nacional/valdivia-tasa-pobreza-ingresos?year=2024"
+curl -X POST "localhost:3000/biblioteca-congreso-nacional/valdivia-participacion-electoral?year=2026"
 curl -X POST localhost:3000/biblioteca-congreso-nacional/valdivia-organizaciones-comunitarias
 ```
 
