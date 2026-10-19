@@ -2,8 +2,8 @@
 % TESIS DE PREGRADO - INGENIERIA CIVIL EN INFORMATICA
 % Universidad Austral de Chile
 %
-% Titulo: Integracion de Datos y Resiliencia Comunitaria en la Dimension
-%         Sociocomunitaria
+% Titulo: Integracion de Datos y Resiliencia Comunitaria en las Dimensiones
+%         Sociocomunitaria e Institucional
 %
 % Autor: Esteban Nicolas Tejeda Webar
 % Profesor Patrocinante: Cristian Olivares-Rodriguez
@@ -173,7 +173,7 @@
   citecolor=black,
   urlcolor=blue,
   pdfauthor={Esteban Nicolas Tejeda Webar},
-  pdftitle={Integracion de Datos y Resiliencia Comunitaria en la Dimension Sociocomunitaria}
+  pdftitle={Integracion de Datos y Resiliencia Comunitaria en las Dimensiones Sociocomunitaria e Institucional}
 }
 
 % --- Cada capitulo en pagina nueva ---
@@ -197,7 +197,7 @@
 
 % --- Titulo de la tesis (centrado, negrita, 14pt segun pauta) ---
 {\fontsize{14}{18}\selectfont\bfseries
-INTEGRACI\'ON DE DATOS Y RESILIENCIA COMUNITARIA EN LA DIMENSI\'ON SOCIOCOMUNITARIA}
+INTEGRACI\'ON DE DATOS Y RESILIENCIA COMUNITARIA EN LAS DIMENSIONES SOCIOCOMUNITARIA E INSTITUCIONAL}
 
 \end{center}
 
@@ -391,7 +391,7 @@ La herramienta desarrollada aporta a la investigaci\'on de resiliencia comunitar
 \section{Objetivos}
 \label{sec:objetivos}
 
-El presente proyecto busca responder la siguiente pregunta de investigaci\'on: ?`es posible sistematizar la captura de los indicadores cuantitativos sociocomunitarios e institucionales del modelo CORE mediante la extracci\'on autom\'atica de datos disponibles en la web? Para abordarla se definen los objetivos que se detallan a continuaci\'on.
+El presente proyecto plantea como hip\'otesis de trabajo que es posible sistematizar la captura de los indicadores cuantitativos sociocomunitarios e institucionales del modelo CORE mediante la extracci\'on autom\'atica de datos disponibles en la web. Para verificarla se definen los objetivos que se detallan a continuaci\'on.
 
 \subsection{Objetivo general}
 \label{sec:objetivo-general}
@@ -1025,7 +1025,7 @@ La Tabla~\ref{tab:adaptacion-scrum} muestra c\'omo se adaptaron los principales 
 \hline
 \textit{Product backlog} & Indicadores del modelo CORE por implementar y funcionalidades del sistema (API REST, \textit{dashboards} y ejecuci\'on automatizada). \\
 \hline
-\textit{Sprint} & Iteraciones de dos semanas, delimitadas por las reuniones de seguimiento. \\
+\textit{Sprint} & Iteraciones de trabajo, cuyo avance se revisaba en las reuniones de seguimiento. \\
 \hline
 \textit{Sprint planning} & Definici\'on de las tareas y prioridades de la iteraci\'on siguiente junto con el profesor patrocinante y la co-patrocinante. \\
 \hline
@@ -1037,7 +1037,7 @@ La Tabla~\ref{tab:adaptacion-scrum} muestra c\'omo se adaptaron los principales 
 \hline
 \textit{Stakeholder} (co-patrocinante) & Autora principal del modelo CORE; valida la pertinencia de los indicadores y de sus fuentes de datos. \\
 \hline
-\textit{Increment} & Indicadores y componentes del \textit{core} incorporados progresivamente, cada uno validado con pruebas automatizadas. \\
+\textit{Increment} & Funcionalidades desarrolladas en ramas propias del repositorio e integradas a la rama de desarrollo al completarse, cada una validada con pruebas automatizadas. \\
 \hline
 \end{tabular}
 \end{table}
@@ -1907,7 +1907,7 @@ Se verific\'o que el \textit{CronRegistry} programe correctamente las tareas de 
 \section{Conclusiones generales}
 \label{sec:conclusiones-generales}
 
-El presente proyecto logr\'o desarrollar un sistema de extracci\'on, transformaci\'on y carga de datos que sistematiza el proceso de captura de indicadores para el modelo CORE de resiliencia comunitaria. La arquitectura modular basada en \textit{adapters} permite agregar nuevos indicadores y fuentes de datos sin modificar la l\'ogica central del sistema, lo cual constituye el principal aporte t\'ecnico del trabajo.
+El presente proyecto logr\'o desarrollar un sistema de extracci\'on, transformaci\'on y carga de datos que sistematiza el proceso de captura de indicadores para el modelo CORE de resiliencia comunitaria. La arquitectura modular basada en \textit{adapters} permite agregar nuevos indicadores y fuentes de datos sin modificar la l\'ogica central del sistema, lo cual constituye el principal aporte t\'ecnico del trabajo. De este modo se verifica la hip\'otesis de trabajo planteada en la secci\'on~\ref{sec:objetivos}: la captura de los indicadores cuantitativos sociocomunitarios e institucionales del modelo CORE puede sistematizarse mediante la extracci\'on autom\'atica de datos disponibles en la web, con la condici\'on de que exista una fuente p\'ublica accesible para cada indicador.
 
 El sistema demostr\'o ser funcional para fuentes de datos de naturaleza distinta (\textit{web scraping} de HTML, extracci\'on de tablas y consumo de APIs JSON), extrayendo y almacenando 70 registros correspondientes a cuatro indicadores del modelo CORE distribuidos en dos m\'odulos. La validaci\'on realizada confirm\'o que los datos extra\'idos coinciden con los obtenidos de forma manual, y que los mecanismos de evitaci\'on de duplicados operan correctamente ante ejecuciones repetidas.
 
