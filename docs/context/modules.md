@@ -34,7 +34,7 @@ El fetch adapter no se escribe por indicador: se reutiliza uno del core (ver má
 La estructura de carpetas depende de cuántos indicadores tenga el módulo.
 
 - **Un tipo de dato, archivos en la raíz.** `emergencias-desastres` tiene tres indicadores (`simulacros-2021`, `simulacros-2022`, `simulacros-2023`) que comparten la misma estructura de página. Por eso hay un solo juego de adapters en la raíz del módulo y el `config.ts` los instancia tres veces, cambiando solo la URL.
-- **Varios tipos de dato, una subcarpeta por tipo.** `biblioteca-congreso-nacional` tiene dos fuentes con formatos distintos (una tabla HTML y un JSON). Cada una tiene su subcarpeta (`tasa-pobreza-ingresos/`, `organizaciones-comunitarias/`) con su propio juego de adapters, schema e interfaces, y un `index.ts` que reexporta mapper, parse, schema y storage. Los hash adapters se importan directo desde su archivo en el `config.ts`.
+- **Varios tipos de dato, una subcarpeta por tipo.** `biblioteca-congreso-nacional` tiene tres tipos de dato: dos tablas HTML distintas del reporte comunal y un JSON. Cada uno tiene su subcarpeta (`tasa-pobreza-ingresos/`, `participacion-electoral/`, `organizaciones-comunitarias/`) con su propio juego de adapters, schema e interfaces, y un `index.ts` que reexporta mapper, parse, schema y storage. Los hash adapters se importan directo desde su archivo en el `config.ts`.
 
 La regla es que la carpeta agrupa indicadores que comparten adapters. Si dos indicadores necesitan un parse distinto, van en carpetas distintas.
 
@@ -67,7 +67,7 @@ Están en `src/core/adapters/fetch-adapter/`. Un módulo elige uno con `setFetch
 
 | Adapter | Qué hace | Quién lo usa |
 |---|---|---|
-| `RequestPromiseAdapter` | GET con `request-promise`. Devuelve el cuerpo tal cual (HTML). | `emergencias-desastres` y `tasa-pobreza-ingresos` de la BCN. |
+| `RequestPromiseAdapter` | GET con `request-promise`. Devuelve el cuerpo tal cual (HTML). | `emergencias-desastres`, y `tasa-pobreza-ingresos` y `participacion-electoral` de la BCN. |
 | `JsonFetchAdapter` | GET con `fetch`, valida que la respuesta sea OK, la lee como JSON y la devuelve serializada como `string`. | `organizaciones-comunitarias` de la BCN. |
 | `PuppeteerAdapter` | Abre un navegador headless, navega a la URL y devuelve el HTML ya renderizado. Cierra el navegador siempre. | Ningún módulo hoy. Disponible para páginas que dependen de JavaScript. |
 | `DownloadAdapter` | Descarga el archivo a `/tmp/<nombre>` y devuelve la ruta, no el contenido. | Ningún módulo hoy. El parse adapter que lo use debe leer el archivo desde esa ruta. |
@@ -76,7 +76,7 @@ Están en `src/core/adapters/fetch-adapter/`. Un módulo elige uno con `setFetch
 
 La URL de un indicador puede tener marcadores `{{nombre}}`. `ScrapeBase.init` recibe un objeto `params` y reemplaza cada `{{clave}}` por su valor antes de llamar al fetch.
 
-El caso en uso es `valdivia-tasa-pobreza-ingresos`, cuya URL tiene `{{year}}`. Quien llama a `init` es responsable de pasar los params: la ruta de ese módulo (`biblioteca-congreso-nacional.route.ts`) detecta si la URL contiene `{{year}}`, exige el query param `year` con cuatro dígitos y lo pasa. Para la ejecución programada, el indicador declara `setScheduledParams(resolver)` en el `IndicatorBuilder`: `resolver` es una función sin argumentos que devuelve una lista ordenada de params candidatos (`Array<Record<string, string>>`) y se evalúa en cada ejecución del cron, no al construir. `CronRegistry` llama a `init` con el primer candidato; si falla con `ParseError` (la fuente todavía no tiene datos para esos params) prueba el siguiente, y ante cualquier otro error se detiene. Si ningún candidato tiene datos, registra el último `ParseError` como `CronExecutionError`. Sin resolver, `ScrapeBase.getIndicatorScheduledParams` devuelve `[{}]`. `valdivia-tasa-pobreza-ingresos` resuelve el año actual y los dos anteriores, porque la BCN publica el reporte de un año con retraso. Los params también se agregan a cada registro antes del hash; si la fuente trae un campo con el mismo nombre, gana el dato de la fuente.
+Los casos en uso son `valdivia-tasa-pobreza-ingresos` y `valdivia-participacion-electoral`, cuya URL tiene `{{year}}`. Quien llama a `init` es responsable de pasar los params: la ruta de ese módulo (`biblioteca-congreso-nacional.route.ts`) detecta si la URL contiene `{{year}}`, exige el query param `year` con cuatro dígitos y lo pasa. Para la ejecución programada, el indicador declara `setScheduledParams(resolver)` en el `IndicatorBuilder`: `resolver` es una función sin argumentos que devuelve una lista ordenada de params candidatos (`Array<Record<string, string>>`) y se evalúa en cada ejecución del cron, no al construir. `CronRegistry` llama a `init` con el primer candidato; si falla con `ParseError` (la fuente todavía no tiene datos para esos params) prueba el siguiente, y ante cualquier otro error se detiene. Si ningún candidato tiene datos, registra el último `ParseError` como `CronExecutionError`. Sin resolver, `ScrapeBase.getIndicatorScheduledParams` devuelve `[{}]`. Los dos indicadores resuelven el año actual y los dos anteriores, porque la BCN publica el reporte de un año con retraso. Los params también se agregan a cada registro antes del hash; si la fuente trae un campo con el mismo nombre, gana el dato de la fuente.
 
 ## Deduplicación
 
@@ -90,6 +90,7 @@ Consecuencia: una clave que ya existe nunca se actualiza. Si la fuente corrige u
 
 - `emergencias-desastres`: fecha y región. Dos simulacros el mismo día en la misma región se consideran el mismo registro.
 - `tasa-pobreza-ingresos`: unidad territorial, año, módulo e indicador.
+- `participacion-electoral`: unidad territorial, elección, módulo e indicador. El año consultado no entra, porque dos reportes pueden informar la misma elección.
 - `organizaciones-comunitarias`: año, indicador y módulo, comprimidos en un identificador corto.
 
 El storage de `emergencias-desastres` captura cualquier `MongoBulkWriteError`, no solo los de clave duplicada. Los de la BCN capturan solo el código 11000.
