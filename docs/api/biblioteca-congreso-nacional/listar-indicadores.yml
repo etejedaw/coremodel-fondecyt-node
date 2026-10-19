@@ -20,7 +20,7 @@ docs: |-
   ## Response 200
   ```json
   {
-    "indicators": ["valdivia-tasa-pobreza-ingresos", "valdivia-organizaciones-comunitarias"]
+    "indicators": ["valdivia-tasa-pobreza-ingresos", "valdivia-organizaciones-comunitarias", "valdivia-participacion-electoral"]
   }
   ```
 

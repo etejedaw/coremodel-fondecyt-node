@@ -1,0 +1,63 @@
+info:
+  name: Extraer Participación Electoral (Valdivia)
+  type: http
+  seq: 6
+
+http:
+  method: POST
+  url: "{{baseUrl}}/biblioteca-congreso-nacional/valdivia-participacion-electoral"
+  params:
+    - name: year
+      value: "2026"
+      type: query
+
+settings:
+  encodeUrl: true
+
+docs: |-
+  # Extraer Participación Electoral (Valdivia)
+
+  Ejecuta el scraping de la participación electoral desde el reporte comunal de la BCN para Valdivia y la almacena en MongoDB. La BCN publica en ese reporte los datos del SERVEL.
+
+  Requiere el parámetro `year` para indicar el año del reporte comunal. Cada reporte informa la elección más reciente a esa fecha (por ejemplo, el de 2024 trae el Plebiscito Constitucional 2023 y el de 2026 las elecciones generales 2025 y la segunda vuelta presidencial).
+
+  Extrae una fila por unidad territorial (comuna, región y país) de cada tabla de la sección "Indicadores electorales" cuyo título sea de participación. Las columnas se reconocen por su encabezado, porque cambian de nombre entre reportes ("Inscritos Total", "N° Electores", "Votación", "N° Votantes").
+
+  **Auth:** public
+
+  ## Path params
+  - `indicator` (string) — `valdivia-participacion-electoral`
+
+  ## Query
+  - `year` (string, requerido) — año de 4 dígitos del reporte comunal de la BCN, por ejemplo `2026`.
+
+  ## Response 200
+  ```json
+  {
+    "data": [
+      {
+        "eleccion": "Elecciones generales 2025",
+        "unidadTerritorial": "Comuna de Valdivia",
+        "inscritos": 147528,
+        "votantes": 125299,
+        "participacionFuente": 84.9,
+        "participacion": 84.93,
+        "year": "2026",
+        "indicator": "valdivia-participacion-electoral",
+        "module": "biblioteca-congreso-nacional",
+        "key": "comuna-de-valdivia-elecciones-generales-2025-biblioteca-congreso-nacional-valdivia-participacion-electoral"
+      }
+    ]
+  }
+  ```
+
+  `eleccion` es el texto que sigue a "participación (%)" en el título de la tabla. `inscritos` y `votantes` son los conteos publicados; `participacionFuente` es el porcentaje que publica la fuente y `participacion` el que calcula el sistema como `votantes / inscritos × 100`, ambos con dos decimales. `year` es el año consultado y no entra en `key`, que combina la unidad territorial, la elección, el módulo y el indicador: dos reportes que informan la misma elección no duplican los registros. Para leer lo guardado sin volver a consultar la fuente, usa `GET /biblioteca-congreso-nacional/valdivia-participacion-electoral`.
+
+  ## Errors
+  - `404` — `{ "error": "Indicator valdivia-participacion-electoral not found" }` si el indicador no existe en el módulo.
+  - `400` — `{ "error": "year query param is required" }` si falta `year` o viene vacío (`InvalidQueryParamError`).
+  - `400` — `{ "error": "year query param must be a 4-digit year" }` si `year` no son 4 dígitos o se repite en la query (`InvalidQueryParamError`).
+  - `400` — `{ "error": "Cannot extract data from source" }` si el reporte no contiene una tabla de participación con las columnas esperadas (`ParseError`).
+  - `502` — `{ "error": "Fetch failed for https://www.bcn.cl/siit/reportescomunales/comunas_v.html?anno=2026&idcom=14101" }` si la BCN no responde o responde con un estado HTTP no exitoso (`FetchError`).
+  - `502` — `{ "error": "Storage failed: participacion-electoral insertMany failed" }` si falla el guardado en MongoDB (`StorageError`).
+  - `500` — `{ "error": "Internal server error" }` ante un error inesperado.

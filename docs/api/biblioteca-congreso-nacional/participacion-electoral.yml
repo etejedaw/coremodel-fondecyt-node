@@ -1,0 +1,52 @@
+info:
+  name: Participación Electoral (Valdivia)
+  type: http
+  seq: 7
+
+http:
+  method: GET
+  url: "{{baseUrl}}/biblioteca-congreso-nacional/valdivia-participacion-electoral"
+
+settings:
+  encodeUrl: true
+
+docs: |-
+  # Participación Electoral (Valdivia)
+
+  Lee desde MongoDB la participación electoral de Valdivia guardada por `POST /biblioteca-congreso-nacional/valdivia-participacion-electoral`.
+
+  No consulta la fuente ni modifica datos, así que no requiere `year`.
+
+  **Auth:** public
+
+  ## Path params
+  - `indicator` (string) — `valdivia-participacion-electoral`
+
+  ## Response 200
+  ```json
+  {
+    "data": [
+      {
+        "eleccion": "Elecciones generales 2025",
+        "unidadTerritorial": "Comuna de Valdivia",
+        "inscritos": 147528,
+        "votantes": 125299,
+        "participacionFuente": 84.9,
+        "participacion": 84.93,
+        "year": "2026",
+        "indicator": "valdivia-participacion-electoral",
+        "module": "biblioteca-congreso-nacional",
+        "key": "comuna-de-valdivia-elecciones-generales-2025-biblioteca-congreso-nacional-valdivia-participacion-electoral",
+        "createdAt": "2026-10-18T12:00:00.000Z",
+        "updatedAt": "2026-10-18T12:00:00.000Z"
+      }
+    ]
+  }
+  ```
+
+  Hay un registro por elección y unidad territorial guardadas. `createdAt` y `updatedAt` indican cuándo se guardó cada registro; `_id` y `__v` no se exponen. Si todavía no se ha ejecutado el scraping, responde `{ "data": [] }`.
+
+  ## Errors
+  - `404` — `{ "error": "Indicator valdivia-participacion-electoral not found" }` si el indicador no existe en el módulo.
+  - `502` — `{ "error": "Storage failed: participacion-electoral find failed" }` si falla la lectura en MongoDB (`StorageError`).
+  - `500` — `{ "error": "Internal server error" }` ante un error inesperado.
